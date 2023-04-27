@@ -15,9 +15,7 @@ export default function Home() {
       <div className="relative md:min-h-[80vh] lg:min-h-screen py-8 px-12">
         <div className="flex items-center justify-between w-full">
           <div className="w-6/12 lg:w-2/12 flex items-center gap-2">
-            <div className=" ">
-              <Image src={img1} alt="Imagen de fondo" />
-            </div>
+            <Image src={img1} alt="Imagen de fondo" />
           </div>
           <nav className="hidden w-6/12 lg:flex justify-center items-center gap-8 text-gray-500 font-medium">
             <a
