@@ -1,5 +1,7 @@
+import { faTachometerAltFast } from '@fortawesome/free-solid-svg-icons'
 import NavBar from '../components/navbar'
 import { useState } from 'react'
+import { useEffect } from 'react'
 
 interface Card {
   id: number
@@ -31,8 +33,37 @@ const MemorizeGame = () => {
         'https://img.freepik.com/foto-gratis/retrato-hombre-negocios-mascarilla-usando-su-computadora-portatil-mientras-sentado-escaleras-al-aire-libre-concepto-negocio-nuevo-concepto-estilo-vida-normal_58466-14709.jpg',
       showImage: false,
     },
+    {
+      id: 5,
+      image:
+        'https://ep01.epimg.net/elpais/imagenes/2019/10/30/album/1572424649_614672_1572453030_noticia_normal.jpg',
+      showImage: false,
+    },
+    {
+      id: 6,
+      image:
+        'https://ep01.epimg.net/elpais/imagenes/2019/10/30/album/1572424649_614672_1572453030_noticia_normal.jpg',
+      showImage: false,
+    },
   ])
   const [selectedCards, setSelectedCards] = useState<Card[]>([])
+  const [pairsFound, setPairsFound] = useState<number>(0)
+
+  useEffect(() => {
+    // Crear una copia del array de cartas actual
+    const shuffledCards = [...cards]
+
+    // Barajar el array de cartas
+    for (let i = shuffledCards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[shuffledCards[i], shuffledCards[j]] = [
+        shuffledCards[j],
+        shuffledCards[i],
+      ]
+    }
+    // Actualizar el estado de las cartas con el array barajado
+    setCards(shuffledCards)
+  }, [])
 
   const handleClick = (card: Card) => {
     if (selectedCards.length < 2) {
@@ -57,36 +88,34 @@ const MemorizeGame = () => {
         return c
       })
       setCards(updatedCards)
-
       setSelectedCards([...selectedCards, card])
 
-      setTimeout(() => {
-        // Compara las dos cartas seleccionadas
-        if (selectedCards[0].image === selectedCards[1].image) {
-          // Si las cartas son iguales, actualiza el estado de las cartas con showImage = true y disable = true
-          const updatedCards = cards.map((c) => {
-            if (c.id === selectedCards[0].id || c.id === selectedCards[1].id) {
-              return { ...c, showImage: true, disable: true }
-            }
-            return c
-          })
+      // Compara las imágenes de las dos tarjetas
+      if (selectedCards[0].image === card.image) {
+        // Si las imágenes son iguales, elimina ambas tarjetas del estado y aumenta el contador de pares encontrados
+        setTimeout(() => {
+          const updatedCards = cards.filter(
+            (c) => c.id !== card.id && c.id !== selectedCards[0].id,
+          )
           setCards(updatedCards)
-        } else {
-          // Si las cartas no son iguales, actualiza el estado de las tarjetas con showImage = false
+          setSelectedCards([])
+          setPairsFound(pairsFound + 1)
+        }, 1000)
+      } else {
+        // Si las imágenes son diferentes, da vuelta ambas tarjetas después de un corto retraso
+        setTimeout(() => {
           const updatedCards = cards.map((c) => {
-            if (c.id === selectedCards[0].id || c.id === selectedCards[1].id) {
+            if (c.id === card.id || c.id === selectedCards[0].id) {
               return { ...c, showImage: false }
             }
             return c
           })
           setCards(updatedCards)
-        }
-
-        setSelectedCards([])
-      }, 1000)
+          setSelectedCards([])
+        }, 1000)
+      }
     }
   }
-
   return (
     <div>
       <NavBar />
