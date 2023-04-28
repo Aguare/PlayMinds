@@ -13,8 +13,8 @@ CREATE TABLE usuario(
     correo VARCHAR(45) PRIMARY KEY NOT NULL,
     nombre VARCHAR(150),
     pass   VARCHAR(100),
-    rol    ENUM('PROFESOR','ALUMNO','ADMIN'),
-    punteo INT,
+    rol    VARCHAR(100),--('PROFESOR','ALUMNO','ADMIN'),
+    punteo INT
 );
 
 CREATE TABLE insignea_usuarios(
@@ -33,7 +33,7 @@ CREATE TABLE etiqueta(
 CREATE TABLE juego(
     id_juego VARCHAR(45) PRIMARY KEY,
     nombre   VARCHAR(45),
-    tipo    ENUM('MEMORIA','AHORCADO','TARJETA','QUIZ')
+    tipo     VARCHAR(45), --('MEMORIA','AHORCADO','TARJETA','QUIZ')
     descripcion VARCHAR(400)
 );
 
@@ -77,7 +77,7 @@ CREATE TABLE pregunta(
 CREATE TABLE respuesta(
     id_respuesta INT PRIMARY KEY AUTO_INCREMENT,
     respuesta VARCHAR(100),
-    tipo      ENUM('CORRECTA','INCORRECTA'),
+    tipo      VARCHAR(100), --ENUM('CORRECTA','INCORRECTA')
     id_pregunta   INT,
     FOREIGN KEY (id_pregunta) REFERENCES pregunta(id_pregunta)
 );
