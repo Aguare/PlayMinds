@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
 
+import com.coderhouse.Enum.Role;
+
 @Data
 @Entity
 @Table(name = "user")
@@ -15,6 +17,6 @@ public class User implements Serializable{
     private String email;
     private String name;
     private String password;
-    private String role;
+    private Role role;
     private int points;
 }

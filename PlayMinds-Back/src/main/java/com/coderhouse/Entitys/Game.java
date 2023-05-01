@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
 
-import Enum.TypeGame;
+import com.coderhouse.Enum.TypeGame;
 public class Game implements Serializable {
     @Id
     private String id_game;
