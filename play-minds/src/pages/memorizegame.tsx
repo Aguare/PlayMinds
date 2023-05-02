@@ -1,4 +1,3 @@
-import { faTachometerAltFast } from '@fortawesome/free-solid-svg-icons'
 import NavBar from '../components/navbar'
 import { useState } from 'react'
 import { useEffect } from 'react'

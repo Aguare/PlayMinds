@@ -92,12 +92,15 @@ const Quiz = () => {
           <h1>Pregunta {currentQuestion + 1}</h1>
           <p>{questions[currentQuestion].question}</p>
           {questions[currentQuestion].answers.map((answer, index) => (
-            <button
-              key={index}
-              onClick={() => handleAnswerButtonClick(answer.correct)}
-            >
-              {answer.text}
-            </button>
+            <div className="px-4 py-8 flex flex-wrap md:items-center md:justify-center gap-8">
+              <button
+                className="py-2 px-6 text-center text-[#112B3C] relative before:absolute before:top-0 before:left-0 before:w-full before:h-full before:z-10 before:bg-red-500/10 before:transition-all before:duration-300 hover:before:opacity-0 hover:before:scale-50 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:z-10 after:opacity-0 after:transition-all after:duration-300 after:border after:border-green-600 after:scale-125 hover:after:opacity-100 hover:after:scale-100"
+                key={index}
+                onClick={() => handleAnswerButtonClick(answer.correct)}
+              >
+                {answer.text}
+              </button>
+            </div>
           ))}
         </div>
       )}
