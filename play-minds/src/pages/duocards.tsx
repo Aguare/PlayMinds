@@ -86,7 +86,6 @@ const Duocards = () => {
   ])
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0)
   const [answeredCards, setAnsweredCards] = useState<Card[]>([])
-  const [isCorrect, setIsCorrect] = useState<boolean | undefined>(undefined)
   const [isAnswered, setIsAnswered] = useState<boolean>(false)
   const [gameOver, setGameOver] = useState<boolean>(false)
   const [correctAnswers, setCorrectAnswers] = useState<number>(0)
@@ -103,16 +102,12 @@ const Duocards = () => {
     setCurrentCardIndex(0)
     setAnsweredCards([])
     setGameOver(false)
-    setCorrectAnswers(0) // Reiniciar el contador al comenzar un nuevo juego
+    setCorrectAnswers(0) // Establecer el contador en 0 al comenzar un nuevo juego
   }, [cards])
 
   const handleSwipe = (direction: string) => {
     if (!isAnswered) {
       const currentCard = cards[currentCardIndex]
-      const newAnsweredCards = [...answeredCards, currentCard]
-      const remainingCards = cards.filter(
-        (card) => !newAnsweredCards.includes(card),
-      )
       const isCorrect =
         direction === 'right' ? currentCard.correct : !currentCard.correct
       console.log(`Usuario eligió ${direction}`)
@@ -130,6 +125,11 @@ const Duocards = () => {
         setCorrectAnswers((prev) => prev + 1) // Actualizar el contador si se responde correctamente
       }
 
+      const newAnsweredCards = [...answeredCards, currentCard]
+      const remainingCards = cards.filter(
+        (card) => !newAnsweredCards.includes(card),
+      )
+
       if (remainingCards.length > 0) {
         const newIndex = Math.min(
           currentCardIndex + 1,
@@ -137,7 +137,7 @@ const Duocards = () => {
         )
         setCurrentCardIndex(newIndex)
         setCards([...remainingCards])
-        setAnsweredCards(newAnsweredCards)
+        setAnsweredCards(newAnsweredCards) // Actualizar el estado de answeredCards después de verificar si la respuesta es correcta
       } else {
         setGameOver(true)
       }
@@ -164,7 +164,10 @@ const Duocards = () => {
             <h2>¡Juego terminado!</h2>
             <p>Todas las cartas han sido respondidas.</p>
             <div className="correct-answers">
-              Respuestas correctas: {correctAnswers}/{cards.length}
+              <h1>
+                {' '}
+                Respuestas correctas: {correctAnswers}/{answeredCards.length}
+              </h1>
             </div>
           </div>
         ) : (
