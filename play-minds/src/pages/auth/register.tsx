@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import img1 from '../image/logo playminds.png'
+import img1 from '../../image/logo playminds.png'
 
 const Register = () => {
   return (
@@ -13,20 +13,6 @@ const Register = () => {
           <div className="flex flex-col gap-1 w-full">
             <h1 className="text-4xl font-medium">Crear cuenta</h1>
             <p className="text-gray-400">Registrate en la plataforma</p>
-          </div>
-
-          <div className="w-full">
-            <button
-              type="button"
-              className="w-full flex items-center justify-center gap-2 border p-2 px-4 rounded-full"
-            >
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/281/281764.png"
-                width="20"
-                height="20"
-              />
-              <span className="ml-2">Registrate con Google</span>
-            </button>
           </div>
 
           <form className="flex flex-col gap-4">
