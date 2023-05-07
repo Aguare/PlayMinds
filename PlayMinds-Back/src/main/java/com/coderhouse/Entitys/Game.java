@@ -4,9 +4,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-import org.springframework.data.annotation.Id;
-
 import com.coderhouse.Enum.TypeGame;
+
+@Data
+@Entity
+@Table(name = "game")
 public class Game implements Serializable {
     @Id
     private String id_game;

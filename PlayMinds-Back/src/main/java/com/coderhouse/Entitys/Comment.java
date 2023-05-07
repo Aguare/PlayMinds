@@ -5,7 +5,6 @@ import lombok.Data;
 import java.io.Serializable;
 import java.sql.Date;
 
-import org.springframework.data.annotation.Id;
 
 @Data
 @Entity

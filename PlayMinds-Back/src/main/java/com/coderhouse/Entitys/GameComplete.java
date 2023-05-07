@@ -6,7 +6,6 @@ import lombok.Data;
 import java.io.Serializable;
 import java.sql.Date;
 
-import org.springframework.data.annotation.Id;
 
 
 @Data
@@ -14,8 +13,14 @@ import org.springframework.data.annotation.Id;
 @Table(name= "game_complete")
 public class GameComplete implements Serializable{
     @Id
-    private String FK_UG_user_email;
-    private String FK_UG_id_game;
+    @ManyToOne
+    @JoinColumn(name = "FK_UG_user_email")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "Fk_UG_id_game")
+    private Game game;
+
     private Date date;
 
 }
