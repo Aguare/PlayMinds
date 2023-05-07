@@ -1,15 +1,15 @@
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import img1 from '../image/logo playminds1.png'
-import imggame1 from '../image/img-ahorcado.png'
-import imggame2 from '../image/img-duocards.png'
-import imggame3 from '../image/img-memoria.png'
-import imggame4 from '../image/img-quiz.png'
+
+import img1 from '../../image/logo playminds1.png'
+import imggame1 from '../../image/img-ahorcado.png'
+import imggame2 from '../../image/img-duocards.png'
+import imggame3 from '../../image/img-memoria.png'
+import imggame4 from '../../image/img-quiz.png'
 import Link from 'next/link'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBell } from '@fortawesome/free-solid-svg-icons'
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
+const creator = () => {
   return (
     <div>
       <div className="relative md:min-h-[80vh] lg:min-h-screen py-8 px-12">
@@ -17,36 +17,26 @@ export default function Home() {
           <div className="w-6/12 lg:w-2/12 flex items-center gap-2">
             <Image src={img1} alt="Imagen de fondo" />
           </div>
-          <nav className="hidden w-6/12 lg:flex justify-center items-center gap-8 text-gray-500 font-medium">
+          <nav className="hidden w-6/12 lg:flex justify-center items-center gap-8 text-gray-500 font-medium"></nav>
+          <div className="flex items-center gap-2">
             <a
               href="#"
-              className="text-gray-900 hover:text-gray-900 transition-colors"
+              className="text-[#EFEFEF] xl:py-1 xl:px-2 rounded-lg transition-colors"
             >
-              Home
+              <FontAwesomeIcon icon={faBell} className="text-[#EFEFEF]" />
             </a>
-            <a href="#" className="hover:text-gray-900 transition-colors">
-              Ingenieria
-            </a>
-            <a href="#" className="hover:text-gray-900 transition-colors">
-              Derecho
-            </a>
-            <a href="#" className="hover:text-gray-900 transition-colors">
-              Economicas
-            </a>
-            <a href="#" className="hover:text-gray-900 transition-colors">
-              Medicina
-            </a>
-          </nav>
-          <div className="hidden w-4/12 lg:flex justify-center items-center gap-8">
-            <button type="button" className="py-2 px-4">
-              <Link href="/auth/signin">Log in</Link>
-            </button>
-            <button
-              type="button"
-              className="border border-gray-600 py-2 px-4 rounded-lg"
-            >
-              <Link href="/auth/register"> Sign up</Link>
-            </button>
+            <div className="flex items-center gap-2 cursor-pointer ">
+              <div className="relative ">
+                <img
+                  src="https://img.freepik.com/foto-gratis/joven-mujer-colombiana-atractiva-gafas-sol-posando-mientras-pie-junto-al-mar-dia_181624-41580.jpg?w=1800&t=st=1674592279~exp=1674592879~hmac=1276990bc65161f9f68c332774d2e5446f0b6b00d1d865b72e71e8732a58d9f7"
+                  className="w-8 h-8 object-cover rounded-full"
+                />
+                <span className="absolute bg-green-600 w-1.5 h-1.5 top-0 right-0.5 rounded-full ring-2 ring-white"></span>
+              </div>
+              <a className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg  transition-colors ">
+                1,751 pts
+              </a>
+            </div>
           </div>
         </div>
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-8 p-8">
@@ -196,3 +186,4 @@ export default function Home() {
     </div>
   )
 }
+export default creator

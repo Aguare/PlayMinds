@@ -7,7 +7,9 @@ const NavBar = () => {
   return (
     <div className="w-full bg-[#112B3C] rounded-lg p-7 sm:flex sm:justify-between gap-4 sm:h-[90px] grid md:grid-cols-1 ">
       <div className="bg-red flex items-center gap-2 w-[200px]">
-        <Image src={img1} alt="Imagen de logo" />
+        <a href="/">
+          <Image src={img1} alt="Imagen de logo" />
+        </a>
       </div>
       <div className="">
         <form className="col-span-4 flex items-center justify-center gap-2 w-[70%] sm:w-[100%]">

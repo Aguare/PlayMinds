@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSpring, animated } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
-import NavBar from '../components/navbar'
+import NavBar from '../../components/navbar'
 
 interface Card {
   id: number
