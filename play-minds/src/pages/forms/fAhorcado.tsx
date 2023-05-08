@@ -1,12 +1,28 @@
 import NavBar from '../../components/navbar'
+import { useState } from 'react'
 
-const home = () => {
+const ahorcadoF = () => {
+  const [palabra, setPalabra] = useState<string>('')
+  const [pista, setPista] = useState<string>('')
+
+  const handlePalabraChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPalabra(event.target.value)
+  }
+
+  const handlePistaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPista(event.target.value)
+  }
+
+  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault()
+    // Aquí se podra enviar los datos al servidor para procesarlos
+  }
   return (
     <div>
       <NavBar />
       <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
         <div>
-          <h1 className="mb-1 font-bold text-3xl flex gap-1 items-baseline">
+          <h1 className="mb-1 font-bold text-3xl flex gap-1 items-baseline text-maincian">
             Creando<span className="text-sm text-mainorange">Ahorcado</span>
           </h1>
           <div className="grid max-w-3xl gap-2 py-10 px-8 sm:grid-cols-2 bg-white rounded-md border-t-4 border-mainorange">
@@ -18,6 +34,7 @@ const home = () => {
                   id="word"
                   className="peer block w-full border-0 p-0 text-base text-gray-900 placeholder-gray-400 focus:ring-0"
                   placeholder="Ingrese la palabra a adivinar"
+                  onChange={handlePalabraChange}
                 />
                 <label
                   htmlFor="word"
@@ -35,6 +52,7 @@ const home = () => {
                   id="hint"
                   className="peer block w-full border-0 p-0 text-base text-gray-900 placeholder-gray-400 focus:ring-0"
                   placeholder="Ingrese una pista"
+                  onChange={handlePistaChange}
                 />
                 <label
                   htmlFor="hint"
@@ -56,4 +74,4 @@ const home = () => {
     </div>
   )
 }
-export default home
+export default ahorcadoF
