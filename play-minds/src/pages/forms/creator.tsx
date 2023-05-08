@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import img1 from '../../image/logo playminds1.png'
+import img1 from '../../image/logo playminds.png'
 import imggame1 from '../../image/img-ahorcado.png'
 import imggame2 from '../../image/img-duocards.png'
 import imggame3 from '../../image/img-memoria.png'
@@ -12,8 +12,8 @@ import { faBell } from '@fortawesome/free-solid-svg-icons'
 const creator = () => {
   return (
     <div>
-      <div className="relative md:min-h-[80vh] lg:min-h-screen py-8 px-12">
-        <div className="flex items-center justify-between w-full">
+      <div className="relative md:min-h-[80vh] lg:min-h-screen py-8 px-12 bg-mainblue">
+        <div className="flex items-center justify-between w-full bg-mainblue">
           <div className="w-6/12 lg:w-2/12 flex items-center gap-2">
             <Image src={img1} alt="Imagen de fondo" />
           </div>
@@ -34,7 +34,7 @@ const creator = () => {
                 <span className="absolute bg-green-600 w-1.5 h-1.5 top-0 right-0.5 rounded-full ring-2 ring-white"></span>
               </div>
               <a className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg  transition-colors ">
-                1,751 pts
+                Nombre Docente
               </a>
             </div>
           </div>
@@ -58,23 +58,12 @@ const creator = () => {
               palabra antes de que sea demasiado tarde. ¡Diviértete jugando
               Ahorcado!"
             </p>
-            <div className="flex items-center gap-4">
-              <img
-                src="https://img.freepik.com/foto-gratis/retrato-hombre-negocios-mascarilla-usando-su-computadora-portatil-mientras-sentado-escaleras-al-aire-libre-concepto-negocio-nuevo-concepto-estilo-vida-normal_58466-14709.jpg"
-                className="w-16 h-16 object-cover rounded-full ring-4 ring-gray-300"
-              />
-              <div>
-                <h3 className="text-indigo-500 font-bold">Marcos Aguare</h3>
-                <p className="text-gray-500 font-medium">Backend Developer</p>
-              </div>
-              <button
-                type="button"
-                className="border border-gray-600 py-2 px-4 rounded-lg "
-              >
-                <Link href="/game/ahorcado">JUGAR</Link>
-              </button>
-              <div className="hidden w-4/12 lg:flex justify-center sm:pl-[40%] items-center gap-8"></div>
-            </div>
+            <button
+              type="button"
+              className="border border-gray-600 py-2 px-4 rounded-lg"
+            >
+              <Link href="/game/duocards">CREAR</Link>
+            </button>
           </div>
           {/*Juego 2*/}
           <div className="flex flex-col gap-6 bg-gray-100 p-8 rounded-xl drop-shadow-xl">
@@ -93,23 +82,12 @@ const creator = () => {
               antes de que se acabe el tiempo. Diferentes niveles de dificultad.
               ¡Ten cuidado con las preguntas engañosas!"
             </p>
-            <div className="flex items-center gap-4">
-              <img
-                src="https://img.freepik.com/foto-gratis/retrato-hombre-negocios-mascarilla-usando-su-computadora-portatil-mientras-sentado-escaleras-al-aire-libre-concepto-negocio-nuevo-concepto-estilo-vida-normal_58466-14709.jpg"
-                className="w-16 h-16 object-cover rounded-full ring-4 ring-gray-300"
-              />
-              <div>
-                <h3 className="text-indigo-500 font-bold">Daniel Morales</h3>
-                <p className="text-gray-500 font-medium">Backend Developer</p>
-              </div>
-              <button
-                type="button"
-                className="border border-gray-600 py-2 px-4 rounded-lg"
-              >
-                <Link href="/game/duocards">JUGAR</Link>
-              </button>
-              <div className="hidden w-4/12 lg:flex justify-center sm:pl-[40%] items-center gap-8"></div>
-            </div>
+            <button
+              type="button"
+              className="border border-gray-600 py-2 px-4 rounded-lg"
+            >
+              <Link href="/game/duocards">CREAR</Link>
+            </button>
           </div>
           {/*Juego 3*/}
           <div className="flex flex-col gap-6 bg-gray-100 p-8 rounded-xl drop-shadow-xl">
@@ -128,23 +106,12 @@ const creator = () => {
               la concentración. Juega contra otros usuarios y diviertete ¡Que
               gane el más rápido! Suerte."
             </p>
-            <div className="flex items-center gap-4">
-              <img
-                src="https://img.freepik.com/foto-gratis/retrato-hombre-negocios-mascarilla-usando-su-computadora-portatil-mientras-sentado-escaleras-al-aire-libre-concepto-negocio-nuevo-concepto-estilo-vida-normal_58466-14709.jpg"
-                className="w-16 h-16 object-cover rounded-full ring-4 ring-gray-300"
-              />
-              <div>
-                <h3 className="text-indigo-500 font-bold">Emilio Maldonado</h3>
-                <p className="text-gray-500 font-medium">Frontend Developer</p>
-              </div>
-              <button
-                type="button"
-                className="border border-gray-600 py-2 px-4 rounded-lg"
-              >
-                <Link href="/game/memorize">JUGAR</Link>
-              </button>
-              <div className="hidden w-4/12 lg:flex justify-center sm:pl-[40%] items-center gap-8"></div>
-            </div>
+            <button
+              type="button"
+              className="border border-gray-600 py-2 px-4 rounded-lg"
+            >
+              <Link href="/game/duocards">CREAR</Link>
+            </button>
           </div>
           {/*Juego 4*/}
           <div className="flex flex-col gap-6 bg-gray-100 p-8 rounded-xl drop-shadow-xl">
@@ -163,23 +130,12 @@ const creator = () => {
               puntos posible. ¡Demuestra tus conocimientos y diviértete jugando
               Trivia Time!"
             </p>
-            <div className="flex items-center gap-4">
-              <img
-                src="https://img.freepik.com/foto-gratis/retrato-hombre-negocios-mascarilla-usando-su-computadora-portatil-mientras-sentado-escaleras-al-aire-libre-concepto-negocio-nuevo-concepto-estilo-vida-normal_58466-14709.jpg"
-                className="w-16 h-16 object-cover rounded-full ring-4 ring-gray-300"
-              />
-              <div>
-                <h3 className="text-indigo-500 font-bold">Pedro Domingo</h3>
-                <p className="text-gray-500 font-medium">Ingeniero</p>
-              </div>
-              <button
-                type="button"
-                className="border border-gray-600 py-2 px-4 rounded-lg"
-              >
-                <Link href="/game/quiz">JUGAR</Link>
-              </button>
-              <div className="hidden w-4/12 lg:flex justify-center sm:pl-[40%] items-center gap-8"></div>
-            </div>
+            <button
+              type="button"
+              className="border border-gray-600 py-2 px-4 rounded-lg"
+            >
+              <Link href="/game/duocards">CREAR</Link>
+            </button>
           </div>
         </div>
       </div>
