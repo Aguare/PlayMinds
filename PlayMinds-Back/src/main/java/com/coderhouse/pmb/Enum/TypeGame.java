@@ -1,4 +1,4 @@
-package com.coderhouse.Enum;
+package com.coderhouse.pmb.Enum;
 
 public enum TypeGame {
    MEMORY,

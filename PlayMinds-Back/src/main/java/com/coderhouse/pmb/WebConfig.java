@@ -1,4 +1,4 @@
-package com.coderhouse;
+package com.coderhouse.pmb;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

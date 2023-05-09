@@ -1,11 +1,11 @@
-package com.coderhouse.Entitys;
+package com.coderhouse.pmb.Entitys;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
 
-import com.coderhouse.Enum.Role;
+import com.coderhouse.pmb.Enum.Role;
 
 @Data
 @Entity

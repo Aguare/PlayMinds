@@ -1,4 +1,4 @@
-package com.coderhouse.Entitys;
+package com.coderhouse.pmb.Entitys;
 
 import jakarta.persistence.*;
 import lombok.Data;
