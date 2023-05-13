@@ -84,16 +84,35 @@ const QuizForm = () => {
                 </div>
               </div>
             ))}
-            {error && (
-              <div className="text-red-500 text-sm font-medium">{error}</div>
-            )}
-            <div className="grid">
+            <span className="text-red-500">{error}</span>
+            <div className="sm:col-span-2">
               <button
-                className="bg-maincian hover:bg-mainorange-dark text-white font-medium py-2 px-4 rounded-md"
+                type="button"
+                className="bg-maincian text-white py-2 px-6 rounded-md hover:bg-mainorange transition-colors mr-2"
                 onClick={handleAgregarPregunta}
               >
                 Agregar pregunta
               </button>
+            </div>
+            <div className="mt-4 w-[100%]">
+              {preguntas.map((pregunta, index) => (
+                <div key={index} className="grid grid-cols-2 gap-2 py-3">
+                  <div className="font-bold">{pregunta.pregunta}</div>
+                  <div>
+                    {pregunta.respuestas.map((respuesta, index) => (
+                      <div key={index}>{respuesta}</div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              <div className="w-[100%]">
+                <button
+                  type="submit"
+                  className="mt-4 bg-maincian text-white py-2 px-6 rounded-md hover:bg-mainorange transition-colors w-[100%]"
+                >
+                  Crear
+                </button>
+              </div>
             </div>
           </div>
         </div>

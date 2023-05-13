@@ -74,7 +74,7 @@ const MemorizeF = () => {
                       <img
                         src={URL.createObjectURL(file)}
                         alt={`Imagen ${index + 1}`}
-                        className="w-16 h-16 object-cover mr-2"
+                        className="w-16 h-16 object-cover mr-2 mt-2"
                       />
                       <span>{file.name}</span>
                     </div>
