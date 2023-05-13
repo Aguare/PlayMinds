@@ -76,34 +76,47 @@ const Quiz = () => {
   }
 
   return (
-    <div>
+    <div className="bg-gray-100 min-h-screen w-[100%]">
       <NavBar />
-
-      {showScore ? (
-        <div className="quiz-result">
-          <h1>Resultado</h1>
-          <p>
-            Acertaste {score} de {questions.length} preguntas
-          </p>
-          <button onClick={handleRetryButtonClick}>Volver a intentar</button>
-        </div>
-      ) : (
-        <div className="quiz-question">
-          <h1>Pregunta {currentQuestion + 1}</h1>
-          <p>{questions[currentQuestion].question}</p>
-          {questions[currentQuestion].answers.map((answer, index) => (
-            <div className="px-4 py-8 flex flex-wrap md:items-center md:justify-center gap-8">
-              <button
-                className="py-2 px-6 text-center text-[#112B3C] relative before:absolute before:top-0 before:left-0 before:w-full before:h-full before:z-10 before:bg-red-500/10 before:transition-all before:duration-300 hover:before:opacity-0 hover:before:scale-50 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:z-10 after:opacity-0 after:transition-all after:duration-300 after:border after:border-green-600 after:scale-125 hover:after:opacity-100 hover:after:scale-100"
-                key={index}
-                onClick={() => handleAnswerButtonClick(answer.correct)}
-              >
-                {answer.text}
-              </button>
+      <div className=" bg-[#EFEFEF] sm:w-[60%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px] grid grid-cols-1 p-2 gap-3 place-items-center overflow-hidden">
+        {showScore ? (
+          <div className="quiz-result">
+            <h1>Resultado</h1>
+            <p>
+              Acertaste {score} de {questions.length} preguntas
+            </p>
+            <button onClick={handleRetryButtonClick}>Volver a intentar</button>
+          </div>
+        ) : (
+          <div className="quiz-question ">
+            <div className="p-10 rounded-lg bg-gray-900 bg-opacity-60 flex flex-col justify-center items-center text-center text-[white]">
+              <h1 className="text-xl font-semibold text-mainorange">
+                Pregunta {currentQuestion + 1}
+              </h1>
+              <p className="sm:text-2xl">
+                {questions[currentQuestion].question}
+              </p>
             </div>
-          ))}
-        </div>
-      )}
+            {/*  */}
+
+            <div className="flex flex-wrap items-center justify-center">
+              {questions[currentQuestion].answers.map((answer, index) => (
+                <div className="px-4 py-8 ">
+                  <button className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm sm:text-lg font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
+                    <span
+                      className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0 "
+                      key={index}
+                      onClick={() => handleAnswerButtonClick(answer.correct)}
+                    >
+                      {answer.text}
+                    </span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

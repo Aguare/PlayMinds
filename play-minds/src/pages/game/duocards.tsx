@@ -1,7 +1,8 @@
+import NavBar from '@/components/navbar'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useSpring, animated } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
-import NavBar from '../../components/navbar'
 
 interface Card {
   id: number
@@ -98,13 +99,6 @@ const Duocards = () => {
     config: { mass: 5, tension: 500, friction: 120 },
   }))
 
-  useEffect(() => {
-    setCurrentCardIndex(0)
-    setAnsweredCards([])
-    setGameOver(false)
-    setCorrectAnswers(0) // Establecer el contador en 0 al comenzar un nuevo juego
-  }, [cards])
-
   const handleSwipe = (direction: string) => {
     if (!isAnswered) {
       const currentCard = cards[currentCardIndex]
@@ -122,7 +116,10 @@ const Duocards = () => {
       setIsAnswered(true)
 
       if (isCorrect) {
-        setCorrectAnswers((prev) => prev + 1) // Actualizar el contador si se responde correctamente
+        setCorrectAnswers((prev) => prev + 1)
+        console.log(`sumopunto ${correctAnswers}`)
+      } else {
+        console.log('no es correcto')
       }
 
       const newAnsweredCards = [...answeredCards, currentCard]
@@ -156,44 +153,51 @@ const Duocards = () => {
   })
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen w-[100%]">
       <NavBar />
-      <div className="grid place-content-center content-center h-full">
-        {gameOver ? (
-          <div className="game-over">
-            <h2>¡Juego terminado!</h2>
-            <p>Todas las cartas han sido respondidas.</p>
-            <div className="correct-answers">
-              <h1>
-                {' '}
-                Respuestas correctas: {correctAnswers}/{answeredCards.length}
-              </h1>
+      <div className="bg-gradient-to-r from-red-200 via-transparent to-green-200 sm:w-[60%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px]">
+        <div className="grid grid-cols-1 p-2 gap-3 place-items-center  rounded-lg w-[100%] sm:h-[650px]">
+          {gameOver ? (
+            <div className="p-10 rounded-lg bg-gray-900 bg-opacity-60 flex flex-col justify-center items-center text-center">
+              <h1 className="text-5xl font-bold text-white mb-4">Game Over</h1>
+
+              <div className="text-lg text-gray-200">
+                <h1>
+                  {' '}
+                  Respuestas correctas: {correctAnswers}/
+                  {answeredCards.length + 1}
+                </h1>
+              </div>
             </div>
-          </div>
-        ) : (
-          <animated.div
-            className="card grid grid-cols-1 p-2 gap-3 place-items-center"
-            {...bind()}
-            style={{
-              transform: props.x
-                .interpolate({
-                  range: [-300, 0, 300],
-                  output: [-45, 0, 45],
-                })
-                .interpolate((x) => `translate3d(${x}px,0,0)`),
-            }}
-          >
-            <h1 className="card-title">{cards[currentCardIndex].name}</h1>
-            <img
-              className="card-image "
-              src={cards[currentCardIndex].image}
-              alt={cards[currentCardIndex].name}
-            />
-            <p className="card-description">
-              {cards[currentCardIndex].description}
-            </p>
-          </animated.div>
-        )}
+          ) : (
+            <animated.div
+              className="card grid grid-cols-1 p-6 gap-3 place-items-center bg-[white] rounded-xl sm:w-[40%] shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]"
+              {...bind()}
+              style={{
+                transform: props.x
+                  .interpolate({
+                    range: [-300, 0, 300],
+                    output: [-45, 0, 45],
+                  })
+                  .interpolate((x) => `translate3d(${x}px,0,0)`),
+              }}
+            >
+              <h1 className="card-title text-center text-lg sm:text-xl font-semibold">
+                {cards[currentCardIndex].name}
+              </h1>
+              <Image
+                className="card-image w-[300px] h-[300px]"
+                src={cards[currentCardIndex].image}
+                alt={cards[currentCardIndex].name}
+                width={300}
+                height={300}
+              />
+              <p className="card-description text-center text-lg sm:text-xl font-semibold text-[#565656]">
+                {cards[currentCardIndex].description}
+              </p>
+            </animated.div>
+          )}
+        </div>
       </div>
     </div>
   )

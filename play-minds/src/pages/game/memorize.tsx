@@ -122,15 +122,15 @@ const MemorizeGame = () => {
     }
   }
   return (
-    <div>
+    <div className="bg-gray-100 min-h-screen w-[100%]">
       <NavBar />
-      <div className="px-4 py-8 flex flex-wrap md:items-center md:justify-center gap-8">
+      <div className="px-4 py-8 flex flex-wrap md:items-center md:justify-center gap-8 sm:w-[60%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px]">
         {cards.map((card) => (
           <button
             key={card.id}
-            className="py-2 px-6 text-center relative w-48 h-48 
+            className="py-2 px-6 text-center relative w-36 h-36 sm:w-48 sm:h-48 
             before:absolute before:top-0 before:left-0 before:w-full before:h-full 
-            before:z-10 before:bg-green-500/10 before:transition-all before:duration-300 
+            before:z-10 before:bg-[#205375] before:transition-all before:duration-300 
             hover:before:opacity-0 hover:before:scale-50 
             after:absolute after:top-0 after:left-0 after:w-full after:h-full 
             after:z-10 after:opacity-0 after:transition-all after:duration-300 

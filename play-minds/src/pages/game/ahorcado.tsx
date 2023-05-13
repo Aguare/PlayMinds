@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { HangImage } from '@/components/HangImage'
 import { letters } from '@/helpers/letters'
+import NavBar from '@/components/navbar'
 
 function Hangman() {
   interface HangmanWord {
@@ -105,76 +106,79 @@ function Hangman() {
   }
 
   return (
-    <div className=" bg-[#EFEFEF] sm:w-[60%] w-[100%] border-2 rounded-lg border-[#205375]">
-      {gameOver ? (
-        <div className="grid grid-cols-1 p-2 gap-3 place-items-center bg-[#EFEFEF] rounded-lg w-[100%] sm:h-[650px]">
-          {/* Imágenes */}
-          <HangImage imageNumber={attempts} />
+    <div className="bg-gray-100 min-h-screen w-[100%] ">
+      <NavBar />
+      <div className=" bg-[#EFEFEF] sm:w-[60%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px]">
+        {gameOver ? (
+          <div className="grid grid-cols-1 p-2 gap-3 place-items-center bg-[#EFEFEF] rounded-lg w-[100%] sm:h-[650px]">
+            {/* Imágenes */}
+            <HangImage imageNumber={attempts} />
 
-          {/* Palabra oculta */}
-          <h3 className="font-semibold text-[#404040] text-3xl">
-            {hiddenWord}
-          </h3>
+            {/* Palabra oculta */}
+            <h3 className="font-semibold text-[#404040] text-3xl">
+              {hiddenWord}
+            </h3>
 
-          {/* Contador de intentos */}
-          <h3 className="font-semibold text-[#404040] text-xl">
-            Intentos: {attempts}{' '}
-          </h3>
-          <p className="font-semibold text-[#205375] text-lg">{word.hint}</p>
+            {/* Contador de intentos */}
+            <h3 className="font-semibold text-[#404040] text-xl">
+              Intentos: {attempts}{' '}
+            </h3>
+            <p className="font-semibold text-[#205375] text-lg">{word.hint}</p>
 
-          <div>
-            {letters.map((letter) => (
-              <button
-                className="bg-[#F66B0E] text-[white] w-[26px] sm:m-1 rounded-md md:hover:opacity-30"
-                onClick={() => checkLetter(letter)}
-                key={letter}
-              >
-                {letter}
-              </button>
-            ))}
+            <div>
+              {letters.map((letter) => (
+                <button
+                  className="bg-[#F66B0E] text-[white] w-[26px] sm:m-1 rounded-md md:hover:opacity-30"
+                  onClick={() => checkLetter(letter)}
+                  key={letter}
+                >
+                  {letter}
+                </button>
+              ))}
+            </div>
+            {/* Mensaje si peridó */}
+            {lose && siguiente ? (
+              <div className="grid grid-cols-1 p-2 gap-3 place-items-center">
+                <h2 className="font-semibold text-[#D21312] text-2xl">
+                  ¡Perdiste! la palabra era: {word.word}
+                </h2>
+                <button
+                  className="bg-[#205375] p-2 font-semibold rounded-lg text-[white] hover:bg-[#F66B0E]"
+                  onClick={newGame}
+                >
+                  Siguiente
+                </button>
+              </div>
+            ) : (
+              ''
+            )}
+            {won && siguiente ? (
+              <div className="grid grid-cols-1 p-2 gap-3 place-items-center">
+                <h2 className="font-semibold text-[#539165] text-2xl">
+                  ¡Adivinaste!
+                </h2>
+                <button
+                  className="bg-[#205375] font-semibold p-2 rounded-lg text-[white] hover:bg-[#F66B0E]"
+                  onClick={newGame}
+                >
+                  Siguiente
+                </button>
+              </div>
+            ) : (
+              ''
+            )}
           </div>
-          {/* Mensaje si peridó */}
-          {lose && siguiente ? (
-            <div className="grid grid-cols-1 p-2 gap-3 place-items-center">
-              <h2 className="font-semibold text-[#D21312] text-2xl">
-                ¡Perdiste! la palabra era: {word.word}
-              </h2>
-              <button
-                className="bg-[#205375] p-2 font-semibold rounded-lg text-[white] hover:bg-[#F66B0E]"
-                onClick={newGame}
-              >
-                Siguiente
-              </button>
-            </div>
-          ) : (
-            ''
-          )}
-          {won && siguiente ? (
-            <div className="grid grid-cols-1 p-2 gap-3 place-items-center">
-              <h2 className="font-semibold text-[#539165] text-2xl">
-                ¡Adivinaste!
-              </h2>
-              <button
-                className="bg-[#205375] font-semibold p-2 rounded-lg text-[white] hover:bg-[#F66B0E]"
-                onClick={newGame}
-              >
-                Siguiente
-              </button>
-            </div>
-          ) : (
-            ''
-          )}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 p-2 gap-3 place-items-center bg-[#EFEFEF] rounded-lg w-[100%] sm:h-[650px]">
-          <h1 className="text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-blue-600 to-blue-900">
-            GAME OVER
-          </h1>
-          <h3 className="font-semibold text-[#404040] text-4xl">
-            Puntuación: {score}
-          </h3>
-        </div>
-      )}
+        ) : (
+          <div className="grid grid-cols-1 p-2 gap-3 place-items-center bg-[#EFEFEF] rounded-lg w-[100%] sm:h-[650px]">
+            <h1 className="text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-blue-600 to-blue-900">
+              GAME OVER
+            </h1>
+            <h3 className="font-semibold text-[#404040] text-4xl">
+              Puntuación: {score}
+            </h3>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
