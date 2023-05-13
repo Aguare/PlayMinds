@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import img1 from '../image/logo playminds1.png'
-import imgDerecho from '../image/Image-carrera-der.png'
-import imgEconomicas from '../image/Image-carrera-eco.png'
-import imgIngenieria from '../image/Image-carrera-inge.png'
-import imgMedicina from '../image/Image-carrera-med.png'
+import imggame1 from '../image/img-ahorcado.png'
+import imggame2 from '../image/img-duocards.png'
+import imggame3 from '../image/img-memoria.png'
+import imggame4 from '../image/img-quiz.png'
 import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -39,13 +39,13 @@ export default function Home() {
           </nav>
           <div className="hidden w-4/12 lg:flex justify-center items-center gap-8">
             <button type="button" className="py-2 px-4">
-              <Link href="/login">Log in</Link>
+              <Link href="/auth/signin">Log in</Link>
             </button>
             <button
               type="button"
               className="border border-gray-600 py-2 px-4 rounded-lg"
             >
-              <Link href="/register"> Sign up</Link>
+              <Link href="/auth/register"> Sign up</Link>
             </button>
           </div>
         </div>
@@ -54,17 +54,19 @@ export default function Home() {
           <div className="flex flex-col gap-6 bg-gray-100 p-8 rounded-xl drop-shadow-xl">
             <div className="flex flex-col items-center justify-center mx-auto pad ">
               <Image
-                src={imgDerecho}
+                src={imggame1}
                 alt="Imagen de fondo"
                 width={400}
                 height={400}
               />
             </div>
             <p className="text-gray-500">
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore
-              quibusdam ducimus libero ad tempora doloribus expedita laborum
-              saepe voluptas perferendis delectus assumenda rerum, culpa aperiam
-              dolorum, obcaecati corrupti aspernatur a..."
+              "Juego en donde el jugador debe adivinar una palabra desconocida
+              letra por letra antes de que se complete un dibujo de un hombre
+              ahorcado. Cada letra incorrecta agrega una parte al dibujo. Si se
+              completa el dibujo, el jugador pierde. El objetivo es adivinar la
+              palabra antes de que sea demasiado tarde. ¡Diviértete jugando
+              Ahorcado!"
             </p>
             <div className="flex items-center gap-4">
               <img
@@ -75,31 +77,31 @@ export default function Home() {
                 <h3 className="text-indigo-500 font-bold">Marcos Aguare</h3>
                 <p className="text-gray-500 font-medium">Backend Developer</p>
               </div>
-              <div className="hidden w-4/12 lg:flex justify-center sm:pl-[40%] items-center gap-8">
-                <button
-                  type="button"
-                  className="border border-gray-600 py-2 px-4 rounded-lg"
-                >
-                  JUGAR
-                </button>
-              </div>
+              <button
+                type="button"
+                className="border border-gray-600 py-2 px-4 rounded-lg "
+              >
+                <Link href="/game/ahorcado">JUGAR</Link>
+              </button>
+              <div className="hidden w-4/12 lg:flex justify-center sm:pl-[40%] items-center gap-8"></div>
             </div>
           </div>
           {/*Juego 2*/}
           <div className="flex flex-col gap-6 bg-gray-100 p-8 rounded-xl drop-shadow-xl">
             <div className="flex flex-col items-center justify-center mx-auto pad ">
               <Image
-                src={imgEconomicas}
+                src={imggame2}
                 alt="Imagen de fondo"
                 width={400}
                 height={400}
               />
             </div>
             <p className="text-gray-500">
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore
-              quibusdam ducimus libero ad tempora doloribus expedita laborum
-              saepe voluptas perferendis delectus assumenda rerum, culpa aperiam
-              dolorum, obcaecati corrupti aspernatur a..."
+              "Juego de preguntas verdadero/falso con solo dos opciones de
+              respuesta. Desliza a la izquierda para "no" y a la derecha para
+              "sí". Objetivo: responder la mayor cantidad de preguntas correctas
+              antes de que se acabe el tiempo. Diferentes niveles de dificultad.
+              ¡Ten cuidado con las preguntas engañosas!"
             </p>
             <div className="flex items-center gap-4">
               <img
@@ -110,31 +112,31 @@ export default function Home() {
                 <h3 className="text-indigo-500 font-bold">Daniel Morales</h3>
                 <p className="text-gray-500 font-medium">Backend Developer</p>
               </div>
-              <div className="hidden w-4/12 lg:flex justify-center sm:pl-[40%] items-center gap-8">
-                <button
-                  type="button"
-                  className="border border-gray-600 py-2 px-4 rounded-lg"
-                >
-                  JUGAR
-                </button>
-              </div>
+              <button
+                type="button"
+                className="border border-gray-600 py-2 px-4 rounded-lg"
+              >
+                <Link href="/game/duocards">JUGAR</Link>
+              </button>
+              <div className="hidden w-4/12 lg:flex justify-center sm:pl-[40%] items-center gap-8"></div>
             </div>
           </div>
           {/*Juego 3*/}
           <div className="flex flex-col gap-6 bg-gray-100 p-8 rounded-xl drop-shadow-xl">
             <div className="flex flex-col items-center justify-center mx-auto pad ">
               <Image
-                src={imgIngenieria}
+                src={imggame3}
                 alt="Imagen de fondo"
                 width={400}
                 height={400}
               />
             </div>
             <p className="text-gray-500">
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore
-              quibusdam ducimus libero ad tempora doloribus expedita laborum
-              saepe voluptas perferendis delectus assumenda rerum, culpa aperiam
-              dolorum, obcaecati corrupti aspernatur a..."
+              "Juego memoria donde se muestran cartas boca abajo y debes
+              voltearlas para encontrar las parejas. El jugador que encuentre
+              más parejas en el menor tiempo posible gana. Mejora la memoria y
+              la concentración. Juega contra otros usuarios y diviertete ¡Que
+              gane el más rápido! Suerte."
             </p>
             <div className="flex items-center gap-4">
               <img
@@ -145,31 +147,31 @@ export default function Home() {
                 <h3 className="text-indigo-500 font-bold">Emilio Maldonado</h3>
                 <p className="text-gray-500 font-medium">Frontend Developer</p>
               </div>
-              <div className="hidden w-4/12 lg:flex justify-center sm:pl-[40%] items-center gap-8">
-                <button
-                  type="button"
-                  className="border border-gray-600 py-2 px-4 rounded-lg"
-                >
-                  JUGAR
-                </button>
-              </div>
+              <button
+                type="button"
+                className="border border-gray-600 py-2 px-4 rounded-lg"
+              >
+                <Link href="/game/memorize">JUGAR</Link>
+              </button>
+              <div className="hidden w-4/12 lg:flex justify-center sm:pl-[40%] items-center gap-8"></div>
             </div>
           </div>
           {/*Juego 4*/}
           <div className="flex flex-col gap-6 bg-gray-100 p-8 rounded-xl drop-shadow-xl">
             <div className="flex flex-col items-center justify-center mx-auto pad ">
               <Image
-                src={imgMedicina}
+                src={imggame4}
                 alt="Imagen de fondo"
                 width={400}
                 height={400}
               />
             </div>
             <p className="text-gray-500">
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore
-              quibusdam ducimus libero ad tempora doloribus expedita laborum
-              saepe voluptas perferendis delectus assumenda rerum, culpa aperiam
-              dolorum, obcaecati corrupti aspernatur a..."
+              "Juego de quiz en línea con preguntas sobre una amplia variedad de
+              temas. El jugador debe responder correctamente antes de que se
+              acabe el tiempo. El objetivo es acumular la mayor cantidad de
+              puntos posible. ¡Demuestra tus conocimientos y diviértete jugando
+              Trivia Time!"
             </p>
             <div className="flex items-center gap-4">
               <img
@@ -177,17 +179,16 @@ export default function Home() {
                 className="w-16 h-16 object-cover rounded-full ring-4 ring-gray-300"
               />
               <div>
-                <h3 className="text-indigo-500 font-bold">Marco Mander</h3>
-                <p className="text-gray-500 font-medium">Pensum Cheater</p>
+                <h3 className="text-indigo-500 font-bold">Pedro Domingo</h3>
+                <p className="text-gray-500 font-medium">Ingeniero</p>
               </div>
-              <div className="hidden w-4/12 lg:flex justify-center sm:pl-[40%] items-center gap-8">
-                <button
-                  type="button"
-                  className="border border-gray-600 py-2 px-4 rounded-lg"
-                >
-                  JUGAR
-                </button>
-              </div>
+              <button
+                type="button"
+                className="border border-gray-600 py-2 px-4 rounded-lg"
+              >
+                <Link href="/game/quiz">JUGAR</Link>
+              </button>
+              <div className="hidden w-4/12 lg:flex justify-center sm:pl-[40%] items-center gap-8"></div>
             </div>
           </div>
         </div>

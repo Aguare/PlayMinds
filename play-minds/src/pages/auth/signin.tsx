@@ -1,7 +1,25 @@
 import Image from 'next/image'
-import img1 from '../image/logo playminds.png'
+import img1 from '../../image/logo playminds.png'
+import { NextPage } from 'next'
+import { FormEventHandler, useState } from 'react'
+import { signIn } from 'next-auth/react'
 
-const Login = () => {
+interface Props {}
+
+const SignIn: NextPage = (props): JSX.Element => {
+  const [userInfo, setUserInfo] = useState({ email: '', password: '' })
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    //validete youe userinfo
+    e.preventDefault()
+
+    const res = await signIn('credentials', {
+      email: userInfo.email,
+      password: userInfo.password,
+      redirect: false,
+    })
+    console.log(res)
+  }
+
   return (
     <div>
       <div className="min-h-screen bg-[#112B3C] grid grid-cols-1 lg:grid-cols-2">
@@ -16,27 +34,17 @@ const Login = () => {
               Ingresa al sistema con tus credenciales
             </p>
           </div>
-          {/*Titulo*/}
-          <div className="w-full">
-            <button
-              type="button"
-              className="w-full flex items-center justify-center gap-2 border p-2 px-4 rounded-full"
-            >
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/281/281764.png"
-                width="20"
-                height="20"
-              />
-              <span className="ml-2">Ingresar con Google</span>
-            </button>
-          </div>
           {/*Formulario*/}
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="text-gray-200">
                 Correo electrónico
               </label>
               <input
+                value={userInfo.email}
+                onChange={({ target }) =>
+                  setUserInfo({ ...userInfo, email: target.value })
+                }
                 type="email"
                 id="email"
                 autoComplete="off"
@@ -49,6 +57,10 @@ const Login = () => {
                 Contraseña
               </label>
               <input
+                value={userInfo.password}
+                onChange={({ target }) =>
+                  setUserInfo({ ...userInfo, password: target.value })
+                }
                 type="password"
                 id="password"
                 autoComplete="off"
@@ -75,6 +87,9 @@ const Login = () => {
             </div>
             <div className="mt-4 order-1 md:order-2">
               <button
+                onClick={() => {
+                  signIn()
+                }}
                 type="submit"
                 className="w-full bg-[#205375] p-2 rounded-full hover:bg-[#F66B0E] transition-colors"
               >
@@ -87,4 +102,4 @@ const Login = () => {
     </div>
   )
 }
-export default Login
+export default SignIn
