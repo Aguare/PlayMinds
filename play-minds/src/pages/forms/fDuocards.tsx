@@ -1,6 +1,5 @@
 import NavBar from '../../components/navbar'
 import { useState } from 'react'
-import Duocards from '../game/duocards'
 
 const DuoCardsForm = () => {
   const [pregunta, setPregunta] = useState<string>('')
@@ -12,6 +11,10 @@ const DuoCardsForm = () => {
     { pregunta: string; pista: string; imagen: string }[]
   >([])
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedFile(event.target.files)
+  }
+
   const handlePreguntaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPregunta(event.target.value)
     setError('')
@@ -20,6 +23,27 @@ const DuoCardsForm = () => {
   const handlePistaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPista(event.target.value)
     setError('')
+  }
+
+  const handleImage = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    // Verifica que se haya seleccionado un archivo
+    if (!selectedFile) {
+      return
+    }
+
+    // Agrega la imagen seleccionada al array de imágenes subidas
+    setUploadedFiles([...uploadedFiles, selectedFile[0]])
+
+    // Crea un objeto FormData para enviar la imagen al servidor
+    const formData = new FormData()
+    formData.append('image', selectedFile[0])
+  }
+
+  const handleRemove = (index: number) => {
+    const newUploadedFiles = [...uploadedFiles]
+    newUploadedFiles.splice(index, 1)
+    setUploadedFiles(newUploadedFiles)
   }
 
   const handleAgregarDuoCard = () => {
@@ -47,6 +71,7 @@ const DuoCardsForm = () => {
     evt.preventDefault()
     // Aquí se podra enviar los datos al servidor para procesarlos
   }
+
   return (
     <div>
       <NavBar />
@@ -96,8 +121,68 @@ const DuoCardsForm = () => {
                 </label>
               </div>
             </div>
-            <span className="text-red-500">{error}</span>
+            <div className="grid">
+              <form onSubmit={handleImage}>
+                <div>
+                  <label htmlFor="image">Seleccione una imagen:</label>
+                  <input type="file" id="image" onChange={handleFileChange} />
+                </div>
+                {selectedFile && (
+                  <div>
+                    <img
+                      src={URL.createObjectURL(selectedFile[0])}
+                      alt="Imagen seleccionada"
+                      style={{ width: '30%' }}
+                    />
+                  </div>
+                )}
+                <button
+                  type="submit"
+                  className="mt-4 bg-maincian text-white py-2 px-6 rounded-md hover:bg-mainorange transition-colors "
+                >
+                  Subir Imagen
+                </button>
+              </form>
+              <div className="mt-4">
+                {uploadedFiles.map((file, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={`Imagen ${index + 1}`}
+                        className="w-16 h-16 object-cover mr-2 mt-2"
+                      />
+                      <span>{file.name}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleRemove(index)}
+                      className="bg-red-500 text-white py-2 px-6 rounded-md hover:bg-red-600 transition-colors"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <span className="text-red-500">{error}</span>
+            </div>
             <div className="sm:col-span-2">
+              {cartas.map((carta, index) => (
+                <div key={index} className="my-2">
+                  <h2 className="font-bold text-lg">{carta.pregunta}</h2>
+                  <img
+                    src={carta.imagen}
+                    alt={carta.pregunta}
+                    className="my-2"
+                    style={{ width: '10%' }}
+                  />
+                  <p className="text-sm">{carta.pista}</p>
+                </div>
+              ))}
+
               <button
                 type="button"
                 className="bg-maincian text-white py-2 px-6 rounded-md hover:bg-mainorange transition-colors mr-2"
