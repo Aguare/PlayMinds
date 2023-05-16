@@ -8,8 +8,13 @@ import java.io.Serializable;
 @Entity
 @Table(name = "answer")
 public class Answer implements Serializable {
+
     @Id
-    private int id_answer;
+    @Column(name = "id_answer")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String answer;
+
     private Boolean isCorrect;
 }

@@ -12,7 +12,6 @@ import java.sql.Date;
 public class Comment implements Serializable {
     @Id
     private String game_id_game;
-    @Id
     private String user_email;
     private String comment;
     private Date date_comment;

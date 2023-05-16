@@ -11,10 +11,8 @@ import java.io.Serializable;
 public class QuestionGame implements Serializable {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "FK_id_question")
-    private Question question;
+    @Column(name = "FK_id_question")
+    private Long question;
 
-    @Id
     private String FK_id_game;
 }

@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/Users")
 @Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserCTRL {
+
 
     @Autowired
     private UserDAO user;
@@ -30,8 +32,12 @@ public class UserCTRL {
         return user.findAll();
     }
 
+    @GetMapping("/GetUserByPoints")
+    public Iterable<User> getUserByPoints() {
+        return user.findAllByOrderByPointsDesc();
+    }
 
-    @PostMapping("/SaveUser")
+    @PostMapping("/RegisterUser")
     public User saveUser(@RequestBody User user) {
         User userReceipt = this.user.save(user);
         if (this.user.findById(userReceipt.getEmail()).isPresent()) {
@@ -40,7 +46,6 @@ public class UserCTRL {
             return null;
         }
     }
-
 
     @DeleteMapping("/DeleteUser")
     public void deleteUser(String email) {

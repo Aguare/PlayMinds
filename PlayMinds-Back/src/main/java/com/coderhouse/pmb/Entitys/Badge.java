@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class Badge implements Serializable{
 
     @Id
-    private int id_bagde;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id_bagde;
     private String name_badge;
 }

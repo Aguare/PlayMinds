@@ -9,7 +9,10 @@ import java.io.Serializable;
 @Entity
 @Table(name = "question")
 public class Question implements Serializable {
+
     @Id
-    private int id_question;
-    private String question;
+    @Column(name = "id_question")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String ask;
 }

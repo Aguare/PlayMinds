@@ -13,11 +13,15 @@ import org.springframework.data.annotation.Id;
 @Table( name = "badge_user")
 
 public class BadgeUser implements Serializable{
-    @Id
-    private int FK_id_badge;
-    @Id
-    private String FK_user_email;
+    @EmbeddedId
+    private BadgeUserKey id;
     private Date date;
-    
-    
+
+
+    @Embeddable
+    public static class BadgeUserKey implements Serializable {
+        private int FK_id_badge;
+        private String FK_user_email;
+
+    }
 }
