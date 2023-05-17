@@ -5,7 +5,7 @@ const QuizForm = () => {
   const [pregunta, setPregunta] = useState<string>('')
   const [respuestas, setRespuestas] = useState<string[]>(['', '', '', ''])
   const [preguntas, setPreguntas] = useState<
-    { pregunta: string; respuestas: string[] }[]
+    { pregunta: string; respuestas: string[]; respuestaCorrecta: number }[]
   >([])
   const [error, setError] = useState<string>('')
 
@@ -24,12 +24,34 @@ const QuizForm = () => {
     setError('')
   }
 
+  const handleRespuestaCorrectaChange = (
+    preguntaIndex: number,
+    respuestaCorrecta: number,
+  ) => {
+    const nuevasPreguntas = preguntas.map((pregunta, index) => {
+      if (index === preguntaIndex) {
+        return {
+          ...pregunta,
+          respuestaCorrecta: respuestaCorrecta,
+        }
+      }
+      return pregunta
+    })
+    setPreguntas(nuevasPreguntas)
+  }
+
   const handleAgregarPregunta = () => {
     if (!pregunta || !respuestas.every((respuesta) => respuesta.trim())) {
       setError('Por favor ingrese la pregunta y las 4 respuestas')
       return
     }
-    setPreguntas(preguntas.concat({ pregunta, respuestas }))
+    setPreguntas(
+      preguntas.concat({
+        pregunta,
+        respuestas,
+        respuestaCorrecta: -1, // Inicialmente no hay respuesta correcta seleccionada
+      }),
+    )
     setPregunta('')
     setRespuestas(['', '', '', ''])
     setError('')
@@ -39,6 +61,7 @@ const QuizForm = () => {
     evt.preventDefault()
     // Aquí se podrán enviar los datos al servidor para procesarlos
   }
+
   return (
     <div>
       <NavBar />
@@ -69,8 +92,14 @@ const QuizForm = () => {
               </div>
             </div>
             {respuestas.map((respuesta, index) => (
-              <div key={index} className="grid ">
-                <div className="bfirst:flex min-h-[60px] flex-col-reverse justify-center rounded-md border border-gray-300 px-3 py-2 shadow-sm focus-within:shadow-inner">
+              <div key={index} className="grid">
+                <div
+                  className={`bfirst:flex min-h-[60px] flex-col-reverse justify-center rounded-md border border-gray-300 px-3 py-2 shadow-sm focus-within:shadow-inner ${
+                    preguntas[preguntas.length - 1]?.respuestaCorrecta === index
+                      ? 'bg-green-200'
+                      : ''
+                  }`}
+                >
                   <input
                     type="text"
                     name={`respuesta-${index}`}
@@ -81,9 +110,26 @@ const QuizForm = () => {
                     onChange={(event) => handleRespuestaChange(event, index)}
                     required
                   />
+                  <input
+                    type="radio"
+                    name="respuestaCorrecta"
+                    id={`respuestaCorrecta-${index}`}
+                    defaultChecked={
+                      preguntas[preguntas.length - 1]?.respuestaCorrecta ===
+                      index
+                    }
+                    onChange={() =>
+                      handleRespuestaCorrectaChange(preguntas.length - 1, index)
+                    }
+                  />
+                  <label htmlFor={`respuestaCorrecta-${index}`}>
+                    {' '}
+                    Correcta
+                  </label>
                 </div>
               </div>
             ))}
+
             <span className="text-red-500">{error}</span>
             <div className="sm:col-span-2">
               <button
@@ -99,12 +145,25 @@ const QuizForm = () => {
                 <div key={index} className="grid grid-cols-2 gap-2 py-3">
                   <div className="font-bold">{pregunta.pregunta}</div>
                   <div>
-                    {pregunta.respuestas.map((respuesta, index) => (
-                      <div key={index}>{respuesta}</div>
+                    {pregunta.respuestas.map((respuesta, respuestaIndex) => (
+                      <div
+                        key={respuestaIndex}
+                        className={`${
+                          respuestaIndex === pregunta.respuestaCorrecta
+                            ? 'bg-green-200'
+                            : ''
+                        }`}
+                      >
+                        {respuesta}
+                        {respuestaIndex === pregunta.respuestaCorrecta && (
+                          <span className="ml-2 text-green-500">Correcta</span>
+                        )}
+                      </div>
                     ))}
                   </div>
                 </div>
               ))}
+
               <div className="w-[100%]">
                 <button
                   type="submit"
