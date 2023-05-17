@@ -1,0 +1,70 @@
+{
+  "game": {
+    "name_game": "Super Quiz",
+    "type_game": "QUIZ",
+    "description": "Exciting quiz game",
+    "value_points": 200,
+    "user": {
+      "email": "marcosy300@gmail.com"
+    }
+  },
+  "questions": [
+    {
+      "question": {
+        "ask": "What is the capital of France?"
+      },
+      "answers": [
+        {
+          "answer": "Paris",
+          "isCorrect": true
+        },
+        {
+          "answer": "London",
+          "isCorrect": false
+        },
+        {
+          "answer": "Madrid",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "question": {
+        "ask": "Who painted the Mona Lisa?"
+      },
+      "answers": [
+        {
+          "answer": "Leonardo da Vinci",
+          "isCorrect": true
+        },
+        {
+          "answer": "Pablo Picasso",
+          "isCorrect": false
+        },
+        {
+          "answer": "Vincent van Gogh",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "question": {
+        "ask": "What is the symbol for sodium in the periodic table?"
+      },
+      "answers": [
+        {
+          "answer": "Na",
+          "isCorrect": true
+        },
+        {
+          "answer": "H",
+          "isCorrect": false
+        },
+        {
+          "answer": "C",
+          "isCorrect": false
+        }
+      ]
+    }
+  ]
+}
