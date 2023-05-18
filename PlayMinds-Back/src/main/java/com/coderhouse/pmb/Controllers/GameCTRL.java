@@ -3,6 +3,7 @@ package com.coderhouse.pmb.Controllers;
 import com.coderhouse.pmb.Controllers.Getters.GameBuild;
 import com.coderhouse.pmb.DAO.*;
 import com.coderhouse.pmb.Entitys.*;
+import com.coderhouse.pmb.Entitys.Assistant.MemoryGame;
 import com.coderhouse.pmb.Entitys.Assistant.QuestionOBJ;
 import com.coderhouse.pmb.Entitys.Assistant.QuizGame;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,9 @@ public class GameCTRL {
     @Autowired
     private GameBuild gameBuild;
 
+    @Autowired
+    private ImageGameDAO imageGame;
+
     @PostMapping("/RegisterQuizGame")
     public QuizGame registerQuizGame(@RequestBody QuizGame quizGame) {
         quizGame.getGame().setId_game(generateUUID());
@@ -59,6 +63,21 @@ public class GameCTRL {
         return null;
     }
 
+    @PostMapping("/RegisterMemoryGame")
+    public MemoryGame registerMemoryGame(@RequestBody MemoryGame memoryGame) {
+        memoryGame.getGame().setId_game(generateUUID());
+        Game newMemory = this.game.save(memoryGame.getGame());
+        List<Image> images = memoryGame.getImageList();
+        for (Image i : images) {
+            ImageGame newImageGame = new ImageGame();
+            newImageGame.setIdGame(newMemory.getId_game());
+            newImageGame.setImage(i.getId());
+            this.imageGame.save(newImageGame);
+        }
+        return null;
+    }
+
+
     @GetMapping("/GetGame")
     public Object getGame(String id_game) {
         return this.game.findById(id_game);
@@ -67,6 +86,11 @@ public class GameCTRL {
     @GetMapping("/GetQuizGame")
     public Object getQuizGame(String id_game) {
         return gameBuild.getQuizGameById(id_game);
+    }
+
+    @GetMapping("/GetMemoryGame")
+    public Object getMemoryGame(String id_game) {
+        return gameBuild.getMemoryGameById(id_game);
     }
 
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

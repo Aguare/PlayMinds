@@ -15,10 +15,19 @@ import java.util.Optional;
 @CrossOrigin(origins = {"http://localhost:3000"} )
 public class UserCTRL {
 
-
     @Autowired
     private UserDAO user;
 
+    @GetMapping("/Login")
+    public User login(String email, String password) {
+        Optional<User> userReceipt = this.user.findById(email);
+        if (userReceipt.isPresent()) {
+            if (userReceipt.get().getPassword().equals(password)) {
+                return userReceipt.get();
+            }
+        }
+        return null;
+    }
 
     @GetMapping("/GetUser")
     public User getUser(String email) {

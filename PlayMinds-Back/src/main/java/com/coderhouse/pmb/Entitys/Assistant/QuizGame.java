@@ -2,9 +2,10 @@ package com.coderhouse.pmb.Entitys.Assistant;
 
 import com.coderhouse.pmb.Entitys.Game;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class QuizGame{
+public class QuizGame implements Serializable {
 
     private Game game;
     private List<QuestionOBJ> questions;

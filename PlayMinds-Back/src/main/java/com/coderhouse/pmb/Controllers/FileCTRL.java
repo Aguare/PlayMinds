@@ -1,7 +1,10 @@
 package com.coderhouse.pmb.Controllers;
 
+import com.coderhouse.pmb.DAO.ImageDAO;
+import com.coderhouse.pmb.Entitys.Image;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -20,10 +23,12 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:3000")
 public class FileCTRL {
 
+    @Autowired
+    private ImageDAO image;
 
     @PostMapping("/upload")
-    public ResponseEntity<List<String>> uploadFiles(@RequestParam("files") List<MultipartFile> files) {
-        List<String> fileUrls = new ArrayList<>();
+    public ResponseEntity<List<Image>> uploadFiles(@RequestParam("files") List<MultipartFile> files) {
+        List<Image> fileUrls = new ArrayList<>();
 
         try {
             for (MultipartFile file : files) {
@@ -34,9 +39,12 @@ public class FileCTRL {
                 Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
                 String fileUrl = "localhost:8080" + "/img/" + uniqueFileName;
-                fileUrls.add(fileUrl);
+                Image newImage = new Image();
+                newImage.setPath_img(fileUrl);
+                newImage.setShow(false);
+                Image imageRegister = this.image.save(newImage);
+                fileUrls.add(imageRegister);
             }
-
             return ResponseEntity.ok(fileUrls);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

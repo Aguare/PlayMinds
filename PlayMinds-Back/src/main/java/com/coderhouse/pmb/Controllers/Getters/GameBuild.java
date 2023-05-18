@@ -1,17 +1,16 @@
 package com.coderhouse.pmb.Controllers.Getters;
 
 import com.coderhouse.pmb.DAO.*;
-import com.coderhouse.pmb.Entitys.Answer;
+import com.coderhouse.pmb.Entitys.*;
+import com.coderhouse.pmb.Entitys.Assistant.MemoryGame;
 import com.coderhouse.pmb.Entitys.Assistant.QuestionOBJ;
 import com.coderhouse.pmb.Entitys.Assistant.QuizGame;
-import com.coderhouse.pmb.Entitys.Game;
-import com.coderhouse.pmb.Entitys.QuestionAnswer;
-import com.coderhouse.pmb.Entitys.QuestionGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GameBuild {
@@ -30,6 +29,12 @@ public class GameBuild {
 
     @Autowired
     private AnswerDAO answer;
+
+    @Autowired
+    private ImageGameDAO imageGame;
+
+    @Autowired
+    private ImageDAO image;
 
     public Game getGameById(String id) {
         Game game = this.game.findById(id).orElse(null);
@@ -61,5 +66,23 @@ public class GameBuild {
             answers.add(this.answer.findById(qa.getAnswer()).orElse(null));
         }
         return answers;
+    }
+
+    public MemoryGame getMemoryGameById(String id){
+        Game game = this.game.findById(id).orElse(null);
+        if (game != null) {
+            game.getUser().setPassword("");
+            return new MemoryGame(game, getImagesByIdGame(id));
+        }
+        return null;
+    }
+
+    public List<Image> getImagesByIdGame(String id){
+        List<Image> images = new ArrayList<>();
+        List<ImageGame> list = this.imageGame.findAllByIdGame(id);
+        for (ImageGame ig: list) {
+            this.image.findById(ig.getImage()).ifPresent(images::add);
+        }
+        return images;
     }
 }
