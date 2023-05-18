@@ -61,9 +61,13 @@ public class GameCTRL {
 
     @GetMapping("/GetGame")
     public Object getGame(String id_game) {
-        return gameBuild.getQuizGameById(id_game);
+        return this.game.findById(id_game);
     }
 
+    @GetMapping("/GetQuizGame")
+    public Object getQuizGame(String id_game) {
+        return gameBuild.getQuizGameById(id_game);
+    }
 
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int LENGTH = 10;

@@ -12,7 +12,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/Users")
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000"} )
 public class UserCTRL {
 
 
@@ -32,7 +32,7 @@ public class UserCTRL {
         return user.findAll();
     }
 
-    @GetMapping("/GetUserByPoints")
+    @GetMapping("/GetUsersRanking")
     public Iterable<User> getUserByPoints() {
         return user.findAllByOrderByPointsDesc();
     }
