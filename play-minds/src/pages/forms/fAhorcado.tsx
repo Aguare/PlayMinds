@@ -1,4 +1,5 @@
 import NavBar from '../../components/navbar'
+import React, { FormEvent } from 'react'
 import axios from 'axios'
 import { useState } from 'react'
 import { Game } from '../../models/Entitys/Game'
@@ -67,17 +68,31 @@ const AhorcadoF = () => {
     setUserEmail('  ')
   }
 
-  const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
-    evt.preventDefault()
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
 
     // Obtenemos el correo del usuario logeado
     getUserEmail()
 
     // Crear el objeto de tipo HangedGame
     const user = new User(userEmail, '', '', '', 0)
+    const game = new Game(
+      '',
+      name_game,
+      '',
+      description,
+      parseInt(value_points),
+      user,
+    )
+
+    const phrasesArray = palabras.map(
+      (p, i) => new Phrase(i + 1, p.palabra, p.pista),
+    )
+    const hangedGame = new HangedGame(game, phrasesArray)
+
     try {
       // Realizar la solicitud POST
-      const response = await axios.post('URL_DE_TU_API', HangedGame)
+      const response = await axios.post('URL_DEL_API', hangedGame)
 
       // Manejar la respuesta del servidor
       console.log(response.data)
@@ -85,6 +100,7 @@ const AhorcadoF = () => {
       console.error(error)
     }
   }
+
   return (
     <div>
       <NavBar />
@@ -217,6 +233,7 @@ const AhorcadoF = () => {
               <button
                 type="submit"
                 className="mt-4 bg-mainblue text-white py-2 px-6 rounded-md hover:bg-mainorange transition-colors w-[100%]"
+                onClick={handleSubmit}
               >
                 Crear
               </button>
