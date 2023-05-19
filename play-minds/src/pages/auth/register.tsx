@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import img1 from '../../image/logo playminds.png'
 import axios from 'axios'
-import { User } from '../../models/User' // Asegúrate de importar la clase User correctamente
+import { User } from '../../models/Entitys/User'
 
 const Register = () => {
   const [name, setName] = useState('')
@@ -15,14 +15,18 @@ const Register = () => {
 
     const user = new User(email, name, password, role, 0)
 
-    console.log('Datos de usuario:', user) // Agrega esta línea
+    console.log('Datos de usuario:', user)
 
     axios
-      .post('https://adb0-181-174-107-182.ngrok.io/Users/RegisterUser', user, {
-        headers: {
-          'Content-Type': 'application/json',
+      .post(
+        'https://c088-181-174-107-182.ngrok-free.app/Users/RegisterUser',
+        user,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      })
+      )
       .then(function (response) {
         console.log('Respuesta del servidor:', response.data)
       })
@@ -70,7 +74,7 @@ const Register = () => {
                 value={role}
                 onChange={(event) => setRole(event.target.value)}
               >
-                <option value="Estudiante">Estudiante</option>
+                <option value="STUDENT">STUDENT</option>
                 <option value="TEACHER">TEACHER</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
