@@ -3,9 +3,7 @@ package com.coderhouse.pmb.Controllers;
 import com.coderhouse.pmb.Controllers.Getters.GameBuild;
 import com.coderhouse.pmb.DAO.*;
 import com.coderhouse.pmb.Entitys.*;
-import com.coderhouse.pmb.Entitys.Assistant.MemoryGame;
-import com.coderhouse.pmb.Entitys.Assistant.QuestionOBJ;
-import com.coderhouse.pmb.Entitys.Assistant.QuizGame;
+import com.coderhouse.pmb.Entitys.Assistant.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +37,18 @@ public class GameCTRL {
 
     @Autowired
     private ImageGameDAO imageGame;
+
+    @Autowired
+    private PhraseDAO phrase;
+
+    @Autowired
+    private PhraseGameDAO phraseGame;
+
+    @Autowired
+    private CardDAO card;
+
+    @Autowired
+    private CardGameDAO cardGame;
 
     @PostMapping("/RegisterQuizGame")
     public QuizGame registerQuizGame(@RequestBody QuizGame quizGame) {
@@ -77,6 +87,40 @@ public class GameCTRL {
         return null;
     }
 
+    @PostMapping("/RegisterHangedGame")
+    public HangedGame registerHangedGame(@RequestBody HangedGame hangedGame) {
+        hangedGame.getGame().setId_game(generateUUID());
+        Game newHanged = this.game.save(hangedGame.getGame());
+        List<Phrase> phrases = hangedGame.getPhrases();
+        for (Phrase p : phrases) {
+            Phrase newPhrase = this.phrase.save(p);
+            PhraseGame newPhraseGame = new PhraseGame();
+            newPhraseGame.setIdGame(newHanged.getId_game());
+            newPhraseGame.setIdPhrase(newPhrase.getId_phrase());
+            this.phraseGame.save(newPhraseGame);
+        }
+        return null;
+    }
+
+    @PostMapping("/RegisterCardGame")
+    public CardGameG registerCardGame(@RequestBody CardGameG cardGameG) {
+        cardGameG.getGame().setId_game(generateUUID());
+        Game newGame = this.game.save(cardGameG.getGame());
+        List<Card> cards = cardGameG.getCards();
+        for (Card c : cards) {
+            Card ca = this.card.save(c);
+            CardGame newCardGame = new CardGame();
+            newCardGame.setIdGame(newGame.getId_game());
+            newCardGame.setIdCard(ca.getIdCard());
+            this.cardGame.save(newCardGame);
+        }
+        return null;
+    }
+
+    @GetMapping("/GetAllGames")
+    public Object getAllGames() {
+        return this.game.findAll();
+    }
 
     @GetMapping("/GetGame")
     public Object getGame(String id_game) {
@@ -92,6 +136,12 @@ public class GameCTRL {
     public Object getMemoryGame(String id_game) {
         return gameBuild.getMemoryGameById(id_game);
     }
+
+    @GetMapping("/GetHangedGame")
+    public Object getHangedGame(String id_game) { return gameBuild.getHangedGameById(id_game); }
+
+    @GetMapping("/GetCardGame")
+    public Object getCardGame(String id_game) { return gameBuild.getCardGameById(id_game); }
 
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int LENGTH = 10;

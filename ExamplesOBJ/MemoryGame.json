@@ -1,6 +1,5 @@
 {
   "game": {
-    "id_game": "1",
     "name_game": "Juego de memoria",
     "type_game": "MEMORY",
     "description": "Un divertido juego de memoria",

@@ -38,7 +38,7 @@ public class FileCTRL {
                 String filePath = Paths.get("src", "main", "resources", "static", "img", uniqueFileName).toString();
                 Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
-                String fileUrl = "localhost:8080" + "/img/" + uniqueFileName;
+                String fileUrl = "http://localhost:8080" + "/img/" + uniqueFileName;
                 Image newImage = new Image();
                 newImage.setPath_img(fileUrl);
                 newImage.setShow(false);

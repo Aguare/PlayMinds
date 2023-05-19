@@ -2,9 +2,7 @@ package com.coderhouse.pmb.Controllers.Getters;
 
 import com.coderhouse.pmb.DAO.*;
 import com.coderhouse.pmb.Entitys.*;
-import com.coderhouse.pmb.Entitys.Assistant.MemoryGame;
-import com.coderhouse.pmb.Entitys.Assistant.QuestionOBJ;
-import com.coderhouse.pmb.Entitys.Assistant.QuizGame;
+import com.coderhouse.pmb.Entitys.Assistant.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +34,18 @@ public class GameBuild {
     @Autowired
     private ImageDAO image;
 
+    @Autowired
+    private PhraseDAO phrase;
+
+    @Autowired
+    private PhraseGameDAO phraseGame;
+
+    @Autowired
+    private CardDAO card;
+
+    @Autowired
+    private CardGameDAO cardGame;
+
     public Game getGameById(String id) {
         Game game = this.game.findById(id).orElse(null);
 
@@ -50,7 +60,7 @@ public class GameBuild {
         return null;
     }
 
-    public List<QuestionOBJ> getQuestionByIdGame(String id){
+    private List<QuestionOBJ> getQuestionByIdGame(String id){
         List<QuestionOBJ> questions = new ArrayList<>();
         Iterable<QuestionGame> list = this.questionGame.findByFK_id_game(id);
         for (QuestionGame qg: list) {
@@ -59,7 +69,7 @@ public class GameBuild {
         return questions;
     }
 
-    public List<Answer> getAnswersByIdQuestion(Long id){
+    private List<Answer> getAnswersByIdQuestion(Long id){
         List<Answer> answers = new ArrayList<>();
         List<QuestionAnswer> list = this.questionAnswer.findByQuestionId(id);
         for (QuestionAnswer qa: list) {
@@ -77,12 +87,43 @@ public class GameBuild {
         return null;
     }
 
-    public List<Image> getImagesByIdGame(String id){
+    private List<Image> getImagesByIdGame(String id){
         List<Image> images = new ArrayList<>();
         List<ImageGame> list = this.imageGame.findAllByIdGame(id);
         for (ImageGame ig: list) {
             this.image.findById(ig.getImage()).ifPresent(images::add);
         }
         return images;
+    }
+
+    public HangedGame getHangedGameById(String id){
+        Game game = this.game.findById(id).orElse(null);
+        if (game != null) {
+            game.getUser().setPassword("");
+            return new HangedGame(game, getPhrasesByIdGame(id));
+        }
+        return null;
+    }
+
+    private List<Phrase> getPhrasesByIdGame(String id){
+        List<Phrase> phrases = new ArrayList<>();
+        List<PhraseGame> list = this.phraseGame.findAllByFK_id_game(id);
+        for (PhraseGame pg: list) {
+            this.phrase.findById(pg.getIdPhrase()).ifPresent(phrases::add);
+        }
+        return phrases;
+    }
+
+    public CardGameG getCardGameById(String id){
+        return new CardGameG(this.game.findById(id).orElse(null), getCardsByIdGame(id));
+    }
+
+    private List<Card> getCardsByIdGame(String id){
+        List<Card> cards = new ArrayList<>();
+        List<CardGame> list = this.cardGame.findAllByIdGame(id);
+        for (CardGame cg: list) {
+            this.card.findById(cg.getIdCard()).ifPresent(cards::add);
+        }
+        return cards;
     }
 }

@@ -1,0 +1,33 @@
+{
+  "game": {
+    "name_game": "Hangman",
+    "type_game": "CARD",
+    "description": "Guess the word by suggesting letters.",
+    "value_points": 100,
+    "user": {
+      "email": "marcosy300@gmail.com"
+    }
+  },
+  "cards": [
+    {
+      "name": "Card 1",
+      "description": "Description for Card 1",
+      "correct": true,
+      "image": {
+        "id": 1,
+        "path_img": "/path/to/image1.jpg",
+        "show": true
+      }
+    },
+    {
+      "name": "Card 2",
+      "description": "Description for Card 2",
+      "correct": false,
+      "image": {
+        "id": 2,
+        "path_img": "/path/to/image2.jpg",
+        "show": false
+      }
+    }
+  ]
+}
