@@ -1,24 +1,35 @@
-import Image from 'next/image'
-import img1 from '../../image/logo playminds.png'
-import { NextPage } from 'next'
-import { FormEventHandler, useState } from 'react'
-import { signIn } from 'next-auth/react'
+import Image from "next/image";
+import img1 from "../../image/logo playminds.png";
+import { useState } from "react";
+import { User } from "@/models/Entitys/User";
+import axios from "axios";
+import { Request } from "../../helpers/requests";
 
-interface Props {}
+const SignIn = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-const SignIn: NextPage = (props): JSX.Element => {
-  const [userInfo, setUserInfo] = useState({ email: '', password: '' })
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    //validete youe userinfo
-    e.preventDefault()
-
-    const res = await signIn('credentials', {
-      email: userInfo.email,
-      password: userInfo.password,
-      redirect: false,
-    })
-    console.log(res)
-  }
+  const handleSigIn = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const user = new User(email, "", password, "TEACHER", 0);
+    try {
+      axios
+        .post(Request.SERVER + "/Users/Login", user, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then(function (response) {
+          response.data.password = "";
+          localStorage.setItem("user", JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -35,16 +46,14 @@ const SignIn: NextPage = (props): JSX.Element => {
             </p>
           </div>
           {/*Formulario*/}
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <form className="flex flex-col gap-4" onSubmit={handleSigIn}>
             <div>
               <label htmlFor="email" className="text-gray-200">
                 Correo electrónico
               </label>
               <input
-                value={userInfo.email}
-                onChange={({ target }) =>
-                  setUserInfo({ ...userInfo, email: target.value })
-                }
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
                 type="email"
                 id="email"
                 autoComplete="off"
@@ -57,10 +66,8 @@ const SignIn: NextPage = (props): JSX.Element => {
                 Contraseña
               </label>
               <input
-                value={userInfo.password}
-                onChange={({ target }) =>
-                  setUserInfo({ ...userInfo, password: target.value })
-                }
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
                 type="password"
                 id="password"
                 autoComplete="off"
@@ -70,7 +77,7 @@ const SignIn: NextPage = (props): JSX.Element => {
             </div>
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 order-2 md:order-1">
               <span className="text-gray-400">
-                ¿No tienes cuenta?{' '}
+                ¿No tienes cuenta?{" "}
                 <a
                   href="#"
                   className="text-indigo-400 hover:text-indigo-500 transition-colors"
@@ -87,9 +94,6 @@ const SignIn: NextPage = (props): JSX.Element => {
             </div>
             <div className="mt-4 order-1 md:order-2">
               <button
-                onClick={() => {
-                  signIn()
-                }}
                 type="submit"
                 className="w-full bg-[#205375] p-2 rounded-full hover:bg-[#F66B0E] transition-colors"
               >
@@ -100,6 +104,6 @@ const SignIn: NextPage = (props): JSX.Element => {
         </div>
       </div>
     </div>
-  )
-}
-export default SignIn
+  );
+};
+export default SignIn;
