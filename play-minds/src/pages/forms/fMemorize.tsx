@@ -5,6 +5,7 @@ import { Game } from '../../models/Entitys/Game'
 import { Imag } from '../../models/Entitys/Imag'
 import { User } from '../../models/Entitys/User'
 import { MemoryGame } from '../../models/Entitys/Assistant/MemoryGame'
+import {Request} from '../../helpers/requests'
 
 const MemorizeF = () => {
   const [selectedFile, setSelectedFile] = useState<FileList | null>(null)
@@ -60,7 +61,7 @@ const MemorizeF = () => {
     try {
       // Realiza la solicitud POST al API utilizando Axios
       const response = await axios.post(
-        'https://23a0-181-174-107-182.ngrok-free.app/Files/upload',
+        Request.UPLOAD_MEMORIZE,
         formData,
       )
       console.log(response.data)
@@ -83,7 +84,7 @@ const MemorizeF = () => {
     const memoryGame = new MemoryGame(game, listImages)
     try {
       const response = await axios.post(
-        'https://23a0-181-174-107-182.ngrok-free.app/Games/RegisterMemoryGame',
+        Request.REGISTER_MEMORY_GAME,
         memoryGame,
       )
       console.log(response.data)

@@ -3,6 +3,7 @@ import Image from 'next/image'
 import img1 from '../../image/logo playminds.png'
 import axios from 'axios'
 import { User } from '../../models/Entitys/User'
+import {Request} from '../../helpers/requests'
 
 const Register = () => {
   const [name, setName] = useState('')
@@ -19,7 +20,7 @@ const Register = () => {
 
     axios
       .post(
-        'https://c088-181-174-107-182.ngrok-free.app/Users/RegisterUser',
+        Request.REGISTER_USER,
         user,
         {
           headers: {

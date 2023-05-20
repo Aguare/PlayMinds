@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { Game } from '../models/Entitys/Game'
+import {Request} from '../helpers/requests'
 
 const Card = () => {
   const [games, setGames] = useState<Game[]>([])
@@ -13,7 +14,7 @@ const Card = () => {
     const fetchGames = async () => {
       try {
         const response = await axios.get(
-          'https://23a0-181-174-107-182.ngrok-free.app/Games/GetAllGames',
+          Request.GET_ALL_GAMES,
         )
         setGames(response.data)
       } catch (error) {
