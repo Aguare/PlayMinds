@@ -1,5 +1,5 @@
 import { Game } from "../Game";
-import { Image } from "../Image";
+import { Image } from "../Imag";
 
 export class MemoryGame {
   game: Game;

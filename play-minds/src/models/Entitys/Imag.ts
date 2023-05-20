@@ -1,4 +1,4 @@
-export class Image {
+export class Imag {
   id?: number;
   path_img: string;
   show: boolean;

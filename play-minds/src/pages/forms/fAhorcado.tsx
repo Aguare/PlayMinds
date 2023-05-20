@@ -65,7 +65,7 @@ const AhorcadoF = () => {
     // Lógica para obtener el correo del usuario logeado
 
     // Actualizar el estado con el correo del usuario
-    setUserEmail('  ')
+    setUserEmail('marcosy300@gmail.com')
   }
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -75,11 +75,11 @@ const AhorcadoF = () => {
     getUserEmail()
 
     // Crear el objeto de tipo HangedGame
-    const user = new User(userEmail, '', '', '', 0)
+    const user = new User(userEmail, '', '', 'STUDENT', 0)
     const game = new Game(
       '',
       name_game,
-      '',
+      'HANGED',
       description,
       parseInt(value_points),
       user,
@@ -92,7 +92,10 @@ const AhorcadoF = () => {
 
     try {
       // Realizar la solicitud POST
-      const response = await axios.post('URL_DEL_API', hangedGame)
+      const response = await axios.post(
+        'https://23a0-181-174-107-182.ngrok-free.app/Games/RegisterHangedGame',
+        hangedGame,
+      )
 
       // Manejar la respuesta del servidor
       console.log(response.data)

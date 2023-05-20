@@ -12,7 +12,9 @@ const Card = () => {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await axios.get('URL_DEL_API') // Reemplaza 'URL_DEL_API' con la URL real de tu API
+        const response = await axios.get(
+          'https://23a0-181-174-107-182.ngrok-free.app/Games/GetAllGames',
+        )
         setGames(response.data)
       } catch (error) {
         console.error('Error al obtener los juegos:', error)

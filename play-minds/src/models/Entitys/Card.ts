@@ -1,4 +1,4 @@
-import { Image } from "./Image";
+import { Image } from "./Imag";
 
 export class Card {
   idCard?: number;

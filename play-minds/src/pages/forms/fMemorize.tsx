@@ -1,7 +1,11 @@
 import NavBar from '../../components/navbar'
-
+import axios from 'axios'
 import Image from 'next/image'
 import { useState } from 'react'
+import { Game } from '@/models/Entitys/Game'
+import { User } from '../../models/Entitys/User'
+import { Imag } from '@/models/Entitys/Imag'
+import { MemoryGame } from '@/models/Entitys/Assistant/MemoryGame'
 
 const MemorizeF = () => {
   const [selectedFile, setSelectedFile] = useState<FileList | null>(null)
@@ -9,29 +13,11 @@ const MemorizeF = () => {
   const [name_game, setName_game] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [value_points, setValue_points] = useState<string>('')
+  const [userEmail, setUserEmail] = useState('')
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFile(event.target.files)
   }
   const [error, setError] = useState<string>('')
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    // Verifica que se haya seleccionado un archivo
-    if (!selectedFile) {
-      return
-    }
-
-    // Agrega la imagen seleccionada al array de imágenes subidas
-    setUploadedFiles([...uploadedFiles, selectedFile[0]])
-
-    // Crea un objeto FormData para enviar la imagen al servidor
-    const formData = new FormData()
-    formData.append('image', selectedFile[0])
-
-    // Envía la imagen al servidor utilizando fetch o axios
-    // ...
-  }
 
   const handleRemove = (index: number) => {
     const newUploadedFiles = [...uploadedFiles]
@@ -52,6 +38,67 @@ const MemorizeF = () => {
     setValue_points(event.target.value)
     setError('')
   }
+
+  const getUserEmail = () => {
+    // Lógica para obtener el correo del usuario logeado
+
+    // Actualizar el estado con el correo del usuario
+    setUserEmail('marcosy300@gmail.com')
+  }
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+
+    // Verifica que se haya seleccionado un archivo
+    if (!selectedFile) {
+      return
+    }
+
+    // Crea un objeto FormData para enviar la imagen al servidor
+    const formData = new FormData()
+    formData.append('image', selectedFile[0])
+
+    // Realiza la subida de la imagen primero
+    try {
+      const response = await axios.post(
+        'https://23a0-181-174-107-182.ngrok-free.app/Games/RegisterMemoryGame',
+        formData,
+      )
+      const imagePath = response.data.path // Obtiene la ruta de la imagen subida desde la respuesta
+      const image = new Imag(imagePath, false) // Crea una instancia de la clase Image
+
+      // Crea un objeto User con el correo del usuario logeado (suponiendo que ya tienes esa información)
+
+      // Obtenemos el correo del usuario logeado
+      getUserEmail()
+
+      // Crear el objeto de tipo HangedGame
+      const user = new User(userEmail, '', '', '', 0)
+      // Crea un objeto Game utilizando los datos del formulario y los modelos
+      const game = new Game(
+        '',
+        name_game,
+        'MEMORY',
+        description,
+        parseInt(value_points),
+        user,
+      )
+
+      // Crea un objeto MemoryGame con el objeto Game y la lista de imágenes
+      const memoryGame = new MemoryGame(game, [image])
+
+      // Realiza el POST a la API con los datos del juego
+      const apiResponse = await axios.post('/games', memoryGame) // Ajusta la URL de la API de creación de juegos
+
+      console.log(apiResponse.data) // Puedes hacer algo con la respuesta de la API si es necesario
+
+      // ...
+    } catch (error) {
+      console.error(error)
+      // Maneja el error de acuerdo a tus necesidades
+    }
+  }
+
   return (
     <div>
       <NavBar />
@@ -172,6 +219,7 @@ const MemorizeF = () => {
               <button
                 type="submit"
                 className="mt-4 bg-mainblue text-white py-2 px-6 rounded-md hover:bg-mainorange transition-colors w-[100%]"
+                onClick={handleSubmit}
               >
                 Crear
               </button>
