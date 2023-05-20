@@ -1,5 +1,13 @@
 import NavBar from '../../components/navbar'
 import { useState } from 'react'
+import axios from 'axios'
+import { Answer } from '../../models/Entitys/Answer'
+import { Question } from '../../models/Entitys/Question'
+import { User } from '../../models/Entitys/User'
+import { Game } from '../../models/Entitys/Game'
+import { QuizGame } from '../../models/Entitys/Assistant/QuizGame'
+import { QuestionOBJ } from '@/models/Entitys/Assistant/QuestionOBJ'
+
 const QuizForm = () => {
   const [pregunta, setPregunta] = useState<string>('')
   const [respuestas, setRespuestas] = useState<string[]>(['', '', '', ''])
@@ -10,6 +18,8 @@ const QuizForm = () => {
   const [name_game, setName_game] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [value_points, setValue_points] = useState<string>('')
+  const [userEmail, setUserEmail] = useState('')
+
   const handlePreguntaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPregunta(event.target.value)
     setError('')
@@ -50,7 +60,7 @@ const QuizForm = () => {
       preguntas.concat({
         pregunta,
         respuestas,
-        respuestaCorrecta: -1, // Inicialmente no hay respuesta correcta seleccionada
+        respuestaCorrecta: -1,
       }),
     )
     setPregunta('')
@@ -71,9 +81,65 @@ const QuizForm = () => {
     setValue_points(event.target.value)
     setError('')
   }
-  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
-    evt.preventDefault()
-    // Aquí se podrán enviar los datos al servidor para procesarlos
+
+  const getUserEmail = () => {
+    // Lógica para obtener el correo del usuario logeado
+
+    // Actualizar el estado con el correo del usuario
+    setUserEmail('marcosy300@gmail.com')
+    return 'marcosy300@gmail.com'
+  }
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+
+    // Obtenemos el correo del usuario logeado
+    getUserEmail()
+    // Crear instancia de User
+
+    const user = new User(getUserEmail(), '', '', 'STUDENT', 0)
+    const game = new Game(
+      '',
+      name_game,
+      'QUIZ',
+      description,
+      parseInt(value_points),
+      user,
+    )
+
+    // Crear instancias de QuestionOBJ
+    const questionObjs = preguntas.map((pregunta, index) => {
+      const question = new Question(0, pregunta.pregunta)
+      delete question.id
+
+      // Crear instancias de Answer para cada respuesta
+      const answers = pregunta.respuestas.map((respuesta, respuestaIndex) => {
+        const isCorrect = respuestaIndex === pregunta.respuestaCorrecta
+        const answer = new Answer(0, respuesta, isCorrect)
+        delete answer.id
+        return answer
+      })
+
+      // Crear instancia de QuestionOBJ
+      return new QuestionOBJ(question, answers)
+    })
+
+    const quizGame = new QuizGame(game, questionObjs)
+    const jsonData = JSON.stringify(quizGame)
+
+    // Enviar los datos al servidor utilizando Axios
+    try {
+      const response = await axios.post(
+        'https://23a0-181-174-107-182.ngrok-free.app/Games/RegisterQuizGame',
+        jsonData,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      )
+      console.log(response.data)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -242,6 +308,7 @@ const QuizForm = () => {
               <button
                 type="submit"
                 className="mt-4 bg-mainblue text-white py-2 px-6 rounded-md hover:bg-mainorange transition-colors w-[100%]"
+                onClick={handleSubmit}
               >
                 Crear
               </button>

@@ -1,16 +1,16 @@
-import { Image } from "./Imag";
+import { Imag } from "./Imag";
 
 export class Card {
   idCard?: number;
   name: string;
   description: string;
   correct: boolean;
-  image: Image;
+  image: Imag;
 
   constructor(
     idCard: number,
     name: string,
-    image: Image,
+    image: Imag,
     description: string,
     correct: boolean
   ) {

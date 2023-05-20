@@ -1,11 +1,11 @@
 import { Game } from "../Game";
-import { Image } from "../Imag";
+import { Imag } from "../Imag";
 
 export class MemoryGame {
   game: Game;
-  imageList: Image[];
+  imageList: Imag[];
 
-  constructor(game: Game, imageList: Image[]) {
+  constructor(game: Game, imageList: Imag[]) {
     this.game = game;
     this.imageList = imageList;
   }
