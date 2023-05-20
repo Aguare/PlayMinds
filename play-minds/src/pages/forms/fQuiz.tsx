@@ -19,6 +19,7 @@ const QuizForm = () => {
   const [description, setDescription] = useState<string>('')
   const [value_points, setValue_points] = useState<string>('')
   const [userEmail, setUserEmail] = useState('')
+  const [aux, setAux] = useState<number>(-1)
 
   const handlePreguntaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPregunta(event.target.value)
@@ -39,16 +40,8 @@ const QuizForm = () => {
     preguntaIndex: number,
     respuestaCorrecta: number,
   ) => {
-    const nuevasPreguntas = preguntas.map((pregunta, index) => {
-      if (index === preguntaIndex) {
-        return {
-          ...pregunta,
-          respuestaCorrecta: respuestaCorrecta,
-        }
-      }
-      return pregunta
-    })
-    setPreguntas(nuevasPreguntas)
+    console.log('LA CORRECTA ES: ', respuestaCorrecta)
+    setAux(respuestaCorrecta)
   }
 
   const handleAgregarPregunta = () => {
@@ -60,7 +53,7 @@ const QuizForm = () => {
       preguntas.concat({
         pregunta,
         respuestas,
-        respuestaCorrecta: -1,
+        respuestaCorrecta: aux,
       }),
     )
     setPregunta('')

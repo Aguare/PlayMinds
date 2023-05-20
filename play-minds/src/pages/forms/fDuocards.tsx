@@ -102,14 +102,13 @@ const DuoCardsForm = () => {
     if (!pregunta || uploadedFiles.length === 0 || !pista) {
       setError('Por favor ingrese la pregunta, la imagen y la pista')
       console.log(pregunta, pista, respuestaCorrecta)
-      if (respuestaCorrecta) {
-        respuestas.push(1)
-      } else {
-        respuestas.push(0)
-      }
       return
     }
-
+    if (respuestaCorrecta) {
+      respuestas.push(1)
+    } else {
+      respuestas.push(0)
+    }
     const nuevaCarta = {
       pregunta,
       pista,
