@@ -62,7 +62,7 @@ const creator = () => {
               type="button"
               className="border border-gray-600 py-2 px-4 rounded-lg"
             >
-              <Link href="/game/duocards">CREAR</Link>
+              <Link href="/forms/fAhorcado">CREAR</Link>
             </button>
           </div>
           {/*Juego 2*/}
@@ -86,7 +86,7 @@ const creator = () => {
               type="button"
               className="border border-gray-600 py-2 px-4 rounded-lg"
             >
-              <Link href="/game/duocards">CREAR</Link>
+              <Link href="/forms/fDuocards">CREAR</Link>
             </button>
           </div>
           {/*Juego 3*/}
@@ -110,7 +110,7 @@ const creator = () => {
               type="button"
               className="border border-gray-600 py-2 px-4 rounded-lg"
             >
-              <Link href="/game/duocards">CREAR</Link>
+              <Link href="/forms/fMemorize">CREAR</Link>
             </button>
           </div>
           {/*Juego 4*/}
@@ -134,7 +134,7 @@ const creator = () => {
               type="button"
               className="border border-gray-600 py-2 px-4 rounded-lg"
             >
-              <Link href="/game/duocards">CREAR</Link>
+              <Link href="/forms/fQuiz">CREAR</Link>
             </button>
           </div>
         </div>

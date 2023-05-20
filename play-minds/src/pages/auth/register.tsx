@@ -1,7 +1,40 @@
+import React, { useState } from 'react'
 import Image from 'next/image'
 import img1 from '../../image/logo playminds.png'
+import axios from 'axios'
+import { User } from '../../models/Entitys/User'
 
 const Register = () => {
+  const [name, setName] = useState('')
+  const [role, setRole] = useState('Estudiante')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+
+    const user = new User(email, name, password, role, 0)
+
+    console.log('Datos de usuario:', user)
+
+    axios
+      .post(
+        'https://c088-181-174-107-182.ngrok-free.app/Users/RegisterUser',
+        user,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+      .then(function (response) {
+        console.log('Respuesta del servidor:', response.data)
+      })
+      .catch(function (error) {
+        console.error(error)
+      })
+  }
+
   return (
     <div>
       <div className="min-h-screen bg-[#112B3C] grid grid-cols-1 lg:grid-cols-2">
@@ -15,7 +48,7 @@ const Register = () => {
             <p className="text-gray-400">Registrate en la plataforma</p>
           </div>
 
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="name" className="text-gray-200">
                 Nombre completo
@@ -26,6 +59,8 @@ const Register = () => {
                 autoComplete="off"
                 className="w-full py-2 px-4 bg-transparent border rounded-full mt-2 outline-none focus:border-indigo-400"
                 placeholder="Ingresa tu nombre completo"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
               />
             </div>
             <div>
@@ -34,9 +69,13 @@ const Register = () => {
               </label>
             </div>
             <div className="w-full py-2 px-4 bg-transparent border rounded-full mt-2 outline-none focus:border-indigo-400">
-              <select className="w-full bg-[#112B3C] outline-none focus:border-indigo-400">
-                <option>Estudiante</option>
-                <option>Docente</option>
+              <select
+                className="w-full bg-[#112B3C] outline-none focus:border-indigo-400"
+                value={role}
+                onChange={(event) => setRole(event.target.value)}
+              >
+                <option value="STUDENT">STUDENT</option>
+                <option value="TEACHER">TEACHER</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                 <svg
@@ -58,6 +97,8 @@ const Register = () => {
                 autoComplete="off"
                 className="w-full py-2 px-4 bg-transparent border rounded-full mt-2 outline-none focus:border-indigo-400"
                 placeholder="Ingresa tu correo electrónico"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
               />
             </div>
             <div>
@@ -70,6 +111,8 @@ const Register = () => {
                 autoComplete="off"
                 className="w-full py-2 px-4 bg-transparent border rounded-full mt-2 outline-none focus:border-indigo-400"
                 placeholder="Ingresa tu contraseña"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
               />
             </div>
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 order-2 md:order-1">
