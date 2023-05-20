@@ -143,6 +143,8 @@ public class GameCTRL {
     @GetMapping("/GetCardGame")
     public Object getCardGame(String id_game) { return gameBuild.getCardGameById(id_game); }
 
+    @GetMapping("/GetGameComments")
+    public Object getGameComments(String id_game){ return gameBuild.getGameCommentsById(id_game); }
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int LENGTH = 10;
 

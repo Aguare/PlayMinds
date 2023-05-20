@@ -2,8 +2,6 @@ package com.coderhouse.pmb.Controllers;
 
 import com.coderhouse.pmb.DAO.ImageDAO;
 import com.coderhouse.pmb.Entitys.Image;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,4 +48,5 @@ public class FileCTRL {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 }

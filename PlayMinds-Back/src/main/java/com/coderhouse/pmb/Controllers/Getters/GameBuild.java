@@ -46,6 +46,9 @@ public class GameBuild {
     @Autowired
     private CardGameDAO cardGame;
 
+    @Autowired
+    private CommentDAO comment;
+
     public Game getGameById(String id) {
         Game game = this.game.findById(id).orElse(null);
 
@@ -125,5 +128,21 @@ public class GameBuild {
             this.card.findById(cg.getIdCard()).ifPresent(cards::add);
         }
         return cards;
+    }
+
+    public GameOBJ getGameCommentsById(String id){
+        Game game = this.game.findById(id).orElse(null);
+        if (game != null) {
+            game.getUser().setPassword("");
+            return new GameOBJ(game, getCommentsByIdGame(id));
+        }
+        return null;
+    }
+
+    private List<Comment> getCommentsByIdGame(String id){
+        List<Comment> comments = new ArrayList<>();
+        List<Comment> list = this.comment.findByGameIdGame(id);
+        comments.addAll(list);
+        return comments;
     }
 }
