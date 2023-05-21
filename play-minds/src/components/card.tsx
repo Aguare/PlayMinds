@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { Game } from '../models/Entitys/Game'
-import {Request} from '../helpers/requests'
+import { Request } from '../helpers/requests'
 
 const Card = () => {
   const [games, setGames] = useState<Game[]>([])
@@ -13,9 +13,7 @@ const Card = () => {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await axios.get(
-          Request.GET_ALL_GAMES,
-        )
+        const response = await axios.get(Request.GET_ALL_GAMES)
         setGames(response.data)
       } catch (error) {
         console.error('Error al obtener los juegos:', error)
@@ -24,6 +22,10 @@ const Card = () => {
 
     fetchGames()
   }, [])
+
+  const handlePlay = (id: any) => {
+    console.log('Jugar:', id)
+  }
 
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-8 p-8">
@@ -51,6 +53,7 @@ const Card = () => {
               <button
                 type="button"
                 className="border border-gray-600 py-2 px-4 rounded-lg"
+                onClick={() => handlePlay(game.id_game)}
               >
                 JUGAR
               </button>
