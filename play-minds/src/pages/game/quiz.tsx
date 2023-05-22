@@ -131,7 +131,7 @@ const Quiz = () => {
           new Date(),
           score
         );
-        axios.post(Request.SERVER + "/Games/CompleteGame", gameC);
+        axios.post(Request.SERVER + "/Games/RegisterGameComplete", gameC);
       }
     }
   };
