@@ -7,6 +7,7 @@ import { Router, useRouter } from "next/router";
 import { Request } from "@/helpers/requests";
 import axios from "axios";
 import { QuestionOBJ } from "@/models/Entitys/Assistant/QuestionOBJ";
+import { GameComplete } from "@/models/Entitys/GameComplete";
 
 interface Question {
   question: string;
@@ -21,6 +22,7 @@ interface Answer {
 const Quiz = () => {
   const router = useRouter();
   const { id } = router.query;
+  var user = new User("", "", "", "", 0);
   const [quizGame, setQuizGame] = useState<QuizGame>(
     new QuizGame(
       new Game("default", "", "", "", 0, new User("", "", "", "", 0)),
@@ -91,9 +93,9 @@ const Quiz = () => {
         },
       })
       .then(function (response) {
-        let user = localStorage.getItem("user");
-        if (user) {
-          user = JSON.parse(user);
+        let tmp = localStorage.getItem("user");
+        if (tmp) {
+          user = JSON.parse(tmp);
         }
         setQuizGame(response.data);
         quizGame.questions = response.data.questions;
@@ -118,6 +120,19 @@ const Quiz = () => {
       setCurrentQuestion(nextQuestion);
     } else {
       setShowScore(true);
+      if (
+        quizGame.game.id_game != "default" &&
+        user.email != "" &&
+        quizGame.game.id_game
+      ) {
+        const gameC = new GameComplete(
+          user.email,
+          quizGame.game.id_game,
+          new Date(),
+          score
+        );
+        axios.post(Request.SERVER + "/Games/CompleteGame", gameC);
+      }
     }
   };
 
