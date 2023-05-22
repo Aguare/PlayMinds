@@ -1,79 +1,131 @@
-import { useState } from 'react'
-import NavBar from '../../components/navbar'
+import { useState } from "react";
+import NavBar from "../../components/navbar";
+import { QuizGame } from "@/models/Entitys/Assistant/QuizGame";
+import { Game } from "@/models/Entitys/Game";
+import { User } from "@/models/Entitys/User";
+import { Router, useRouter } from "next/router";
+import { Request } from "@/helpers/requests";
+import axios from "axios";
+import { QuestionOBJ } from "@/models/Entitys/Assistant/QuestionOBJ";
 
 interface Question {
-  question: string
-  answers: Answer[]
+  question: string;
+  answers: Answer[];
 }
 
 interface Answer {
-  text: string
-  correct: boolean
+  text: string;
+  correct: boolean;
 }
 
 const Quiz = () => {
-  const [questions, setQuestions] = useState<Question[]>([
-    {
-      question: '¿En qué año se fundó la ciudad de Madrid?',
-      answers: [
-        { text: '1561', correct: true },
-        { text: '1492', correct: false },
-        { text: '1605', correct: false },
-        { text: '1700', correct: false },
-      ],
-    },
-    {
-      question: "¿Qué personaje de Star Wars dijo 'Que la Fuerza te acompañe'?",
-      answers: [
-        { text: 'Darth Vader', correct: false },
-        { text: 'Yoda', correct: true },
-        { text: 'Obi-Wan Kenobi', correct: false },
-        { text: 'Han Solo', correct: false },
-      ],
-    },
-    {
-      question: '¿Cuál es el país más grande del mundo?',
-      answers: [
-        { text: 'China', correct: false },
-        { text: 'Estados Unidos', correct: false },
-        { text: 'Rusia', correct: true },
-        { text: 'India', correct: false },
-      ],
-    },
-    {
-      question: '¿Cuál es el animal más rápido del mundo?',
-      answers: [
-        { text: 'León', correct: false },
-        { text: 'Guepardo', correct: true },
-        { text: 'Tigre', correct: false },
-        { text: 'Jaguar', correct: false },
-      ],
-    },
-  ])
+  const router = useRouter();
+  const { id } = router.query;
+  const [quizGame, setQuizGame] = useState<QuizGame>(
+    new QuizGame(
+      new Game("default", "", "", "", 0, new User("", "", "", "", 0)),
+      []
+    )
+  );
 
-  const [currentQuestion, setCurrentQuestion] = useState<number>(0)
-  const [showScore, setShowScore] = useState<boolean>(false)
-  const [score, setScore] = useState<number>(0)
+  const [questions, setQuestions] = useState<QuestionOBJ[]>([
+    {
+      question: {
+        id: 1,
+        ask: "¿En qué año se fundó la ciudad de Madrid?",
+      },
+      answers: [
+        { id: 1, answer: "1561", isCorrect: true },
+        { id: 2, answer: "1492", isCorrect: false },
+        { id: 3, answer: "1605", isCorrect: false },
+        { id: 4, answer: "1700", isCorrect: false },
+      ],
+    },
+    {
+      question: {
+        id: 2,
+        ask: "¿Qué personaje de Star Wars dijo 'Que la Fuerza te acompañe'?",
+      },
+      answers: [
+        { id: 1, answer: "Darth Vader", isCorrect: true },
+        { id: 2, answer: "Yoda", isCorrect: false },
+        { id: 3, answer: "Obi-Wan Kenobi", isCorrect: false },
+        { id: 4, answer: "Han Solo", isCorrect: false },
+      ],
+    },
+    {
+      question: {
+        id: 3,
+        ask: "¿Cuál es el país más grande del mundo?",
+      },
+      answers: [
+        { id: 1, answer: "China", isCorrect: true },
+        { id: 2, answer: "Estados Unidos", isCorrect: false },
+        { id: 3, answer: "Rusia", isCorrect: false },
+        { id: 4, answer: "India", isCorrect: false },
+      ],
+    },
+    {
+      question: {
+        id: 4,
+        ask: "¿Cuál es el animal más rápido del mundo?",
+      },
+      answers: [
+        { id: 1, answer: "León", isCorrect: true },
+        { id: 2, answer: "Guepardo", isCorrect: false },
+        { id: 3, answer: "Tigre", isCorrect: false },
+        { id: 4, answer: "Jaguar", isCorrect: false },
+      ],
+    },
+  ]);
 
+  if (
+    id != "default" &&
+    id != undefined &&
+    quizGame.game.id_game == "default"
+  ) {
+    axios
+      .get(Request.SERVER + "/Games/GetQuizGame?id_game=" + id, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then(function (response) {
+        let user = localStorage.getItem("user");
+        if (user) {
+          user = JSON.parse(user);
+        }
+        setQuizGame(response.data);
+        quizGame.questions = response.data.questions;
+        setQuestions(quizGame.questions);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  }
+
+  const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  const [showScore, setShowScore] = useState<boolean>(false);
+  const [score, setScore] = useState<number>(0);
   const handleAnswerButtonClick = (answerCorrect: boolean) => {
     if (answerCorrect) {
-      setScore(score + 1)
+      setScore(score + 1);
     }
 
-    const nextQuestion = currentQuestion + 1
+    const nextQuestion = currentQuestion + 1;
 
     if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion)
+      setCurrentQuestion(nextQuestion);
     } else {
-      setShowScore(true)
+      setShowScore(true);
     }
-  }
+  };
 
   const handleRetryButtonClick = () => {
-    setCurrentQuestion(0)
-    setShowScore(false)
-    setScore(0)
-  }
+    setCurrentQuestion(0);
+    setShowScore(false);
+    setScore(0);
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen w-[100%]">
@@ -94,7 +146,7 @@ const Quiz = () => {
                 Pregunta {currentQuestion + 1}
               </h1>
               <p className="sm:text-2xl">
-                {questions[currentQuestion].question}
+                {questions[currentQuestion].question.ask}
               </p>
             </div>
             {/*  */}
@@ -106,9 +158,9 @@ const Quiz = () => {
                     <span
                       className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0 "
                       key={index}
-                      onClick={() => handleAnswerButtonClick(answer.correct)}
+                      onClick={() => handleAnswerButtonClick(answer.isCorrect)}
                     >
-                      {answer.text}
+                      {answer.answer}
                     </span>
                   </button>
                 </div>
@@ -118,7 +170,7 @@ const Quiz = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Quiz
+export default Quiz;

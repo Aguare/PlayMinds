@@ -1,5 +1,5 @@
 export enum Request {
-  SERVER = "https://3809-181-174-107-182.ngrok-free.app",
+  SERVER = "http://localhost:8080",
   GET_ALL_GAMES = SERVER + "/Games/GetAllGames",
   REGISTER_HANGED_GAME = SERVER + "/Games/RegisterHangedGame",
   UPLOAD_DUO_CARD = SERVER + "/Files/upload",
