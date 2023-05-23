@@ -6,6 +6,8 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { User } from '../models/Entitys/User'
 import img1 from '../image/logo playminds.png'
+import axios from 'axios'
+import { Request } from '@/helpers/requests'
 
 const NavBar = () => {
   const router = useRouter()
@@ -21,7 +23,8 @@ const NavBar = () => {
   }, [])
 
   const handleLogout = () => {
-    localStorage.removeItem('user') // Elimina los datos
+    axios.get(Request.SERVER + '/Users/Logout?email=' + user?.email)
+    localStorage.clear() // Elimina los datos
     router.push('/auth/signin') // Redirige al usuario
   }
 
@@ -86,11 +89,6 @@ const NavBar = () => {
                 </div>
               )}
             </div>
-          )}
-          {user && (
-            <a className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg transition-colors">
-              {user.points} pts
-            </a>
           )}
         </div>
       </div>

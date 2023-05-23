@@ -6,7 +6,7 @@ import { Game } from '../../models/Entitys/Game'
 import { Phrase } from '../../models/Entitys/Phrase'
 import { User } from '../../models/Entitys/User'
 import { HangedGame } from '../../models/Entitys/Assistant/HangedGame'
-import {Request} from '../../helpers/requests'
+import { Request } from '../../helpers/requests'
 
 const AhorcadoF = () => {
   const [palabra, setPalabra] = useState<string>('')
@@ -62,18 +62,8 @@ const AhorcadoF = () => {
     setError('')
   }
 
-  const getUserEmail = () => {
-    // Lógica para obtener el correo del usuario logeado
-
-    // Actualizar el estado con el correo del usuario
-    setUserEmail('marcosy300@gmail.com')
-  }
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-
-    // Obtenemos el correo del usuario logeado
-    getUserEmail()
 
     // Crear el objeto de tipo HangedGame
     const user = new User(userEmail, '', '', 'STUDENT', 0)

@@ -1,5 +1,6 @@
 import Image from 'next/image'
-
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import img1 from '../../image/logo playminds.png'
 import imggame1 from '../../image/img-ahorcado.png'
 import imggame2 from '../../image/img-duocards.png'
@@ -7,15 +8,41 @@ import imggame3 from '../../image/img-memoria.png'
 import imggame4 from '../../image/img-quiz.png'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faBell } from '@fortawesome/free-solid-svg-icons'
+import { User } from '../../models/Entitys/User'
 
 const creator = () => {
+  const router = useRouter()
+  const [user, setUser] = useState<User | null>(null)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user')
+    if (userData) {
+      const parsedUser = JSON.parse(userData)
+      setUser(parsedUser)
+    }
+  }, [])
+  const handleLogout = () => {
+    localStorage.removeItem('user') // Elimina los datos
+    router.push('/auth/signin') // Redirige al usuario
+  }
+  const handleCreator = () => {
+    router.push('/forms/creator') // Redirige al usuario
+  }
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen)
+  }
   return (
     <div>
       <div className="relative md:min-h-[80vh] lg:min-h-screen py-8 px-12 bg-mainblue">
         <div className="flex items-center justify-between w-full bg-mainblue">
           <div className="w-6/12 lg:w-2/12 flex items-center gap-2">
-            <Image src={img1} alt="Imagen de fondo" />
+            <a href="/home">
+              <Image src={img1} alt="Imagen de fondo" />
+            </a>
           </div>
           <nav className="hidden w-6/12 lg:flex justify-center items-center gap-8 text-gray-500 font-medium"></nav>
           <div className="flex items-center gap-2">
@@ -27,15 +54,35 @@ const creator = () => {
             </a>
             <div className="flex items-center gap-2 cursor-pointer ">
               <div className="relative ">
-                <img
-                  src="https://img.freepik.com/foto-gratis/joven-mujer-colombiana-atractiva-gafas-sol-posando-mientras-pie-junto-al-mar-dia_181624-41580.jpg?w=1800&t=st=1674592279~exp=1674592879~hmac=1276990bc65161f9f68c332774d2e5446f0b6b00d1d865b72e71e8732a58d9f7"
-                  className="w-8 h-8 object-cover rounded-full"
-                />
+                <FontAwesomeIcon icon={faUser} className="text-[#EFEFEF]" />
+                <div
+                  className="flex items-center gap-2 cursor-pointer"
+                  onClick={toggleDropdown}
+                >
+                  {user && (
+                    <div className="relative">
+                      <span className="text-white">{user.name}</span>
+                      {dropdownOpen && (
+                        <div className="absolute bg-gray-800 p-2 rounded-lg top-[32px] right-0 z-10">
+                          <p
+                            className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg transition-colors cursor-pointer"
+                            onClick={handleCreator}
+                          >
+                            Crear Juegos
+                          </p>
+                          <p
+                            className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg transition-colors cursor-pointer"
+                            onClick={handleLogout}
+                          >
+                            Cerrar sesión
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
                 <span className="absolute bg-green-600 w-1.5 h-1.5 top-0 right-0.5 rounded-full ring-2 ring-white"></span>
               </div>
-              <a className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg  transition-colors ">
-                Nombre Docente
-              </a>
             </div>
           </div>
         </div>

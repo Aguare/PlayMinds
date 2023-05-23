@@ -9,6 +9,9 @@ import { User } from '@/models/Entitys/User'
 import { Request } from '@/helpers/requests'
 import axios from 'axios'
 import { GameComplete } from '@/models/Entitys/GameComplete'
+import Table from '@/components/table'
+import NewComment from '@/components/newComment'
+import Comments from '@/components/comment'
 
 const MemorizeGame = () => {
   var user = new User('', '', '', '', 0)
@@ -181,8 +184,8 @@ const MemorizeGame = () => {
   }
   return (
     <div className="bg-gray-100 min-h-screen w-[100%]">
-      <NavBar />
-      <div className="px-4 py-8 flex flex-wrap md:items-center md:justify-center gap-8 sm:w-[60%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px]">
+      <NavBar />\
+      <div className="px-4 py-8 flex flex-wrap md:items-center md:justify-center gap-8 sm:w-[60%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px] col-span-3">
         {cards.map((card) => (
           <button
             key={card.id}
@@ -204,7 +207,6 @@ const MemorizeGame = () => {
           </button>
         ))}
       </div>
-
       {gameCompleted && (
         <div className="flex bg-white shadow-lg rounded-lg sm:w-[20%]">
           <div className="icon bg-green-600 flex justify-center items-center py-4 px-6 rounded-tr-3xl rounded-lg">
@@ -229,6 +231,12 @@ const MemorizeGame = () => {
           </div>
         </div>
       )}
+      <div className="col-span-4 w-[100%]">
+        <NewComment />
+      </div>
+      <div className="col-span-4 w-[100%]">
+        <Comments />
+      </div>
     </div>
   )
 }
