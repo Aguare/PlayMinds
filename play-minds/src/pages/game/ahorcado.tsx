@@ -23,14 +23,13 @@ function Hangman() {
     ),
   )
   const [words,setWords] = useState<Phrase[]> ([
-    { phrase: 'programacion', hint: 'Acción de escribir código' },
-    { phrase: 'javascript', hint: 'Lenguaje de programación popular en la web' },
+    { id_phrase:1, phrase: 'Pro', hint: 'Acción de escribir código' },
+    { id_phrase:2, phrase: 'javascript', hint: 'Lenguaje de programación popular en la web' },
     {
-      phrase: 'react',
+      id_phrase:3, phrase: 'react',
       hint: 'Biblioteca de JavaScript para construir interfaces de usuario',
     },
   ])
-
   if (
     id != "default" &&
     id != undefined &&
@@ -43,11 +42,8 @@ function Hangman() {
         },
       })
       .then(function (response) {
-        let tmp = localStorage.getItem("user");
-        if (tmp) {
-          user = JSON.parse(tmp);
-        }
-        setHangedGame(response.data);
+       
+       hangedGame.game = response.data.game;
        hangedGame.phrases = response.data.phrases;
         setWords(hangedGame.phrases);
       })
@@ -56,10 +52,13 @@ function Hangman() {
       });
   }
 
-  const [cont, setCont] = useState(0)
+
+  const [cont, setCont] = useState(hangedGame.phrases.length)
   function getRandomWord() {
-    /* const randomIndex = Math.floor(Math.random() * words.length); */
-    setCont(cont + 1)
+    if(cont!==0){
+      setCont(cont+1)
+    }
+    console.log("cont-> "+ cont)
     return words[cont]
   }
   const [word, setWord] = useState<Phrase>({ phrase: '', hint: '' })
@@ -85,6 +84,7 @@ function Hangman() {
   useEffect(() => {
     if (cont == cantidad - 1 && (won == true || lose == true)) {
       setGameOver(false)
+      // aqui va el set del game complete
     }
   }, [cont, lose, cantidad, won])
   // para mostrar el boton de siguiente
@@ -104,8 +104,8 @@ function Hangman() {
   useEffect(() => {
     if (
       hiddenWord &&
-      hiddenWord.split(' ').join('') === word.phrase &&
-      word.phrase !== ''
+      hiddenWord.replace(/ /g, '') === word.phrase.toLocaleLowerCase() &&
+      word.phrase!=='' 
     ) {
       setWon(true)
     }
@@ -121,16 +121,18 @@ function Hangman() {
   const checkLetter = (letter: string) => {
     if (lose) return
     if (won) return
+    letter=letter.toLowerCase()
     console.log(letter)
-    if (!word.phrase.includes(letter.toLowerCase())) {
+    if (!word.phrase.toLocaleLowerCase().includes(letter)) {
       setAttempts(Math.min(attempts + 1, 9))
       return
     }
+    
 
     const hiddenWordArray = hiddenWord.split(' ')
     for (let i = 0; i < word.phrase.length; i++) {
-      if (word.phrase[i] === letter.toLowerCase()) {
-        hiddenWordArray[i] = letter.toLowerCase()
+      if (word.phrase[i].toLocaleLowerCase() === letter) {
+        hiddenWordArray[i] = letter;
       }
     }
     setHiddenWord(hiddenWordArray.join(' '))
