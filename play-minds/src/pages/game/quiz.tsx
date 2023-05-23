@@ -1,49 +1,49 @@
-import { useState } from 'react'
-import NavBar from '../../components/navbar'
-import { QuizGame } from '@/models/Entitys/Assistant/QuizGame'
-import { Game } from '@/models/Entitys/Game'
-import { User } from '@/models/Entitys/User'
-import { Router, useRouter } from 'next/router'
-import { Request } from '@/helpers/requests'
-import axios from 'axios'
-import { QuestionOBJ } from '@/models/Entitys/Assistant/QuestionOBJ'
-import { GameComplete } from '@/models/Entitys/GameComplete'
-import Table from '@/components/table'
-import NewComment from '@/components/newComment'
-import Comments from '@/components/comment'
+import { useState } from "react";
+import NavBar from "../../components/navbar";
+import { QuizGame } from "@/models/Entitys/Assistant/QuizGame";
+import { Game } from "@/models/Entitys/Game";
+import { User } from "@/models/Entitys/User";
+import { Router, useRouter } from "next/router";
+import { Request } from "@/helpers/requests";
+import axios from "axios";
+import { QuestionOBJ } from "@/models/Entitys/Assistant/QuestionOBJ";
+import { GameComplete } from "@/models/Entitys/GameComplete";
+import Table from "@/components/table";
+import NewComment from "@/components/newComment";
+import Comments from "@/components/comment";
 
 interface Question {
-  question: string
-  answers: Answer[]
+  question: string;
+  answers: Answer[];
 }
 
 interface Answer {
-  text: string
-  correct: boolean
+  text: string;
+  correct: boolean;
 }
 
 const Quiz = () => {
-  const router = useRouter()
-  const { id } = router.query
-  var user = new User('', '', '', '', 0)
+  const router = useRouter();
+  const { id } = router.query;
+  var user = new User("", "", "", "", 0);
   const [quizGame, setQuizGame] = useState<QuizGame>(
     new QuizGame(
-      new Game('default', '', '', '', 0, new User('', '', '', '', 0)),
-      [],
-    ),
-  )
+      new Game("default", "", "", "", 0, new User("", "", "", "", 0)),
+      []
+    )
+  );
 
   const [questions, setQuestions] = useState<QuestionOBJ[]>([
     {
       question: {
         id: 1,
-        ask: '¿En qué año se fundó la ciudad de Madrid?',
+        ask: "¿En qué año se fundó la ciudad de Madrid?",
       },
       answers: [
-        { id: 1, answer: '1561', isCorrect: true },
-        { id: 2, answer: '1492', isCorrect: false },
-        { id: 3, answer: '1605', isCorrect: false },
-        { id: 4, answer: '1700', isCorrect: false },
+        { id: 1, answer: "1561", isCorrect: true },
+        { id: 2, answer: "1492", isCorrect: false },
+        { id: 3, answer: "1605", isCorrect: false },
+        { id: 4, answer: "1700", isCorrect: false },
       ],
     },
     {
@@ -52,98 +52,98 @@ const Quiz = () => {
         ask: "¿Qué personaje de Star Wars dijo 'Que la Fuerza te acompañe'?",
       },
       answers: [
-        { id: 1, answer: 'Darth Vader', isCorrect: true },
-        { id: 2, answer: 'Yoda', isCorrect: false },
-        { id: 3, answer: 'Obi-Wan Kenobi', isCorrect: false },
-        { id: 4, answer: 'Han Solo', isCorrect: false },
+        { id: 1, answer: "Darth Vader", isCorrect: true },
+        { id: 2, answer: "Yoda", isCorrect: false },
+        { id: 3, answer: "Obi-Wan Kenobi", isCorrect: false },
+        { id: 4, answer: "Han Solo", isCorrect: false },
       ],
     },
     {
       question: {
         id: 3,
-        ask: '¿Cuál es el país más grande del mundo?',
+        ask: "¿Cuál es el país más grande del mundo?",
       },
       answers: [
-        { id: 1, answer: 'China', isCorrect: true },
-        { id: 2, answer: 'Estados Unidos', isCorrect: false },
-        { id: 3, answer: 'Rusia', isCorrect: false },
-        { id: 4, answer: 'India', isCorrect: false },
+        { id: 1, answer: "China", isCorrect: true },
+        { id: 2, answer: "Estados Unidos", isCorrect: false },
+        { id: 3, answer: "Rusia", isCorrect: false },
+        { id: 4, answer: "India", isCorrect: false },
       ],
     },
     {
       question: {
         id: 4,
-        ask: '¿Cuál es el animal más rápido del mundo?',
+        ask: "¿Cuál es el animal más rápido del mundo?",
       },
       answers: [
-        { id: 1, answer: 'León', isCorrect: true },
-        { id: 2, answer: 'Guepardo', isCorrect: false },
-        { id: 3, answer: 'Tigre', isCorrect: false },
-        { id: 4, answer: 'Jaguar', isCorrect: false },
+        { id: 1, answer: "León", isCorrect: true },
+        { id: 2, answer: "Guepardo", isCorrect: false },
+        { id: 3, answer: "Tigre", isCorrect: false },
+        { id: 4, answer: "Jaguar", isCorrect: false },
       ],
     },
-  ])
+  ]);
 
   if (
-    id != 'default' &&
+    id != "default" &&
     id != undefined &&
-    quizGame.game.id_game == 'default'
+    quizGame.game.id_game == "default"
   ) {
     axios
-      .get(Request.SERVER + '/Games/GetQuizGame?id_game=' + id, {
+      .get(Request.SERVER + "/Games/GetQuizGame?id_game=" + id, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       })
       .then(function (response) {
-        let tmp = localStorage.getItem('user')
+        let tmp = localStorage.getItem("user");
         if (tmp) {
-          user = JSON.parse(tmp)
+          user = JSON.parse(tmp);
         }
-        setQuizGame(response.data)
-        quizGame.questions = response.data.questions
-        setQuestions(quizGame.questions)
+        setQuizGame(response.data);
+        quizGame.questions = response.data.questions;
+        setQuestions(quizGame.questions);
       })
       .catch(function (error) {
-        console.error(error)
-      })
+        console.error(error);
+      });
   }
 
-  const [currentQuestion, setCurrentQuestion] = useState<number>(0)
-  const [showScore, setShowScore] = useState<boolean>(false)
-  const [score, setScore] = useState<number>(0)
+  const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  const [showScore, setShowScore] = useState<boolean>(false);
+  const [score, setScore] = useState<number>(0);
   const handleAnswerButtonClick = (answerCorrect: boolean) => {
     if (answerCorrect) {
-      setScore(score + 1)
+      setScore(score + 1);
     }
 
-    const nextQuestion = currentQuestion + 1
+    const nextQuestion = currentQuestion + 1;
 
     if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion)
+      setCurrentQuestion(nextQuestion);
     } else {
-      setShowScore(true)
+      setShowScore(true);
       if (
-        quizGame.game.id_game != 'default' &&
-        user.email != '' &&
+        quizGame.game.id_game != "default" &&
+        user.email != "" &&
         quizGame.game.id_game
       ) {
         const gameC = new GameComplete(
           user.email,
           quizGame.game.id_game,
           new Date(),
-          score,
-        )
-        axios.post(Request.SERVER + '/Games/RegisterGameComplete', gameC)
+          score
+        );
+        axios.post(Request.SERVER + "/Games/RegisterGameComplete", gameC);
       }
     }
-  }
+  };
 
   const handleRetryButtonClick = () => {
-    setCurrentQuestion(0)
-    setShowScore(false)
-    setScore(0)
-  }
+    setCurrentQuestion(0);
+    setShowScore(false);
+    setScore(0);
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen w-[100%]">
@@ -203,7 +203,7 @@ const Quiz = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Quiz
+export default Quiz;
