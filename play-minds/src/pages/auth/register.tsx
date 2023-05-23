@@ -3,7 +3,7 @@ import Image from 'next/image'
 import img1 from '../../image/logo playminds.png'
 import axios from 'axios'
 import { User } from '../../models/Entitys/User'
-import {Request} from '../../helpers/requests'
+import { Request } from '../../helpers/requests'
 
 const Register = () => {
   const [name, setName] = useState('')
@@ -19,15 +19,11 @@ const Register = () => {
     console.log('Datos de usuario:', user)
 
     axios
-      .post(
-        Request.REGISTER_USER,
-        user,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      .post(Request.REGISTER_USER, user, {
+        headers: {
+          'Content-Type': 'application/json',
         },
-      )
+      })
       .then(function (response) {
         console.log('Respuesta del servidor:', response.data)
       })
@@ -120,7 +116,7 @@ const Register = () => {
               <span className="text-gray-400">
                 ¿Ya tienes cuenta?{' '}
                 <a
-                  href="#"
+                  href="/auth/signin"
                   className="text-indigo-400 hover:text-indigo-500 transition-colors"
                 >
                   Ingresa

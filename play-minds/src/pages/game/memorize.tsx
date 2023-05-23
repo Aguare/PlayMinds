@@ -130,7 +130,7 @@ const MemorizeGame = () => {
             key={card.id}
             className="py-2 px-6 text-center relative w-36 h-36 sm:w-48 sm:h-48 
             before:absolute before:top-0 before:left-0 before:w-full before:h-full 
-            before:z-10 before:bg-[#205375] before:transition-all before:duration-300 
+            before:z-10 before:bg-green-500/10 before:transition-all before:duration-300 
             hover:before:opacity-0 hover:before:scale-50 
             after:absolute after:top-0 after:left-0 after:w-full after:h-full 
             after:z-10 after:opacity-0 after:transition-all after:duration-300 

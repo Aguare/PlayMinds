@@ -6,9 +6,11 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { Game } from '../models/Entitys/Game'
 import { Request } from '../helpers/requests'
+import { useRouter } from 'next/router'
 
 const Card = () => {
   const [games, setGames] = useState<Game[]>([])
+  const router = useRouter()
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -23,8 +25,12 @@ const Card = () => {
     fetchGames()
   }, [])
 
-  const handlePlay = (id: any) => {
+  const handlePlay = (type: any, id: any) => {
     console.log('Jugar:', id)
+    if (type === 'QUIZ') router.push(`game/quiz?id=${id}`)
+    if (type === 'CARD') router.push(`game/duocards?id=${id}`)
+    if (type === 'MEMORY') router.push(`game/memorize?id=${id}`)
+    if (type === 'HANGED') router.push(`game/ahorcado?id=${id}`)
   }
 
   return (
@@ -53,7 +59,7 @@ const Card = () => {
               <button
                 type="button"
                 className="border border-gray-600 py-2 px-4 rounded-lg"
-                onClick={() => handlePlay(game.id_game)}
+                onClick={() => handlePlay(game.type_game, game.id_game)}
               >
                 JUGAR
               </button>

@@ -1,5 +1,5 @@
 export enum Request {
-  SERVER = "http://localhost:8080",
+  SERVER = "https://98c1-181-174-107-182.ngrok-free.app/PlayMind",
   GET_ALL_GAMES = SERVER + "/Games/GetAllGames",
   REGISTER_HANGED_GAME = SERVER + "/Games/RegisterHangedGame",
   UPLOAD_DUO_CARD = SERVER + "/Files/upload",

@@ -1,41 +1,43 @@
-import Image from "next/image";
-import img1 from "../../image/logo playminds.png";
-import { useState } from "react";
-import { User } from "@/models/Entitys/User";
-import axios from "axios";
-import { Request } from "../../helpers/requests";
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import img1 from '../../image/logo playminds.png'
+import { useState } from 'react'
+import { User } from '@/models/Entitys/User'
+import axios from 'axios'
+import { Request } from '../../helpers/requests'
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const handleSigIn = async (event: React.FormEvent) => {
-    event.preventDefault();
-    const user = new User(email, "", password, "TEACHER", 0);
+  const handleSignIn = async (event: React.FormEvent) => {
+    event.preventDefault()
+    const user = new User(email, '', password, 'TEACHER', 0)
     try {
-      axios
-        .post(Request.SERVER + "/Users/Login", user, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then(function (response) {
-          response.data.password = "";
-          localStorage.setItem("user", JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
+      const response = await axios.post(Request.SERVER + '/Users/Login', user, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const userData = response.data
+      userData.password = ''
+      localStorage.setItem('user', JSON.stringify(userData))
+      router.push('/home') // Redireccionar al usuario a la página Home
     } catch (error) {
-      console.error(error);
+      console.error(error)
+      setErrorMessage(
+        'Credenciales incorrectas. Por favor, intenta nuevamente.',
+      )
     }
-  };
+  }
 
   return (
     <div>
       <div className="min-h-screen bg-[#112B3C] grid grid-cols-1 lg:grid-cols-2">
-        {/*Imagen*/}
-        <div className="flex flex-col items-center justify-center sm:pl-[20%] mx-auto pad ">
+        {/* Imagen */}
+        <div className="flex flex-col items-center justify-center sm:pl-[20%] mx-auto pad">
           <Image src={img1} alt="Imagen de fondo" width={900} height={900} />
         </div>
         <div className="text-white flex flex-col items-center justify-center gap-8 p-8 max-w-lg mx-auto">
@@ -45,8 +47,8 @@ const SignIn = () => {
               Ingresa al sistema con tus credenciales
             </p>
           </div>
-          {/*Formulario*/}
-          <form className="flex flex-col gap-4" onSubmit={handleSigIn}>
+          {/* Formulario */}
+          <form className="flex flex-col gap-4" onSubmit={handleSignIn}>
             <div>
               <label htmlFor="email" className="text-gray-200">
                 Correo electrónico
@@ -77,9 +79,9 @@ const SignIn = () => {
             </div>
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 order-2 md:order-1">
               <span className="text-gray-400">
-                ¿No tienes cuenta?{" "}
+                ¿No tienes cuenta?{' '}
                 <a
-                  href="#"
+                  href="/auth/register"
                   className="text-indigo-400 hover:text-indigo-500 transition-colors"
                 >
                   Registrate
@@ -100,10 +102,12 @@ const SignIn = () => {
                 Iniciar sesión
               </button>
             </div>
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           </form>
         </div>
       </div>
     </div>
-  );
-};
-export default SignIn;
+  )
+}
+
+export default SignIn
