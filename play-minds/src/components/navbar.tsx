@@ -1,33 +1,36 @@
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBell } from '@fortawesome/free-solid-svg-icons'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
-import { useEffect, useState } from 'react'
-import { User } from '../models/Entitys/User'
-import img1 from '../image/logo playminds.png'
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import { User } from "../models/Entitys/User";
+import img1 from "../image/logo playminds.png";
+import axios from "axios";
+import { Request } from "@/helpers/requests";
 
 const NavBar = () => {
-  const router = useRouter()
-  const [user, setUser] = useState<User | null>(null)
-  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
-    const userData = localStorage.getItem('user')
+    const userData = localStorage.getItem("user");
     if (userData) {
-      const parsedUser = JSON.parse(userData)
-      setUser(parsedUser)
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
     }
-  }, [])
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('user') // Elimina los datos
-    router.push('/auth/signin') // Redirige al usuario
-  }
+    axios.get(Request.SERVER + "/Users/Logout?email=" + user?.email);
+    localStorage.clear(); // Elimina los datos
+    router.push("/auth/signin"); // Redirige al usuario
+  };
 
   const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen)
-  }
+    setDropdownOpen(!dropdownOpen);
+  };
 
   return (
     <div className="w-full bg-[#112B3C] rounded-lg p-7 sm:flex sm:justify-between gap-4 sm:h-[90px] grid md:grid-cols-1 ">
@@ -95,7 +98,7 @@ const NavBar = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;
