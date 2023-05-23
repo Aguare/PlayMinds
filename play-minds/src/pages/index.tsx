@@ -17,26 +17,6 @@ export default function Home() {
           <div className="w-6/12 lg:w-2/12 flex items-center gap-2">
             <Image src={img1} alt="Imagen de fondo" />
           </div>
-          <nav className="hidden w-6/12 lg:flex justify-center items-center gap-8 text-gray-500 font-medium">
-            <a
-              href="#"
-              className="text-gray-900 hover:text-gray-900 transition-colors"
-            >
-              Home
-            </a>
-            <a href="#" className="hover:text-gray-900 transition-colors">
-              Ingenieria
-            </a>
-            <a href="#" className="hover:text-gray-900 transition-colors">
-              Derecho
-            </a>
-            <a href="#" className="hover:text-gray-900 transition-colors">
-              Economicas
-            </a>
-            <a href="#" className="hover:text-gray-900 transition-colors">
-              Medicina
-            </a>
-          </nav>
           <div className="hidden w-4/12 lg:flex justify-center items-center gap-8">
             <button type="button" className="py-2 px-4">
               <Link href="/auth/signin">Log in</Link>
