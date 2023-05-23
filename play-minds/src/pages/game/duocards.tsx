@@ -13,7 +13,7 @@ import { GameComplete } from "@/models/Entitys/GameComplete";
 import { Card } from "@/models/Entitys/Card";
 
 const Duocards = () => {
-  var user = new User("", "", "", "", 0);
+  const user = new User("", "", "", "", 0);
   const router = useRouter();
   const { id } = router.query;
   const [cardGameG, setCardGameG] = useState<CardGameG>(
@@ -149,12 +149,7 @@ const Duocards = () => {
         },
       })
       .then((response) => {
-        let tmp = localStorage.getItem("user");
-        if (tmp) {
-          user = JSON.parse(tmp);
-        }
-        setCardGameG(response.data.game);
-        cardGameG.game.id_game = response.data.game.id_game;
+        setCardGameG(response.data);
         cardGameG.cards = response.data.cards;
         cardGameG.cards.forEach((element) => {
           element.image.path_img = element.image.path_img.replace(
@@ -163,7 +158,6 @@ const Duocards = () => {
           );
         });
         setCards(cardGameG.cards);
-        console.log(cardGameG);
       })
       .catch((error) => {
         console.log(error);
@@ -202,7 +196,7 @@ const Duocards = () => {
 
       if (isCorrect) {
         setCorrectAnswers((prev) => prev + 1);
-        console.log(`sumopunto ${correctAnswers}`);
+        console.log(`sumo punto ${correctAnswers}`);
       } else {
         console.log("no es correcto");
       }
@@ -222,17 +216,25 @@ const Duocards = () => {
         setAnsweredCards(newAnsweredCards); // Actualizar el estado de answeredCards después de verificar si la respuesta es correcta
       } else {
         setGameOver(true);
+        let tmp = localStorage.getItem("user");
+        if (tmp) {
+          tmp = JSON.parse(tmp).email;
+        }
         if (
-          user.email != "" &&
-          cardGameG.game !== undefined &&
-          cardGameG.game.id_game === "default"
+          tmp &&
+          cardGameG.game.id_game !== "default" &&
+          cardGameG.game.id_game !== undefined
         ) {
+          let score =
+            (cardGameG.game.value_points / cardGameG.cards.length) *
+            correctAnswers;
           const gameC = new GameComplete(
-            user.email,
+            tmp,
             cardGameG.game.id_game,
             new Date(),
-            cardGameG.game.value_points
+            score
           );
+          console.log(gameC);
           axios.post(Request.SERVER + "/Games/RegisterGameComplete", gameC);
         }
       }
