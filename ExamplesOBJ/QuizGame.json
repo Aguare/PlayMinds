@@ -68,3 +68,215 @@
     }
   ]
 }
+{
+ "game": {
+   "name_game": "Quiz Matematico",
+   "type_game": "QUIZ",
+   "description": "Este juego es sobre temas vistos en clase",
+   "value_points": 150,
+   "user": {
+     "email": "marcosy300@gmail.com"
+   }
+ },
+ "questions": [
+   {
+     "question": {
+       "ask": "Es cuando adicionamos dos o más números"
+     },
+     "answers": [
+       {
+         "answer": "Sumar",
+         "isCorrect": true
+       },
+       {
+         "answer": "Restar",
+         "isCorrect": false
+       },
+       {
+         "answer": "Multiplicar",
+         "isCorrect": false
+       },
+{
+         "answer": "Dividir",
+         "isCorrect": false
+       }
+     ]
+   },
+   {
+     "question": {
+       "ask": "¿Cual de los siguientes animales es un reptil"
+     },
+     "answers": [
+       {
+         "answer": "Leon",
+         "isCorrect": false
+       },
+       {
+         "answer": "Tiburón",
+         "isCorrect": false
+       },
+       {
+         "answer": "Seerpiente",
+         "isCorrect": true
+       },
+      {
+         "answer": "Conejo",
+         "isCorrect": false
+       }
+     ]
+   },
+   {
+     "question": {
+       "ask": "¿Cuál de los siguientes planetas es el más cercano al sol"
+     },
+     "answers": [
+       {
+         "answer": "Júpiter",
+         "isCorrect": false
+       },
+       {
+         "answer": "Marte",
+         "isCorrect": false
+       },
+       {
+         "answer": "Venus",
+         "isCorrect": true
+       },
+       {
+         "answer": "Urano",
+         "isCorrect": false
+       }
+     ]
+   }
+ ]
+}
+
+
+{
+ "game": {
+   "name_game": "Math Quiz",
+   "type_game": "QUIZ",
+   "description": "Exciting quiz game from math",
+   "value_points": 160,
+   "user": {
+     "email": "marcosy300@gmail.com"
+   }
+ },
+ "questions": [
+   {
+     "question": {
+       "ask": "¿Cual es el resultado de la operación 8+5?"
+     },
+     "answers": [
+       {
+         "answer": "10",
+         "isCorrect": false
+       },
+       {
+         "answer": "12",
+         "isCorrect": false
+       },
+       {
+         "answer": "13",
+         "isCorrect": true
+       },
+       {
+         "answer": "15",
+         "isCorrect": false
+       }
+     ]
+   },
+   {
+     "question": {
+       "ask": "¿Cual es el resultado de 7 multiplicado por 3?"
+     },
+     "answers": [
+       {
+         "answer": "14",
+         "isCorrect": false
+       },
+       {
+         "answer": "18",
+         "isCorrect": false
+       },
+       {
+         "answer": "21",
+         "isCorrect": true
+       },
+       {
+         "answer": "24",
+         "isCorrect": false
+       }
+     ]
+   },
+   {
+     "question": {
+       "ask": "¿Cual es el valor aproximado de ‘pi’ aproximado"
+     },
+     "answers": [
+       {
+         "answer": "2.718",
+         "isCorrect": false
+       },
+       {
+         "answer": "3.142",
+         "isCorrect": true
+       },
+       {
+         "answer": "3.618",
+         "isCorrect": false
+       },
+       {
+         "answer": "4.236",
+         "isCorrect": false
+       }
+     ]
+   },
+   {
+     "question": {
+       "ask": "¿Cual es el resultado de la operación (6-2)*3 ?"
+     },
+     "answers": [
+       {
+         "answer": "6",
+         "isCorrect": false
+       },
+       {
+         "answer": "8",
+         "isCorrect": false
+       },
+       {
+         "answer": "10",
+         "isCorrect": true
+       },
+       {
+         "answer": "12",
+         "isCorrect": false
+       }
+     ]
+   },
+   {
+     "question": {
+       "ask": "¿Cual es el numero que sigue en la siguiente secuencia: 2,4,6,8,__?"
+     },
+     "answers": [
+       {
+         "answer": "9",
+         "isCorrect": false
+       },
+       {
+         "answer": "10",
+         "isCorrect": false
+       },
+       {
+         "answer": "11",
+         "isCorrect": false
+       },
+       {
+         "answer": "12",
+         "isCorrect": true
+       }
+     ]
+   }
+ ]
+}

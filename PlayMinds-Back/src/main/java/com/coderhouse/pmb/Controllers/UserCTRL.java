@@ -18,11 +18,11 @@ public class UserCTRL {
     @Autowired
     private UserDAO user;
 
-    @GetMapping("/Login")
-    public User login(String email, String password) {
-        Optional<User> userReceipt = this.user.findById(email);
+    @PostMapping("/Login")
+    public User login(@RequestBody User user) {
+        Optional<User> userReceipt = this.user.findById(user.getEmail());
         if (userReceipt.isPresent()) {
-            if (userReceipt.get().getPassword().equals(password)) {
+            if (userReceipt.get().getPassword().equals(user.getPassword())) {
                 return userReceipt.get();
             }
         }
@@ -55,7 +55,6 @@ public class UserCTRL {
             return null;
         }
     }
-
     @DeleteMapping("/DeleteUser")
     public void deleteUser(String email) {
         this.user.deleteById(email);

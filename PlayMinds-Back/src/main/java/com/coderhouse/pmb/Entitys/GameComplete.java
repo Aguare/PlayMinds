@@ -12,15 +12,16 @@ import java.sql.Date;
 @Entity
 @Table(name= "game_complete")
 public class GameComplete implements Serializable{
+
+    @Column(name = "FK_UG_user_email")
+    private String user;
+
     @Id
-    @ManyToOne
-    @JoinColumn(name = "FK_UG_user_email")
-    private User user;
+    @Column(name = "Fk_UG_id_game")
+    private String game;
 
-    @ManyToOne
-    @JoinColumn(name = "Fk_UG_id_game")
-    private Game game;
-
+    @Column(name = "date_UG")
     private Date date;
+    private Double score;
 
 }

@@ -24,6 +24,8 @@ public class FileCTRL {
     @Autowired
     private ImageDAO image;
 
+    private String pathImages= "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1_Tomcat11\\webapps\\images";
+
     @PostMapping("/upload")
     public ResponseEntity<List<Image>> uploadFiles(@RequestParam("files") List<MultipartFile> files) {
         List<Image> fileUrls = new ArrayList<>();
@@ -33,10 +35,9 @@ public class FileCTRL {
                 String originalFileName = file.getOriginalFilename();
                 String fileExtension = StringUtils.getFilenameExtension(originalFileName);
                 String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
-                String filePath = Paths.get("src", "main", "resources", "static", "img", uniqueFileName).toString();
+                String filePath = Paths.get(pathImages, uniqueFileName).toString();
                 Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-
-                String fileUrl = "http://localhost:8080" + "/img/" + uniqueFileName;
+                String fileUrl = "http://localhost:8080" + "/images/" + uniqueFileName;
                 Image newImage = new Image();
                 newImage.setPath_img(fileUrl);
                 newImage.setShow(false);

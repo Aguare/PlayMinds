@@ -50,6 +50,9 @@ public class GameCTRL {
     @Autowired
     private CardGameDAO cardGame;
 
+    @Autowired
+    private GameCompleteDAO gameComplete;
+
     @PostMapping("/RegisterQuizGame")
     public QuizGame registerQuizGame(@RequestBody QuizGame quizGame) {
         quizGame.getGame().setId_game(generateUUID());
@@ -115,6 +118,12 @@ public class GameCTRL {
             this.cardGame.save(newCardGame);
         }
         return null;
+    }
+
+    @PostMapping("/RegisterGameComplete")
+    public boolean registerGameComplete(@RequestBody GameComplete gameComplete) {
+        this.gameComplete.save(gameComplete);
+        return true;
     }
 
     @GetMapping("/GetAllGames")
