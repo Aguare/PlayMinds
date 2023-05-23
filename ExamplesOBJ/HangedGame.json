@@ -1,0 +1,21 @@
+{
+  "game": {
+    "name_game": "Hangman",
+    "type_game": "HANGED",
+    "description": "Guess the word by suggesting letters.",
+    "value_points": 100,
+    "user": {
+      "email": "marcosy300@gmail.com"
+    }
+  },
+  "phrases": [
+    {
+      "phrase": "Hello, world!",
+      "hint": "A common phrase used in programming."
+    },
+    {
+      "phrase": "OpenAI",
+      "hint": "The organization behind ChatGPT."
+    }
+  ]
+}
