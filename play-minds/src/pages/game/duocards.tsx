@@ -67,13 +67,14 @@ const Duocards = () => {
         setCardGameG(response.data);
         cardGameG.game = response.data.game;
         cardGameG.cards = response.data.cards;
-        console.log(cardGameG);
         cardGameG.cards.forEach((element) => {
           element.image.path_img = element.image.path_img.replace(
             "http://localhost:8080",
             Request.SERVER_API
           );
         });
+        setCards(cardGameG.cards);
+        console.log(cardGameG);
       })
       .catch((error) => {
         console.log(error);
@@ -193,7 +194,7 @@ const Duocards = () => {
               <h1 className="card-title text-center text-lg sm:text-xl font-semibold">
                 {cards[currentCardIndex].name}
               </h1>
-              <Image
+              <img
                 className="card-image w-[300px] h-[300px]"
                 src={cards[currentCardIndex].image.path_img}
                 alt={cards[currentCardIndex].name}
