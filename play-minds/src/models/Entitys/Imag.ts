@@ -10,6 +10,8 @@ export class Imag {
     this.path_img = this.path_img.replace(
       "http://localhost:8080",
       Request.SERVER_API
+     
     );
+    console.log(this.path_img);
   }
 }
