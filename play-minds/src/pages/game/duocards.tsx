@@ -46,101 +46,12 @@ const Duocards = () => {
       description: "El río Amazonas",
       correct: false,
     },
-    {
-      idCard: 3,
-      name: "¿Cuál es el elemento más abundante en la Tierra?",
-      image: {
-        id: 2,
-        path_img: "https://via.placeholder.com/150",
-        show: false,
-      },
-      description: "El oxígeno",
-      correct: false,
-    },
-    {
-      idCard: 4,
-      name: '¿Quién escribió la novela "Cien años de soledad"?',
-      image: {
-        id: 2,
-        path_img: "https://via.placeholder.com/150",
-        show: false,
-      },
-      description: "Gabriel García Márquez",
-      correct: true,
-    },
-    {
-      idCard: 5,
-      name: "¿En qué año comenzó la Segunda Guerra Mundial?",
-      image: {
-        id: 2,
-        path_img: "https://via.placeholder.com/150",
-        show: false,
-      },
-      description: "1939",
-      correct: true,
-    },
-    {
-      idCard: 6,
-      name: "¿Qué país tiene la población más grande del mundo?",
-      image: {
-        id: 2,
-        path_img: "https://via.placeholder.com/150",
-        show: false,
-      },
-      description: "China",
-      correct: true,
-    },
-    {
-      idCard: 7,
-      name: "¿Quién fue el primer hombre en pisar la luna?",
-      image: {
-        id: 2,
-        path_img: "https://via.placeholder.com/150",
-        show: false,
-      },
-      description: "Neil Armstrong",
-      correct: true,
-    },
-    {
-      idCard: 8,
-      name: '¿Quién pintó la obra "La noche estrellada"?',
-      image: {
-        id: 2,
-        path_img: "https://via.placeholder.com/150",
-        show: false,
-      },
-      description: "Vincent van Gogh",
-      correct: true,
-    },
-    {
-      idCard: 9,
-      name: "¿Cuál es el nombre del continente más grande del mundo?",
-      image: {
-        id: 2,
-        path_img: "https://via.placeholder.com/150",
-        show: false,
-      },
-      description: "Asia",
-      correct: true,
-    },
-    {
-      idCard: 10,
-      name: "¿Qué animal representa al signo zodiacal de Leo?",
-      image: {
-        id: 2,
-        path_img: "https://via.placeholder.com/150",
-        show: false,
-      },
-      description: "El león",
-      correct: true,
-    },
   ]);
 
   if (
     id !== "default" &&
     id !== undefined &&
-    cardGameG.game !== undefined &&
-    cardGameG.game.id_game === "default"
+    cardGameG.game.id_game == "default"
   ) {
     axios
       .get(Request.SERVER + "/Games/GetCardGame?id_game=" + id, {
@@ -153,10 +64,16 @@ const Duocards = () => {
         if (tmp) {
           user = JSON.parse(tmp);
         }
-        setCardGameG(response.data.game);
-        cardGameG.game.id_game = response.data.game.id_game;
+        setCardGameG(response.data);
+        cardGameG.game = response.data.game;
         cardGameG.cards = response.data.cards;
-        console.log(response.data);
+        console.log(cardGameG);
+        cardGameG.cards.forEach((element) => {
+          element.image.path_img = element.image.path_img.replace(
+            "http://localhost:8080",
+            Request.SERVER_API
+          );
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -179,7 +96,7 @@ const Duocards = () => {
 
   const handleSwipe = (direction: string) => {
     if (!isAnswered) {
-      const currentCard = cards[currentCardIndex];
+      var currentCard = cards[currentCardIndex];
       const isCorrect =
         direction === "right" ? currentCard.correct : !currentCard.correct;
       console.log(`Usuario eligió ${direction}`);
@@ -191,6 +108,7 @@ const Duocards = () => {
         rotate: direction === "right" ? 45 : -45,
         scale: 1.2,
       });
+
       setIsAnswered(true);
 
       if (isCorrect) {
@@ -229,66 +147,68 @@ const Duocards = () => {
           axios.post(Request.SERVER + "/Games/RegisterGameComplete", gameC);
         }
       }
+
+      setTimeout(() => {
+        setIsAnswered(false);
+        set({ x: 0, rotate: 0, scale: 1 });
+      }, 500);
     }
+  };
 
-    const bind = useDrag(({ down, movement: [xDir], direction: [xDir2] }) => {
-      if (!down && xDir !== 0) {
-        handleSwipe(xDir > 0 ? "right" : "left");
-      }
-    });
+  const bind = useDrag(({ down, movement: [xDir], direction: [xDir2] }) => {
+    if (!down && xDir !== 0) {
+      handleSwipe(xDir > 0 ? "right" : "left");
+    }
+  });
 
-    return (
-      <div className="bg-gray-100 min-h-screen w-[100%]">
-        <NavBar />
-        <div className="bg-gradient-to-r from-red-200 via-transparent to-green-200 sm:w-[60%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px]">
-          <div className="grid grid-cols-1 p-2 gap-3 place-items-center  rounded-lg w-[100%] sm:h-[650px]">
-            {gameOver ? (
-              <div className="p-10 rounded-lg bg-gray-900 bg-opacity-60 flex flex-col justify-center items-center text-center">
-                <h1 className="text-5xl font-bold text-white mb-4">
-                  Game Over
+  return (
+    <div className="bg-gray-100 min-h-screen w-[100%]">
+      <NavBar />
+      <div className="bg-gradient-to-r from-red-200 via-transparent to-green-200 sm:w-[60%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px]">
+        <div className="grid grid-cols-1 p-2 gap-3 place-items-center  rounded-lg w-[100%] sm:h-[650px]">
+          {gameOver ? (
+            <div className="p-10 rounded-lg bg-gray-900 bg-opacity-60 flex flex-col justify-center items-center text-center">
+              <h1 className="text-5xl font-bold text-white mb-4">Game Over</h1>
+              <div className="text-lg text-gray-200">
+                <h1>
+                  {" "}
+                  Respuestas correctas: {correctAnswers}/
+                  {answeredCards.length + 1}
                 </h1>
-
-                <div className="text-lg text-gray-200">
-                  <h1>
-                    {" "}
-                    Respuestas correctas: {correctAnswers}/
-                    {answeredCards.length + 1}
-                  </h1>
-                </div>
               </div>
-            ) : (
-              <animated.div
-                className="card grid grid-cols-1 p-6 gap-3 place-items-center bg-[white] rounded-xl sm:w-[40%] shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]"
-                {...bind()}
-                style={{
-                  transform: props.x
-                    .interpolate({
-                      range: [-300, 0, 300],
-                      output: [-45, 0, 45],
-                    })
-                    .interpolate((x) => `translate3d(${x}px,0,0)`),
-                }}
-              >
-                <h1 className="card-title text-center text-lg sm:text-xl font-semibold">
-                  {cards[currentCardIndex].name}
-                </h1>
-                <Image
-                  className="card-image w-[300px] h-[300px]"
-                  src={cards[currentCardIndex].image.path_img}
-                  alt={cards[currentCardIndex].name}
-                  width={300}
-                  height={300}
-                />
-                <p className="card-description text-center text-lg sm:text-xl font-semibold text-[#565656]">
-                  {cards[currentCardIndex].description}
-                </p>
-              </animated.div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <animated.div
+              className="card grid grid-cols-1 p-6 gap-3 place-items-center bg-[white] rounded-xl sm:w-[40%] shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]"
+              {...bind()}
+              style={{
+                transform: props.x
+                  .interpolate({
+                    range: [-300, 0, 300],
+                    output: [-45, 0, 45],
+                  })
+                  .interpolate((x) => `translate3d(${x}px,0,0)`),
+              }}
+            >
+              <h1 className="card-title text-center text-lg sm:text-xl font-semibold">
+                {cards[currentCardIndex].name}
+              </h1>
+              <Image
+                className="card-image w-[300px] h-[300px]"
+                src={cards[currentCardIndex].image.path_img}
+                alt={cards[currentCardIndex].name}
+                width={300}
+                height={300}
+              />
+              <p className="card-description text-center text-lg sm:text-xl font-semibold text-[#565656]">
+                {cards[currentCardIndex].description}
+              </p>
+            </animated.div>
+          )}
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 };
 
 export default Duocards;
