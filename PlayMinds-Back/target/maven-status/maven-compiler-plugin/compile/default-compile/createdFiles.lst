@@ -1,0 +1,6 @@
+com\coderhouse\DAO\UserDAO.class
+com\coderhouse\Entitys\User.class
+com\coderhouse\WebConfig.class
+com\coderhouse\Controllers\UserCTRL.class
+com\coderhouse\pmb\PlayMindsBackApplication.class
+com\coderhouse\pmb\Controlador.class
