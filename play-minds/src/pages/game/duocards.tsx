@@ -258,6 +258,9 @@ const Duocards = () => {
           {gameOver ? (
             <div className="p-10 rounded-lg bg-gray-900 bg-opacity-60 flex flex-col justify-center items-center text-center">
               <h1 className="text-5xl font-bold text-white mb-4">Game Over</h1>
+              <h2 className="text-2xl font-semibold text-white mb-4">
+                Puntos: {correctAnswers}
+              </h2>
             </div>
           ) : (
             <animated.div
