@@ -1,13 +1,38 @@
 import Image from 'next/image'
-import img1 from '../image/logo playminds.png'
+import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBell } from '@fortawesome/free-solid-svg-icons'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { useEffect, useState } from 'react'
+import { User } from '../models/Entitys/User'
+import img1 from '../image/logo playminds.png'
 
 const NavBar = () => {
+  const router = useRouter()
+  const [user, setUser] = useState<User | null>(null)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user')
+    if (userData) {
+      const parsedUser = JSON.parse(userData)
+      setUser(parsedUser)
+    }
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem('user') // Elimina los datos
+    router.push('/auth/signin') // Redirige al usuario
+  }
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen)
+  }
+
   return (
     <div className="w-full bg-[#112B3C] rounded-lg p-7 sm:flex sm:justify-between gap-4 sm:h-[90px] grid md:grid-cols-1 ">
       <div className="bg-red flex items-center gap-2 w-[200px]">
-        <a href="/">
+        <a href="/home">
           <Image src={img1} alt="Imagen de logo" />
         </a>
       </div>
@@ -34,59 +59,43 @@ const NavBar = () => {
           </svg>
         </form>
       </div>
-      <nav className="md:col-span-6 flex justify-end flex flex-col gap-4 sm:flex-row">
-        <a
-          href="#"
-          className="text-[#EFEFEF] xl:py-1 xl:px-2 rounded-lg hover:bg-[#F66B0E] transition-colors"
-        >
-          Ingenieria
-        </a>
-        <a
-          href="#"
-          className="text-[#EFEFEF] xl:py-1 xl:px-2 rounded-lg hover:bg-[#F66B0E] transition-colors"
-        >
-          Derecho
-        </a>
-        <a
-          href="#"
-          className="text-[#EFEFEF] xl:py-1 xl:px-2 rounded-lg hover:bg-[#F66B0E] transition-colors"
-        >
-          Economicas
-        </a>
-        <a
-          href="#"
-          className="text-[#EFEFEF] xl:py-1 xl:px-2 rounded-lg hover:bg-[#F66B0E] transition-colors"
-        >
-          Medicina
-        </a>
-        <a
-          href="#"
-          className="text-[#EFEFEF] xl:py-1 xl:px-2 rounded-lg hover:bg-[#F66B0E] transition-colors"
-        >
-          Otros
-        </a>
-      </nav>
+
       <div className="flex items-center gap-2">
         <a
-          href="#"
+          href="/home"
           className="text-[#EFEFEF] xl:py-1 xl:px-2 rounded-lg transition-colors"
         >
           <FontAwesomeIcon icon={faBell} className="text-[#EFEFEF]" />
         </a>
-        <div className="flex items-center gap-2 cursor-pointer ">
-          <div className="relative ">
-            <img
-              src="https://img.freepik.com/foto-gratis/joven-mujer-colombiana-atractiva-gafas-sol-posando-mientras-pie-junto-al-mar-dia_181624-41580.jpg?w=1800&t=st=1674592279~exp=1674592879~hmac=1276990bc65161f9f68c332774d2e5446f0b6b00d1d865b72e71e8732a58d9f7"
-              className="w-8 h-8 object-cover rounded-full"
-            />
-            <span className="absolute bg-green-600 w-1.5 h-1.5 top-0 right-0.5 rounded-full ring-2 ring-white"></span>
-          </div>
-          <a className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg  transition-colors ">
-            1,751 pts
-          </a>
+        <FontAwesomeIcon icon={faUser} className="text-[#EFEFEF]" />
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={toggleDropdown}
+        >
+          {user && (
+            <div className="relative">
+              <span className="text-white">{user.name}</span>
+              {dropdownOpen && (
+                <div className="absolute bg-gray-800 p-2 rounded-lg top-[32px] right-0 z-10">
+                  <p
+                    className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg transition-colors cursor-pointer"
+                    onClick={handleLogout}
+                  >
+                    Cerrar sesión
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+          {user && (
+            <a className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg transition-colors">
+              {user.points} pts
+            </a>
+          )}
         </div>
       </div>
     </div>
   )
 }
+
 export default NavBar

@@ -3,10 +3,11 @@ import Image from 'next/image'
 import img1 from '../../image/logo playminds.png'
 import axios from 'axios'
 import { User } from '../../models/Entitys/User'
+import { Request } from '../../helpers/requests'
 
 const Register = () => {
   const [name, setName] = useState('')
-  const [role, setRole] = useState('Estudiante')
+  const [role, setRole] = useState('STUDENT')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -18,15 +19,11 @@ const Register = () => {
     console.log('Datos de usuario:', user)
 
     axios
-      .post(
-        'https://c088-181-174-107-182.ngrok-free.app/Users/RegisterUser',
-        user,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      .post(Request.REGISTER_USER, user, {
+        headers: {
+          'Content-Type': 'application/json',
         },
-      )
+      })
       .then(function (response) {
         console.log('Respuesta del servidor:', response.data)
       })
@@ -74,8 +71,8 @@ const Register = () => {
                 value={role}
                 onChange={(event) => setRole(event.target.value)}
               >
-                <option value="STUDENT">STUDENT</option>
-                <option value="TEACHER">TEACHER</option>
+                <option value="STUDENT">ESTUDIANTE</option>
+                <option value="TEACHER">DOCENTE</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                 <svg
@@ -119,7 +116,7 @@ const Register = () => {
               <span className="text-gray-400">
                 ¿Ya tienes cuenta?{' '}
                 <a
-                  href="#"
+                  href="/auth/signin"
                   className="text-indigo-400 hover:text-indigo-500 transition-colors"
                 >
                   Ingresa

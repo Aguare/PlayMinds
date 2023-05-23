@@ -1,95 +1,180 @@
-import NavBar from '@/components/navbar'
-import Image from 'next/image'
-import { useState, useEffect } from 'react'
-import { useSpring, animated } from 'react-spring'
-import { useDrag } from 'react-use-gesture'
-
-interface Card {
-  id: number
-  name: string
-  image: string
-  description: string
-  correct: boolean
-}
+import { CardGameG } from "@/models/Entitys/Assistant/CardGameG";
+import NavBar from "@/components/navbar";
+import { Game } from "@/models/Entitys/Game";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { useSpring, animated } from "react-spring";
+import { useDrag } from "react-use-gesture";
+import { useRouter } from "next/router";
+import { User } from "@/models/Entitys/User";
+import { Request } from "@/helpers/requests";
+import axios from "axios";
+import { GameComplete } from "@/models/Entitys/GameComplete";
+import { Card } from "@/models/Entitys/Card";
 
 const Duocards = () => {
+  var user = new User("", "", "", "", 0);
+  const router = useRouter();
+  const { id } = router.query;
+  const [cardGameG, setCardGameG] = useState<CardGameG>(
+    new CardGameG(
+      new Game("default", "", "", "", 0, new User("", "", "", "", 0)),
+      []
+    )
+  );
+
   const [cards, setCards] = useState<Card[]>([
     {
-      id: 1,
-      name: '¿La capital de Francia es: ?',
-      image: 'https://via.placeholder.com/150',
-      description: 'París',
+      idCard: 1,
+      name: "¿La capital de Francia es: ?",
+      image: {
+        id: 1,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
+      description: "París",
       correct: true,
     },
     {
-      id: 2,
-      name: '¿El río más largo del mundo es: ?',
-      image: 'https://via.placeholder.com/150',
-      description: 'El río Amazonas',
+      idCard: 2,
+      name: "¿El río más largo del mundo es: ?",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
+      description: "El río Amazonas",
       correct: false,
     },
     {
-      id: 3,
-      name: '¿Cuál es el elemento más abundante en la Tierra?',
-      image: 'https://via.placeholder.com/150',
-      description: 'El oxígeno',
+      idCard: 3,
+      name: "¿Cuál es el elemento más abundante en la Tierra?",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
+      description: "El oxígeno",
       correct: false,
     },
     {
-      id: 4,
+      idCard: 4,
       name: '¿Quién escribió la novela "Cien años de soledad"?',
-      image: 'https://via.placeholder.com/150',
-      description: 'Gabriel García Márquez',
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
+      description: "Gabriel García Márquez",
       correct: true,
     },
     {
-      id: 5,
-      name: '¿En qué año comenzó la Segunda Guerra Mundial?',
-      image: 'https://via.placeholder.com/150',
-      description: '1939',
+      idCard: 5,
+      name: "¿En qué año comenzó la Segunda Guerra Mundial?",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
+      description: "1939",
       correct: true,
     },
     {
-      id: 6,
-      name: '¿Qué país tiene la población más grande del mundo?',
-      image: 'https://via.placeholder.com/150',
-      description: 'China',
+      idCard: 6,
+      name: "¿Qué país tiene la población más grande del mundo?",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
+      description: "China",
       correct: true,
     },
     {
-      id: 7,
-      name: '¿Quién fue el primer hombre en pisar la luna?',
-      image: 'https://via.placeholder.com/150',
-      description: 'Neil Armstrong',
+      idCard: 7,
+      name: "¿Quién fue el primer hombre en pisar la luna?",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
+      description: "Neil Armstrong",
       correct: true,
     },
     {
-      id: 8,
+      idCard: 8,
       name: '¿Quién pintó la obra "La noche estrellada"?',
-      image: 'https://via.placeholder.com/150',
-      description: 'Vincent van Gogh',
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
+      description: "Vincent van Gogh",
       correct: true,
     },
     {
-      id: 9,
-      name: '¿Cuál es el nombre del continente más grande del mundo?',
-      image: 'https://via.placeholder.com/150',
-      description: 'Asia',
+      idCard: 9,
+      name: "¿Cuál es el nombre del continente más grande del mundo?",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
+      description: "Asia",
       correct: true,
     },
     {
-      id: 10,
-      name: '¿Qué animal representa al signo zodiacal de Leo?',
-      image: 'https://via.placeholder.com/150',
-      description: 'El león',
+      idCard: 10,
+      name: "¿Qué animal representa al signo zodiacal de Leo?",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
+      description: "El león",
       correct: true,
     },
-  ])
-  const [currentCardIndex, setCurrentCardIndex] = useState<number>(0)
-  const [answeredCards, setAnsweredCards] = useState<Card[]>([])
-  const [isAnswered, setIsAnswered] = useState<boolean>(false)
-  const [gameOver, setGameOver] = useState<boolean>(false)
-  const [correctAnswers, setCorrectAnswers] = useState<number>(0)
+  ]);
+
+  if (
+    id !== "default" &&
+    id !== undefined &&
+    cardGameG.game !== undefined &&
+    cardGameG.game.id_game === "default"
+  ) {
+    axios
+      .get(Request.SERVER + "/Games/GetCardGame?id_game=" + id, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        let tmp = localStorage.getItem("user");
+        if (tmp) {
+          user = JSON.parse(tmp);
+        }
+        setCardGameG(response.data.game);
+        cardGameG.game.id_game = response.data.game.id_game;
+        cardGameG.cards = response.data.cards;
+        cardGameG.cards.forEach((element) => {
+          element.image.path_img = element.image.path_img.replace(
+            "http://localhost:8080",
+            Request.SERVER_API
+          );
+        });
+        setCards(cardGameG.cards);
+        console.log(cardGameG);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
+  const [answeredCards, setAnsweredCards] = useState<Card[]>([]);
+  const [isAnswered, setIsAnswered] = useState<boolean>(false);
+  const [gameOver, setGameOver] = useState<boolean>(false);
+  const [correctAnswers, setCorrectAnswers] = useState<number>(0);
 
   const [props, set] = useSpring(() => ({
     x: 0,
@@ -97,60 +182,73 @@ const Duocards = () => {
     rotate: 0,
     scale: 1,
     config: { mass: 5, tension: 500, friction: 120 },
-  }))
+  }));
 
   const handleSwipe = (direction: string) => {
     if (!isAnswered) {
-      const currentCard = cards[currentCardIndex]
+      const currentCard = cards[currentCardIndex];
       const isCorrect =
-        direction === 'right' ? currentCard.correct : !currentCard.correct
-      console.log(`Usuario eligió ${direction}`)
+        direction === "right" ? currentCard.correct : !currentCard.correct;
+      console.log(`Usuario eligió ${direction}`);
       console.log(
-        `La respuesta correcta es ${currentCard.correct ? 'right' : 'left'}`,
-      )
+        `La respuesta correcta es ${currentCard.correct ? "right" : "left"}`
+      );
       set({
-        x: direction === 'right' ? 300 : -300,
-        rotate: direction === 'right' ? 45 : -45,
+        x: direction === "right" ? 300 : -300,
+        rotate: direction === "right" ? 45 : -45,
         scale: 1.2,
-      })
-      setIsAnswered(true)
+      });
+      setIsAnswered(true);
 
       if (isCorrect) {
-        setCorrectAnswers((prev) => prev + 1)
-        console.log(`sumopunto ${correctAnswers}`)
+        setCorrectAnswers((prev) => prev + 1);
+        console.log(`sumopunto ${correctAnswers}`);
       } else {
-        console.log('no es correcto')
+        console.log("no es correcto");
       }
 
-      const newAnsweredCards = [...answeredCards, currentCard]
+      const newAnsweredCards = [...answeredCards, currentCard];
       const remainingCards = cards.filter(
-        (card) => !newAnsweredCards.includes(card),
-      )
+        (card) => !newAnsweredCards.includes(card)
+      );
 
       if (remainingCards.length > 0) {
         const newIndex = Math.min(
           currentCardIndex + 1,
-          remainingCards.length - 1,
-        )
-        setCurrentCardIndex(newIndex)
-        setCards([...remainingCards])
-        setAnsweredCards(newAnsweredCards) // Actualizar el estado de answeredCards después de verificar si la respuesta es correcta
+          remainingCards.length - 1
+        );
+        setCurrentCardIndex(newIndex);
+        setCards([...remainingCards]);
+        setAnsweredCards(newAnsweredCards); // Actualizar el estado de answeredCards después de verificar si la respuesta es correcta
       } else {
-        setGameOver(true)
+        setGameOver(true);
+        if (
+          user.email != "" &&
+          cardGameG.game !== undefined &&
+          cardGameG.game.id_game === "default"
+        ) {
+          const gameC = new GameComplete(
+            user.email,
+            cardGameG.game.id_game,
+            new Date(),
+            cardGameG.game.value_points
+          );
+          axios.post(Request.SERVER + "/Games/RegisterGameComplete", gameC);
+        }
       }
 
       setTimeout(() => {
-        setIsAnswered(false)
-        set({ x: 0, rotate: 0, scale: 1 })
-      }, 500)
+        setIsAnswered(false);
+        set({ x: 0, rotate: 0, scale: 1 });
+      }, 500);
     }
-  }
+  };
 
   const bind = useDrag(({ down, movement: [xDir], direction: [xDir2] }) => {
     if (!down && xDir !== 0) {
-      handleSwipe(xDir > 0 ? 'right' : 'left')
+      handleSwipe(xDir > 0 ? "right" : "left");
     }
-  })
+  });
 
   return (
     <div className="bg-gray-100 min-h-screen w-[100%]">
@@ -160,14 +258,9 @@ const Duocards = () => {
           {gameOver ? (
             <div className="p-10 rounded-lg bg-gray-900 bg-opacity-60 flex flex-col justify-center items-center text-center">
               <h1 className="text-5xl font-bold text-white mb-4">Game Over</h1>
-
-              <div className="text-lg text-gray-200">
-                <h1>
-                  {' '}
-                  Respuestas correctas: {correctAnswers}/
-                  {answeredCards.length + 1}
-                </h1>
-              </div>
+              <h2 className="text-2xl font-semibold text-white mb-4">
+                Puntos: {correctAnswers}
+              </h2>
             </div>
           ) : (
             <animated.div
@@ -185,9 +278,9 @@ const Duocards = () => {
               <h1 className="card-title text-center text-lg sm:text-xl font-semibold">
                 {cards[currentCardIndex].name}
               </h1>
-              <Image
+              <img
                 className="card-image w-[300px] h-[300px]"
-                src={cards[currentCardIndex].image}
+                src={cards[currentCardIndex].image.path_img}
                 alt={cards[currentCardIndex].name}
                 width={300}
                 height={300}
@@ -200,7 +293,7 @@ const Duocards = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Duocards
+export default Duocards;

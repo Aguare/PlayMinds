@@ -5,6 +5,7 @@ import { Imag } from '../../models/Entitys/Imag'
 import { Card } from '@/models/Entitys/Card'
 import { User } from '../../models/Entitys/User'
 import { CardGameG } from '@/models/Entitys/Assistant/CardGameG'
+import {Request} from '../../helpers/requests'
 
 const DuoCardsForm = () => {
   const [pregunta, setPregunta] = useState<string>('')
@@ -82,7 +83,7 @@ const DuoCardsForm = () => {
     try {
       // Realiza la solicitud POST al API utilizando Axios
       const response = await axios.post(
-        'https://3e8b-181-174-107-182.ngrok-free.app/Files/upload',
+        Request.UPLOAD_DUO_CARD,
         formData,
       )
       console.log(response.data)
@@ -152,7 +153,7 @@ const DuoCardsForm = () => {
     const cardGameG = new CardGameG(game, cards)
     try {
       const response = await axios.post(
-        'https://3e8b-181-174-107-182.ngrok-free.app/Games/RegisterCardGame',
+        Request.REGISTER_CARD_GAME,
         cardGameG,
       )
       console.log(response.data)

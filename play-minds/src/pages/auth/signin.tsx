@@ -1,30 +1,43 @@
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import img1 from '../../image/logo playminds.png'
-import { NextPage } from 'next'
-import { FormEventHandler, useState } from 'react'
-import { signIn } from 'next-auth/react'
+import { useState } from 'react'
+import { User } from '@/models/Entitys/User'
+import axios from 'axios'
+import { Request } from '../../helpers/requests'
 
-interface Props {}
+const SignIn = () => {
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
-const SignIn: NextPage = (props): JSX.Element => {
-  const [userInfo, setUserInfo] = useState({ email: '', password: '' })
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    //validete youe userinfo
-    e.preventDefault()
-
-    const res = await signIn('credentials', {
-      email: userInfo.email,
-      password: userInfo.password,
-      redirect: false,
-    })
-    console.log(res)
+  const handleSignIn = async (event: React.FormEvent) => {
+    event.preventDefault()
+    const user = new User(email, '', password, 'TEACHER', 0)
+    try {
+      const response = await axios.post(Request.SERVER + '/Users/Login', user, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const userData = response.data
+      userData.password = ''
+      localStorage.setItem('user', JSON.stringify(userData))
+      router.push('/home') // Redireccionar al usuario a la página Home
+    } catch (error) {
+      console.error(error)
+      setErrorMessage(
+        'Credenciales incorrectas. Por favor, intenta nuevamente.',
+      )
+    }
   }
 
   return (
     <div>
       <div className="min-h-screen bg-[#112B3C] grid grid-cols-1 lg:grid-cols-2">
-        {/*Imagen*/}
-        <div className="flex flex-col items-center justify-center sm:pl-[20%] mx-auto pad ">
+        {/* Imagen */}
+        <div className="flex flex-col items-center justify-center sm:pl-[20%] mx-auto pad">
           <Image src={img1} alt="Imagen de fondo" width={900} height={900} />
         </div>
         <div className="text-white flex flex-col items-center justify-center gap-8 p-8 max-w-lg mx-auto">
@@ -34,17 +47,15 @@ const SignIn: NextPage = (props): JSX.Element => {
               Ingresa al sistema con tus credenciales
             </p>
           </div>
-          {/*Formulario*/}
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          {/* Formulario */}
+          <form className="flex flex-col gap-4" onSubmit={handleSignIn}>
             <div>
               <label htmlFor="email" className="text-gray-200">
                 Correo electrónico
               </label>
               <input
-                value={userInfo.email}
-                onChange={({ target }) =>
-                  setUserInfo({ ...userInfo, email: target.value })
-                }
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
                 type="email"
                 id="email"
                 autoComplete="off"
@@ -57,10 +68,8 @@ const SignIn: NextPage = (props): JSX.Element => {
                 Contraseña
               </label>
               <input
-                value={userInfo.password}
-                onChange={({ target }) =>
-                  setUserInfo({ ...userInfo, password: target.value })
-                }
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
                 type="password"
                 id="password"
                 autoComplete="off"
@@ -72,7 +81,7 @@ const SignIn: NextPage = (props): JSX.Element => {
               <span className="text-gray-400">
                 ¿No tienes cuenta?{' '}
                 <a
-                  href="#"
+                  href="/auth/register"
                   className="text-indigo-400 hover:text-indigo-500 transition-colors"
                 >
                   Registrate
@@ -87,19 +96,18 @@ const SignIn: NextPage = (props): JSX.Element => {
             </div>
             <div className="mt-4 order-1 md:order-2">
               <button
-                onClick={() => {
-                  signIn()
-                }}
                 type="submit"
                 className="w-full bg-[#205375] p-2 rounded-full hover:bg-[#F66B0E] transition-colors"
               >
                 Iniciar sesión
               </button>
             </div>
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           </form>
         </div>
       </div>
     </div>
   )
 }
+
 export default SignIn

@@ -1,51 +1,96 @@
+import { MemoryGame } from '@/models/Entitys/Assistant/MemoryGame'
 import NavBar from '../../components/navbar'
 import { useState } from 'react'
 import { useEffect } from 'react'
-
-interface Card {
-  id: number
-  image: string
-  showImage: boolean // agrega la propiedad showImage a la interfaz Card
-}
+import { Imag } from '@/models/Entitys/Imag'
+import { useRouter } from 'next/router'
+import { Game } from '@/models/Entitys/Game'
+import { User } from '@/models/Entitys/User'
+import { Request } from '@/helpers/requests'
+import axios from 'axios'
+import { GameComplete } from '@/models/Entitys/GameComplete'
 
 const MemorizeGame = () => {
-  const [cards, setCards] = useState<Card[]>([
+  var user = new User('', '', '', '', 0)
+  const route = useRouter()
+  const { id } = route.query
+  const [memoryGame, setMemoryGame] = useState<MemoryGame>(
+    new MemoryGame(
+      new Game('default', '', '', '', 0, new User('', '', '', '', 0)),
+      [],
+    ),
+  )
+
+  const [cards, setCards] = useState<Imag[]>([
     {
       id: 1,
-      image: 'https://cdn-icons-png.flaticon.com/512/281/281764.png',
-      showImage: false,
+      path_img: 'https://cdn-icons-png.flaticon.com/512/281/281764.png',
+      show: false,
     },
     {
       id: 2,
-      image: 'https://cdn-icons-png.flaticon.com/512/281/281764.png',
-      showImage: false,
+      path_img: 'https://cdn-icons-png.flaticon.com/512/281/281764.png',
+      show: false,
     },
     {
       id: 3,
-      image:
+      path_img:
         'https://img.freepik.com/foto-gratis/retrato-hombre-negocios-mascarilla-usando-su-computadora-portatil-mientras-sentado-escaleras-al-aire-libre-concepto-negocio-nuevo-concepto-estilo-vida-normal_58466-14709.jpg',
-      showImage: false,
+      show: false,
     },
     {
       id: 4,
-      image:
+      path_img:
         'https://img.freepik.com/foto-gratis/retrato-hombre-negocios-mascarilla-usando-su-computadora-portatil-mientras-sentado-escaleras-al-aire-libre-concepto-negocio-nuevo-concepto-estilo-vida-normal_58466-14709.jpg',
-      showImage: false,
+      show: false,
     },
     {
       id: 5,
-      image:
+      path_img:
         'https://ep01.epimg.net/elpais/imagenes/2019/10/30/album/1572424649_614672_1572453030_noticia_normal.jpg',
-      showImage: false,
+      show: false,
     },
     {
       id: 6,
-      image:
+      path_img:
         'https://ep01.epimg.net/elpais/imagenes/2019/10/30/album/1572424649_614672_1572453030_noticia_normal.jpg',
-      showImage: false,
+      show: false,
     },
   ])
-  const [selectedCards, setSelectedCards] = useState<Card[]>([])
+
+  if (
+    id != 'default' &&
+    id != undefined &&
+    memoryGame.game.id_game == 'default'
+  ) {
+    axios
+      .get(Request.SERVER + '/Games/GetMemoryGame?id_game=' + id, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        let tmp = localStorage.getItem('user')
+        if (tmp) {
+          user = JSON.parse(tmp)
+        }
+        setMemoryGame(response.data)
+        memoryGame.imageList = response.data.imageList
+        setCards(memoryGame.imageList)
+        console.log(memoryGame)
+        memoryGame.imageList.forEach((img) => {
+          img.path_img = img.path_img.replace(
+            'http://localhost:8080',
+            Request.SERVER_API,
+          )
+        })
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  const [selectedCards, setSelectedCards] = useState<Imag[]>([])
   const [pairsFound, setPairsFound] = useState<number>(0)
   const [gameCompleted, setGameCompleted] = useState<boolean>(false)
 
@@ -65,12 +110,12 @@ const MemorizeGame = () => {
     setCards(shuffledCards)
   }, [])
 
-  const handleClick = (card: Card) => {
+  const handleClick = (card: Imag) => {
     if (selectedCards.length < 2) {
-      // Actualiza el estado de la tarjeta con showImage = true
+      // Actualiza el estado de la tarjeta con show = true
       const updatedCards = cards.map((c) => {
         if (c.id === card.id) {
-          return { ...c, showImage: true }
+          return { ...c, show: true }
         }
         return c
       })
@@ -80,10 +125,10 @@ const MemorizeGame = () => {
     }
 
     if (selectedCards.length === 1 && selectedCards[0].id !== card.id) {
-      // Actualiza el estado de la tarjeta con showImage = true
+      // Actualiza el estado de la tarjeta con show = true
       const updatedCards = cards.map((c) => {
         if (c.id === card.id) {
-          return { ...c, showImage: true }
+          return { ...c, show: true }
         }
         return c
       })
@@ -91,7 +136,7 @@ const MemorizeGame = () => {
       setSelectedCards([...selectedCards, card])
 
       // Compara las imágenes de las dos tarjetas
-      if (selectedCards[0].image === card.image) {
+      if (selectedCards[0].path_img === card.path_img) {
         // Si las imágenes son iguales, elimina ambas tarjetas del estado y aumenta el contador de pares encontrados
         setTimeout(() => {
           const updatedCards = cards.filter(
@@ -104,6 +149,19 @@ const MemorizeGame = () => {
           // Comprobar si se ha encontrado el último par
           if (pairsFound + 1 === cards.length / 2) {
             setGameCompleted(true)
+            if (
+              memoryGame.game.id_game != 'default' &&
+              user.email != '' &&
+              memoryGame.game.id_game
+            ) {
+              const gameC = new GameComplete(
+                user.email,
+                memoryGame.game.id_game,
+                new Date(),
+                memoryGame.game.value_points,
+              )
+              axios.post(Request.SERVER + '/Games/RegisterGameComplete', gameC)
+            }
           }
         }, 1000)
       } else {
@@ -111,7 +169,7 @@ const MemorizeGame = () => {
         setTimeout(() => {
           const updatedCards = cards.map((c) => {
             if (c.id === card.id || c.id === selectedCards[0].id) {
-              return { ...c, showImage: false }
+              return { ...c, show: false }
             }
             return c
           })
@@ -130,7 +188,7 @@ const MemorizeGame = () => {
             key={card.id}
             className="py-2 px-6 text-center relative w-36 h-36 sm:w-48 sm:h-48 
             before:absolute before:top-0 before:left-0 before:w-full before:h-full 
-            before:z-10 before:bg-[#205375] before:transition-all before:duration-300 
+            before:z-10 before:bg-green-500/10 before:transition-all before:duration-300 
             hover:before:opacity-0 hover:before:scale-50 
             after:absolute after:top-0 after:left-0 after:w-full after:h-full 
             after:z-10 after:opacity-0 after:transition-all after:duration-300 
@@ -138,12 +196,8 @@ const MemorizeGame = () => {
             hover:after:opacity-100 hover:after:scale-100"
             onClick={() => handleClick(card)}
           >
-            {card.showImage ? (
-              <img
-                src={card.image}
-                alt={card.id.toString()}
-                className="w-full h-full object-cover"
-              />
+            {card.show ? (
+              <img src={card.path_img} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full "></div>
             )}

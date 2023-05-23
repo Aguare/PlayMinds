@@ -6,6 +6,7 @@ import { Game } from '../../models/Entitys/Game'
 import { Phrase } from '../../models/Entitys/Phrase'
 import { User } from '../../models/Entitys/User'
 import { HangedGame } from '../../models/Entitys/Assistant/HangedGame'
+import {Request} from '../../helpers/requests'
 
 const AhorcadoF = () => {
   const [palabra, setPalabra] = useState<string>('')
@@ -93,7 +94,7 @@ const AhorcadoF = () => {
     try {
       // Realizar la solicitud POST
       const response = await axios.post(
-        'https://23a0-181-174-107-182.ngrok-free.app/Games/RegisterHangedGame',
+        Request.REGISTER_HANGED_GAME,
         hangedGame,
       )
 

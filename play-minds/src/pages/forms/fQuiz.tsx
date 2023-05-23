@@ -7,7 +7,7 @@ import { User } from '../../models/Entitys/User'
 import { Game } from '../../models/Entitys/Game'
 import { QuizGame } from '../../models/Entitys/Assistant/QuizGame'
 import { QuestionOBJ } from '@/models/Entitys/Assistant/QuestionOBJ'
-
+import {Request} from '../../helpers/requests'
 const QuizForm = () => {
   const [pregunta, setPregunta] = useState<string>('')
   const [respuestas, setRespuestas] = useState<string[]>(['', '', '', ''])
@@ -123,7 +123,7 @@ const QuizForm = () => {
     // Enviar los datos al servidor utilizando Axios
     try {
       const response = await axios.post(
-        'https://23a0-181-174-107-182.ngrok-free.app/Games/RegisterQuizGame',
+        Request.REGISTER_QUIZ_GAME,
         jsonData,
         {
           headers: { 'Content-Type': 'application/json' },

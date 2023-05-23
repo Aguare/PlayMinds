@@ -5,16 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { Game } from '../models/Entitys/Game'
+import { Request } from '../helpers/requests'
+import { useRouter } from 'next/router'
 
 const Card = () => {
   const [games, setGames] = useState<Game[]>([])
+  const router = useRouter()
 
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await axios.get(
-          'https://23a0-181-174-107-182.ngrok-free.app/Games/GetAllGames',
-        )
+        const response = await axios.get(Request.GET_ALL_GAMES)
         setGames(response.data)
       } catch (error) {
         console.error('Error al obtener los juegos:', error)
@@ -23,6 +24,14 @@ const Card = () => {
 
     fetchGames()
   }, [])
+
+  const handlePlay = (type: any, id: any) => {
+    console.log('Jugar:', id)
+    if (type === 'QUIZ') router.push(`game/quiz?id=${id}`)
+    if (type === 'CARD') router.push(`game/duocards?id=${id}`)
+    if (type === 'MEMORY') router.push(`game/memorize?id=${id}`)
+    if (type === 'HANGED') router.push(`game/ahorcado?id=${id}`)
+  }
 
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-8 p-8">
@@ -50,6 +59,7 @@ const Card = () => {
               <button
                 type="button"
                 className="border border-gray-600 py-2 px-4 rounded-lg"
+                onClick={() => handlePlay(game.type_game, game.id_game)}
               >
                 JUGAR
               </button>
