@@ -90,11 +90,6 @@ const NavBar = () => {
               )}
             </div>
           )}
-          {user && (
-            <a className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg transition-colors">
-              {user.points} pts
-            </a>
-          )}
         </div>
       </div>
     </div>
