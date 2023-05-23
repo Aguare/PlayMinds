@@ -1,132 +1,173 @@
-import { CardGameG } from '@/models/Entitys/Assistant/CardGameG'
-import NavBar from '@/components/navbar'
-import { Game } from '@/models/Entitys/Game'
-import Image from 'next/image'
-import { useState, useEffect } from 'react'
-import { useSpring, animated } from 'react-spring'
-import { useDrag } from 'react-use-gesture'
-import { useRouter } from 'next/router'
-import { User } from '@/models/Entitys/User'
-import { Request } from '@/helpers/requests'
-import axios from 'axios'
-import { GameComplete } from '@/models/Entitys/GameComplete'
+import { CardGameG } from "@/models/Entitys/Assistant/CardGameG";
+import NavBar from "@/components/navbar";
+import { Game } from "@/models/Entitys/Game";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { useSpring, animated } from "react-spring";
+import { useDrag } from "react-use-gesture";
+import { useRouter } from "next/router";
+import { User } from "@/models/Entitys/User";
+import { Request } from "@/helpers/requests";
+import axios from "axios";
+import { GameComplete } from "@/models/Entitys/GameComplete";
+import { Card } from "@/models/Entitys/Card";
 
 const Duocards = () => {
-  var user = new User('', '', '', '', 0)
-  const router = useRouter()
-  const { id } = router.query
+  var user = new User("", "", "", "", 0);
+  const router = useRouter();
+  const { id } = router.query;
   const [cardGameG, setCardGameG] = useState<CardGameG>(
     new CardGameG(
-      new Game('default', '', '', '', 0, new User('', '', '', '', 0)),
-      [],
-    ),
-  )
+      new Game("default", "", "", "", 0, new User("", "", "", "", 0)),
+      []
+    )
+  );
 
   const [cards, setCards] = useState<Card[]>([
     {
-      id: 1,
+      idCard: 1,
       name: "¿La capital de Francia es: ?",
-      image: "https://via.placeholder.com/150",
+      image: {
+        id: 1,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
       description: "París",
       correct: true,
     },
     {
-      id: 2,
+      idCard: 2,
       name: "¿El río más largo del mundo es: ?",
-      image: "https://via.placeholder.com/150",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
       description: "El río Amazonas",
       correct: false,
     },
     {
-      id: 3,
+      idCard: 3,
       name: "¿Cuál es el elemento más abundante en la Tierra?",
-      image: "https://via.placeholder.com/150",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
       description: "El oxígeno",
       correct: false,
     },
     {
-      id: 4,
+      idCard: 4,
       name: '¿Quién escribió la novela "Cien años de soledad"?',
-      image: "https://via.placeholder.com/150",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
       description: "Gabriel García Márquez",
       correct: true,
     },
     {
-      id: 5,
+      idCard: 5,
       name: "¿En qué año comenzó la Segunda Guerra Mundial?",
-      image: "https://via.placeholder.com/150",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
       description: "1939",
       correct: true,
     },
     {
-      id: 6,
+      idCard: 6,
       name: "¿Qué país tiene la población más grande del mundo?",
-      image: "https://via.placeholder.com/150",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
       description: "China",
       correct: true,
     },
     {
-      id: 7,
+      idCard: 7,
       name: "¿Quién fue el primer hombre en pisar la luna?",
-      image: "https://via.placeholder.com/150",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
       description: "Neil Armstrong",
       correct: true,
     },
     {
-      id: 8,
+      idCard: 8,
       name: '¿Quién pintó la obra "La noche estrellada"?',
-      image: "https://via.placeholder.com/150",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
       description: "Vincent van Gogh",
       correct: true,
     },
     {
-      id: 9,
+      idCard: 9,
       name: "¿Cuál es el nombre del continente más grande del mundo?",
-      image: "https://via.placeholder.com/150",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
       description: "Asia",
       correct: true,
     },
     {
-      id: 10,
+      idCard: 10,
       name: "¿Qué animal representa al signo zodiacal de Leo?",
-      image: "https://via.placeholder.com/150",
+      image: {
+        id: 2,
+        path_img: "https://via.placeholder.com/150",
+        show: false,
+      },
       description: "El león",
       correct: true,
     },
   ]);
 
   if (
-    id !== 'default' &&
+    id !== "default" &&
     id !== undefined &&
     cardGameG.game !== undefined &&
-    cardGameG.game.id_game === 'default'
+    cardGameG.game.id_game === "default"
   ) {
     axios
-      .get(Request.SERVER + '/Games/GetCardGame?id_game=' + id, {
+      .get(Request.SERVER + "/Games/GetCardGame?id_game=" + id, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       })
       .then((response) => {
-        let tmp = localStorage.getItem('user')
+        let tmp = localStorage.getItem("user");
         if (tmp) {
-          user = JSON.parse(tmp)
+          user = JSON.parse(tmp);
         }
-        setCardGameG(response.data.game)
-        cardGameG.game.id_game = response.data.game.id_game
-        cardGameG.cards = response.data.cards
-        console.log(response.data)
+        setCardGameG(response.data.game);
+        cardGameG.game.id_game = response.data.game.id_game;
+        cardGameG.cards = response.data.cards;
+        console.log(response.data);
       })
       .catch((error) => {
-        console.log(error)
-      })
+        console.log(error);
+      });
   }
 
-  const [currentCardIndex, setCurrentCardIndex] = useState<number>(0)
-  const [answeredCards, setAnsweredCards] = useState<Card[]>([])
-  const [isAnswered, setIsAnswered] = useState<boolean>(false)
-  const [gameOver, setGameOver] = useState<boolean>(false)
-  const [correctAnswers, setCorrectAnswers] = useState<number>(0)
+  const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
+  const [answeredCards, setAnsweredCards] = useState<Card[]>([]);
+  const [isAnswered, setIsAnswered] = useState<boolean>(false);
+  const [gameOver, setGameOver] = useState<boolean>(false);
+  const [correctAnswers, setCorrectAnswers] = useState<number>(0);
 
   const [props, set] = useSpring(() => ({
     x: 0,
@@ -173,19 +214,19 @@ const Duocards = () => {
         setCards([...remainingCards]);
         setAnsweredCards(newAnsweredCards); // Actualizar el estado de answeredCards después de verificar si la respuesta es correcta
       } else {
-        setGameOver(true)
+        setGameOver(true);
         if (
-          cardGameG.game.id_game != 'default' &&
-          user.email != '' &&
+          cardGameG.game.id_game != "default" &&
+          user.email != "" &&
           cardGameG.game.id_game
         ) {
           const gameC = new GameComplete(
             user.email,
             cardGameG.game.id_game,
             new Date(),
-            cardGameG.game.value_points,
-          )
-          axios.post(Request.SERVER + '/Games/RegisterGameComplete', gameC)
+            cardGameG.game.value_points
+          );
+          axios.post(Request.SERVER + "/Games/RegisterGameComplete", gameC);
         }
       }
     }
@@ -233,7 +274,7 @@ const Duocards = () => {
                 </h1>
                 <Image
                   className="card-image w-[300px] h-[300px]"
-                  src={cards[currentCardIndex].image}
+                  src={cards[currentCardIndex].image.path_img}
                   alt={cards[currentCardIndex].name}
                   width={300}
                   height={300}
