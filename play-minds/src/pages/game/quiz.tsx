@@ -116,24 +116,31 @@ const Quiz = () => {
     if (answerCorrect) {
       setScore(score + 1);
     }
-
     const nextQuestion = currentQuestion + 1;
 
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
     } else {
       setShowScore(true);
-      if (
-        quizGame.game.id_game != "default" &&
-        user.email != "" &&
-        quizGame.game.id_game
-      ) {
+      let tmp = localStorage.getItem("user");
+      if (tmp) {
+        tmp = JSON.parse(tmp).email;
+      }
+      if (tmp && quizGame.game.id_game != "default" && quizGame.game.id_game) {
+        let newScore = 0;
+        if (answerCorrect) {
+          newScore =
+            (quizGame.game.value_points / questions.length) * (score + 1);
+        } else {
+          newScore = (quizGame.game.value_points / questions.length) * score;
+        }
         const gameC = new GameComplete(
-          user.email,
+          tmp,
           quizGame.game.id_game,
           new Date(),
-          score
+          newScore
         );
+        console.log(gameC);
         axios.post(Request.SERVER + "/Games/RegisterGameComplete", gameC);
       }
     }
