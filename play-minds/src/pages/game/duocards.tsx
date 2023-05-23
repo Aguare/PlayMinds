@@ -16,9 +16,9 @@ import NewComment from '@/components/newComment'
 import Comments from '@/components/comment'
 
 const Duocards = () => {
-  var user = new User('', '', '', '', 0)
-  const router = useRouter()
-  const { id } = router.query
+  const user = new User("", "", "", "", 0);
+  const router = useRouter();
+  const { id } = router.query;
   const [cardGameG, setCardGameG] = useState<CardGameG>(
     new CardGameG(
       new Game('default', '', '', '', 0, new User('', '', '', '', 0)),
@@ -152,21 +152,15 @@ const Duocards = () => {
         },
       })
       .then((response) => {
-        let tmp = localStorage.getItem('user')
-        if (tmp) {
-          user = JSON.parse(tmp)
-        }
-        setCardGameG(response.data.game)
-        cardGameG.game.id_game = response.data.game.id_game
-        cardGameG.cards = response.data.cards
+        setCardGameG(response.data);
+        cardGameG.cards = response.data.cards;
         cardGameG.cards.forEach((element) => {
           element.image.path_img = element.image.path_img.replace(
-            'http://localhost:8080',
-            Request.SERVER_API,
-          )
-        })
-        setCards(cardGameG.cards)
-        console.log(cardGameG)
+            "http://localhost:8080",
+            Request.SERVER_API
+          );
+        });
+        setCards(cardGameG.cards);
       })
       .catch((error) => {
         console.log(error)
@@ -204,8 +198,8 @@ const Duocards = () => {
       setIsAnswered(true)
 
       if (isCorrect) {
-        setCorrectAnswers((prev) => prev + 1)
-        console.log(`sumopunto ${correctAnswers}`)
+        setCorrectAnswers((prev) => prev + 1);
+        console.log(`sumo punto ${correctAnswers}`);
       } else {
         console.log('no es correcto')
       }
@@ -224,19 +218,27 @@ const Duocards = () => {
         setCards([...remainingCards])
         setAnsweredCards(newAnsweredCards) // Actualizar el estado de answeredCards después de verificar si la respuesta es correcta
       } else {
-        setGameOver(true)
+        setGameOver(true);
+        let tmp = localStorage.getItem("user");
+        if (tmp) {
+          tmp = JSON.parse(tmp).email;
+        }
         if (
-          user.email != '' &&
-          cardGameG.game !== undefined &&
-          cardGameG.game.id_game === 'default'
+          tmp &&
+          cardGameG.game.id_game !== "default" &&
+          cardGameG.game.id_game !== undefined
         ) {
+          let score =
+            (cardGameG.game.value_points / cardGameG.cards.length) *
+            correctAnswers;
           const gameC = new GameComplete(
-            user.email,
+            tmp,
             cardGameG.game.id_game,
             new Date(),
-            cardGameG.game.value_points,
-          )
-          axios.post(Request.SERVER + '/Games/RegisterGameComplete', gameC)
+            score
+          );
+          console.log(gameC);
+          axios.post(Request.SERVER + "/Games/RegisterGameComplete", gameC);
         }
       }
 
