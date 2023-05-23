@@ -7,7 +7,7 @@ import { Request } from '../../helpers/requests'
 
 const Register = () => {
   const [name, setName] = useState('')
-  const [role, setRole] = useState('Estudiante')
+  const [role, setRole] = useState('STUDENT')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -71,8 +71,8 @@ const Register = () => {
                 value={role}
                 onChange={(event) => setRole(event.target.value)}
               >
-                <option value="STUDENT">STUDENT</option>
-                <option value="TEACHER">TEACHER</option>
+                <option value="STUDENT">ESTUDIANTE</option>
+                <option value="TEACHER">DOCENTE</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                 <svg

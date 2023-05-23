@@ -1,8 +1,15 @@
+import { CardGameG } from '@/models/Entitys/Assistant/CardGameG';
 import NavBar from '@/components/navbar'
+import { Game } from '@/models/Entitys/Game'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useSpring, animated } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
+import { useRouter } from 'next/router'
+import { User } from '@/models/Entitys/User'
+import { Request } from '@/helpers/requests'
+import axios from 'axios';
+import { GameComplete } from '@/models/Entitys/GameComplete';
 
 interface Card {
   id: number
@@ -13,6 +20,17 @@ interface Card {
 }
 
 const Duocards = () => {
+  var user = new User("", "", "", "", 0);
+  const router = useRouter();
+  const { id } = router.query;
+  const [cardGameG, setCardGameG]= useState<CardGameG>(
+    new CardGameG(
+      new Game("default", "", "", "", 0, new User("", "", "", "", 0)),
+      []
+    )
+  );  
+
+
   const [cards, setCards] = useState<Card[]>([
     {
       id: 1,
@@ -85,6 +103,31 @@ const Duocards = () => {
       correct: true,
     },
   ])
+
+  if( id != "default" && cardGameG.game.id_game == "default"
+  ){
+    axios
+      .get(Request.SERVER + "/Games/GetCardsGame?id_game=" + id, {
+        headers: {
+          "Content-Type": "application/json",
+      },
+      })
+      .then((response) => {
+        let tmp = localStorage.getItem("user");
+        if(tmp){
+          user=JSON.parse(tmp);
+        }
+        setCardGameG(response.data);
+        cardGameG.cards = response.data.cards;
+        setCardGameG(cardGameG);
+        console.log(cardGameG);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0)
   const [answeredCards, setAnsweredCards] = useState<Card[]>([])
   const [isAnswered, setIsAnswered] = useState<boolean>(false)
@@ -137,8 +180,19 @@ const Duocards = () => {
         setAnsweredCards(newAnsweredCards) // Actualizar el estado de answeredCards después de verificar si la respuesta es correcta
       } else {
         setGameOver(true)
+        if(
+          cardGameG.game.id_game != "default" &&
+          user.email != "" &&
+          cardGameG.game.id_game
+          ) {
+            const gameC= new GameComplete(
+              user.email,
+              cardGameG.game.id_game,
+              new Date(),
+              cardGameG.game.value_points
+            );
+            axios.post(Request.SERVER + "/Games/RegisterGameComplete", gameC);
       }
-
       setTimeout(() => {
         setIsAnswered(false)
         set({ x: 0, rotate: 0, scale: 1 })
