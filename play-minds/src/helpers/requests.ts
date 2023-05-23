@@ -1,10 +1,6 @@
 export enum Request {
-<<<<<<< HEAD
   SERVER = "https://98c1-181-174-107-182.ngrok-free.app/PlayMind",
-=======
-  SERVER = "http://localhost:8080/PlayMind",
->>>>>>> Fronted
-  SERVER_API = "http://localhost:8080",
+  SERVER_API = "https://98c1-181-174-107-182.ngrok-free.app",
   GET_ALL_GAMES = SERVER + "/Games/GetAllGames",
   REGISTER_HANGED_GAME = SERVER + "/Games/RegisterHangedGame",
   UPLOAD_DUO_CARD = SERVER + "/Files/upload",

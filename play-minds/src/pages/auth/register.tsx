@@ -7,7 +7,7 @@ import { Request } from '../../helpers/requests'
 
 const Register = () => {
   const [name, setName] = useState('')
-  const [role, setRole] = useState('Estudiante')
+  const [role, setRole] = useState('STUDENT')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
