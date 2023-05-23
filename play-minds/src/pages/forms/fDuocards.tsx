@@ -5,7 +5,7 @@ import { Imag } from '../../models/Entitys/Imag'
 import { Card } from '@/models/Entitys/Card'
 import { User } from '../../models/Entitys/User'
 import { CardGameG } from '@/models/Entitys/Assistant/CardGameG'
-import {Request} from '../../helpers/requests'
+import { Request } from '../../helpers/requests'
 
 const DuoCardsForm = () => {
   const [pregunta, setPregunta] = useState<string>('')
@@ -59,13 +59,6 @@ const DuoCardsForm = () => {
     setError('')
   }
 
-  const getUserEmail = () => {
-    // Lógica para obtener el correo del usuario logeado
-
-    // Actualizar el estado con el correo del usuario
-    setUserEmail('marcosy300@gmail.com')
-  }
-
   const handleImage = async () => {
     // Verifica que se haya seleccionado un archivo
     if (!selectedFile) {
@@ -82,10 +75,7 @@ const DuoCardsForm = () => {
     // Envía la imagen al servidor
     try {
       // Realiza la solicitud POST al API utilizando Axios
-      const response = await axios.post(
-        Request.UPLOAD_DUO_CARD,
-        formData,
-      )
+      const response = await axios.post(Request.UPLOAD_DUO_CARD, formData)
       console.log(response.data)
       listcards.push(response.data[0])
     } catch (error) {
@@ -127,14 +117,33 @@ const DuoCardsForm = () => {
   }
 
   const handleGameCreation = async () => {
-    const user = new User(userEmail, '', '', 'STUDENT', 0)
+    // Obtener los datos del usuario desde el localStorage
+    const userString = localStorage.getItem('user')
+    let user
+    if (userString) {
+      user = JSON.parse(userString)
+    } else {
+      // Manejar el caso cuando los datos del usuario no están disponibles
+
+      return
+    }
+
+    // Crear el objeto de tipo User con los datos obtenidos del localStorage
+    const userObject = new User(
+      user.email,
+      user.name,
+      '',
+      user.role,
+      user.points,
+    )
+
     const game = new Game(
       '',
       name_game,
       'CARD',
       description,
       parseInt(value_points),
-      user,
+      userObject,
     )
 
     const cards: Card[] = []
@@ -152,10 +161,7 @@ const DuoCardsForm = () => {
 
     const cardGameG = new CardGameG(game, cards)
     try {
-      const response = await axios.post(
-        Request.REGISTER_CARD_GAME,
-        cardGameG,
-      )
+      const response = await axios.post(Request.REGISTER_CARD_GAME, cardGameG)
       console.log(response.data)
       console.log(cardGameG)
     } catch (error) {
@@ -165,9 +171,6 @@ const DuoCardsForm = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
-    // Obtenemos el correo del usuario logeado
-    getUserEmail()
 
     // Sube la imagen al servidor
     await handleImage()

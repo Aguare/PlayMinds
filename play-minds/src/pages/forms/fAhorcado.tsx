@@ -18,7 +18,6 @@ const AhorcadoF = () => {
     { palabra: string; pista: string }[]
   >([])
   const [error, setError] = useState<string>('')
-  const [userEmail, setUserEmail] = useState('')
 
   const handlePalabraChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPalabra(event.target.value)
@@ -65,15 +64,33 @@ const AhorcadoF = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    // Crear el objeto de tipo HangedGame
-    const user = new User(userEmail, '', '', 'STUDENT', 0)
+    // Obtener los datos del usuario desde el localStorage
+    const userString = localStorage.getItem('user')
+    let user
+    if (userString) {
+      user = JSON.parse(userString)
+    } else {
+      // Manejar el caso cuando los datos del usuario no están disponibles
+
+      return
+    }
+
+    // Crear el objeto de tipo User con los datos obtenidos del localStorage
+    const userObject = new User(
+      user.email,
+      user.name,
+      '',
+      user.role,
+      user.points,
+    )
+
     const game = new Game(
       '',
       name_game,
       'HANGED',
       description,
       parseInt(value_points),
-      user,
+      userObject,
     )
 
     const phrasesArray = palabras.map(

@@ -5,7 +5,7 @@ import { Game } from '../../models/Entitys/Game'
 import { Imag } from '../../models/Entitys/Imag'
 import { User } from '../../models/Entitys/User'
 import { MemoryGame } from '../../models/Entitys/Assistant/MemoryGame'
-import {Request} from '../../helpers/requests'
+import { Request } from '../../helpers/requests'
 
 const MemorizeF = () => {
   const [selectedFile, setSelectedFile] = useState<FileList | null>(null)
@@ -39,13 +39,6 @@ const MemorizeF = () => {
     setSelectedFile(event.target.files)
   }
 
-  const getUserEmail = () => {
-    // Lógica para obtener el correo del usuario logeado
-
-    // Actualizar el estado con el correo del usuario
-    setUserEmail('marcosy300@gmail.com')
-  }
-
   const handleImageUpload = async () => {
     // Verifica que se haya seleccionado un archivo
     if (!selectedFile) {
@@ -60,10 +53,7 @@ const MemorizeF = () => {
 
     try {
       // Realiza la solicitud POST al API utilizando Axios
-      const response = await axios.post(
-        Request.UPLOAD_MEMORIZE,
-        formData,
-      )
+      const response = await axios.post(Request.UPLOAD_MEMORIZE, formData)
       console.log(response.data)
       listImages.push(response.data[0])
     } catch (error) {
@@ -72,14 +62,33 @@ const MemorizeF = () => {
   }
 
   const handleGameCreation = async () => {
-    const user = new User(userEmail, '', '', 'STUDENT', 0)
+    // Obtener los datos del usuario desde el localStorage
+    const userString = localStorage.getItem('user')
+    let user
+    if (userString) {
+      user = JSON.parse(userString)
+    } else {
+      // Manejar el caso cuando los datos del usuario no están disponibles
+
+      return
+    }
+
+    // Crear el objeto de tipo User con los datos obtenidos del localStorage
+    const userObject = new User(
+      user.email,
+      user.name,
+      '',
+      user.role,
+      user.points,
+    )
+
     const game = new Game(
       '',
       name_game,
       'MEMORY',
       description,
       parseInt(value_points),
-      user,
+      userObject,
     )
     const memoryGame = new MemoryGame(game, listImages)
     try {
@@ -101,9 +110,6 @@ const MemorizeF = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
-    // Obtenemos el correo del usuario logeado
-    getUserEmail()
 
     // Sube la imagen al servidor
     await handleImageUpload()

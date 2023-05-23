@@ -1,43 +1,60 @@
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
-import { User } from "../models/Entitys/User";
-import img1 from "../image/logo playminds.png";
-import axios from "axios";
-import { Request } from "@/helpers/requests";
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBell, faUser, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { useEffect, useState } from 'react'
+import { User } from '../models/Entitys/User'
+import img1 from '../image/logo playminds.png'
+import axios from 'axios'
+import { Request } from '@/helpers/requests'
 
 const NavBar = () => {
-  const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const router = useRouter()
+  const [user, setUser] = useState<User | null>(null)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
+    const userData = localStorage.getItem('user')
     if (userData) {
-      const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
+      const parsedUser = JSON.parse(userData)
+      setUser(parsedUser)
     }
-  }, []);
+  }, [])
 
   const handleLogout = () => {
-    axios.get(Request.SERVER + "/Users/Logout?email=" + user?.email);
-    localStorage.clear(); // Elimina los datos
-    router.push("/auth/signin"); // Redirige al usuario
-  };
+    axios.get(Request.SERVER + '/Users/Logout?email=' + user?.email)
+    localStorage.clear() // Elimina los datos
+    router.push('/auth/signin') // Redirige al usuario
+  }
+
+  const handlehome = () => {
+    axios
+      .get(Request.SERVER + '/Users/GetUser?email=' + user?.email)
+      .then((response) => {
+        setUser(response.data)
+        localStorage.setItem('user', JSON.stringify(response.data))
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    router.push('/home') // Redirige al usuario
+  }
 
   const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
+    setDropdownOpen(!dropdownOpen)
+  }
+
+  const handleCreateGame = () => {
+    if (user?.role === 'TEACHER') {
+      // Aquí puedes agregar la lógica para redirigir al usuario a la ruta de creación de juegos
+      console.log('Redirigir a la página de creación de juegos')
+    }
+  }
 
   return (
     <div className="w-full bg-[#112B3C] rounded-lg p-7 sm:flex sm:justify-between gap-4 sm:h-[90px] grid md:grid-cols-1 ">
       <div className="bg-red flex items-center gap-2 w-[200px]">
-        <a href="/home">
-          <Image src={img1} alt="Imagen de logo" />
-        </a>
+        <Image src={img1} alt="Imagen de logo" onClick={handlehome} />
       </div>
       <div className="">
         <form className="col-span-4 flex items-center justify-center gap-2 w-[70%] sm:w-[100%]">
@@ -72,11 +89,11 @@ const NavBar = () => {
         </a>
         <FontAwesomeIcon icon={faUser} className="text-[#EFEFEF]" />
         <div
-          className="flex items-center gap-2 cursor-pointer"
+          className="flex items-center gap-2 cursor-pointer relative"
           onClick={toggleDropdown}
         >
           {user && (
-            <div className="relative">
+            <div>
               <span className="text-white">{user.name}</span>
               {dropdownOpen && (
                 <div className="absolute bg-gray-800 p-2 rounded-lg top-[32px] right-0 z-10">
@@ -86,6 +103,14 @@ const NavBar = () => {
                   >
                     Cerrar sesión
                   </p>
+                  {user.role === 'TEACHER' && (
+                    <p
+                      className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg transition-colors cursor-pointer"
+                      onClick={handleCreateGame}
+                    >
+                      Crear juego
+                    </p>
+                  )}
                 </div>
               )}
             </div>
@@ -98,7 +123,7 @@ const NavBar = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default NavBar;
+export default NavBar
