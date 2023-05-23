@@ -15,10 +15,19 @@ import java.util.Optional;
 @CrossOrigin(origins = {"http://localhost:3000"} )
 public class UserCTRL {
 
-
     @Autowired
     private UserDAO user;
 
+    @PostMapping("/Login")
+    public User login(@RequestBody User user) {
+        Optional<User> userReceipt = this.user.findById(user.getEmail());
+        if (userReceipt.isPresent()) {
+            if (userReceipt.get().getPassword().equals(user.getPassword())) {
+                return userReceipt.get();
+            }
+        }
+        return null;
+    }
 
     @GetMapping("/GetUser")
     public User getUser(String email) {
@@ -46,7 +55,6 @@ public class UserCTRL {
             return null;
         }
     }
-
     @DeleteMapping("/DeleteUser")
     public void deleteUser(String email) {
         this.user.deleteById(email);

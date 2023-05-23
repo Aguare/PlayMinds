@@ -10,8 +10,11 @@ import java.io.Serializable;
 @Entity
 @Table(name="image_and_game")
 public class ImageGame implements Serializable {
+
     @Id
-    private String FK_id_img;
-    @Id
-    private String FK_id_game;
+    @Column(name = "FK_id_img")
+    private Long image;
+
+    @Column(name = "FK_id_game")
+    private String idGame;
 }

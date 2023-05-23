@@ -3,9 +3,10 @@ package com.coderhouse.pmb.Entitys.Assistant;
 import com.coderhouse.pmb.Entitys.Answer;
 import com.coderhouse.pmb.Entitys.Question;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class QuestionOBJ {
+public class QuestionOBJ implements Serializable {
     private Question question;
     List<Answer> answers;
 

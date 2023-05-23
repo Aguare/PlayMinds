@@ -11,7 +11,11 @@ import java.io.Serializable;
 @Table(name ="image")
 public class Image implements Serializable {
     @Id
-    private String id_img;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_img")
+    private Long id;
     private String path_img;
+
+    @Column(name = "show_img")
     private boolean show;
 }
