@@ -7,12 +7,15 @@ import { User } from '../models/Entitys/User'
 import img1 from '../image/logo playminds.png'
 import axios from 'axios'
 import { Request } from '@/helpers/requests'
+import { set } from 'date-fns'
+import { Game } from '../models/Entitys/Game'
 
 const NavBar = () => {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
-
+  const [search, setSearch] = useState('')
+  const [games, setGames] = useState('')
   useEffect(() => {
     const userData = localStorage.getItem('user')
     if (userData) {
@@ -52,6 +55,25 @@ const NavBar = () => {
     }
   }
 
+  const handleSearch = (e: any) => {
+    e.preventDefault()
+    useEffect(() => {
+      const fetchGames = async () => {
+        const response = await axios
+          .get(Request.SERVER + Request.GET_GAME_BY_ID + '?id_game=' + search, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+          .then((response) => {
+            const game = response.data
+            setGames(game.data)
+          })
+      }
+    }, [search])
+    console.log(search)
+  }
+
   return (
     <div className="w-full bg-[#112B3C] rounded-lg p-7 sm:flex sm:justify-between gap-4 sm:h-[90px] grid md:grid-cols-1 ">
       <div className="bg-red flex items-center gap-2 w-[200px]">
@@ -63,6 +85,8 @@ const NavBar = () => {
             type="text"
             className="w-full bg-gray-100 outline-none p-2 rounded-lg"
             placeholder="Buscar sala de juego"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -71,6 +95,7 @@ const NavBar = () => {
             viewBox="0 0 24 24"
             stroke="currentColor"
             strokeWidth={2}
+            onClick={handleSearch}
           >
             <path
               strokeLinecap="round"

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Request } from '@/helpers/requests'
 import { User } from '../models/Entitys/User'
 import { useRouter } from 'next/router'
+import { GameComplete } from '../models/Entitys/GameComplete'
+import { Request } from '@/helpers/requests'
 
 const Table = () => {
   const [user, setUser] = useState<User | null>(null)
+  const [rankingData, setRankingData] = useState<GameComplete[]>([])
   const router = useRouter()
+  const id = router.query.id
 
   useEffect(() => {
     const userData = localStorage.getItem('user')
@@ -14,6 +17,24 @@ const Table = () => {
       const parsedUser = JSON.parse(userData)
       setUser(parsedUser)
     }
+
+    axios
+      .get(Request.GET_RANKING_GAME + '?idGame=' + id, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        const data = response.data
+        console.log(data)
+        const sortedData = data.sort(
+          (a: GameComplete, b: GameComplete) => b.score - a.score,
+        )
+        setRankingData(sortedData)
+      })
+      .catch((error) => {
+        console.error('Error al obtener los datos del ranking:', error)
+      })
   }, [])
 
   return (
@@ -28,11 +49,21 @@ const Table = () => {
           </tr>
         </thead>
         <tbody className="text-gray-600">
-          <tr className="border-b border-gray-200 hover:bg-gray-100">
-            <td className="py-2 px-4">1</td>
-            <td className="py-2 px-4">Jugador 1</td>
-            <td className="py-2 px-4">100</td>
-          </tr>
+          {rankingData.map(
+            (item, index) => (
+              console.log(rankingData.map),
+              (
+                <tr
+                  key={index}
+                  className="border-b border-gray-200 hover:bg-gray-100"
+                >
+                  <td className="py-2 px-4">{index + 1}</td>
+                  <td className="py-2 px-4">{item.user}</td>
+                  <td className="py-2 px-4">{item.score}</td>
+                </tr>
+              )
+            ),
+          )}
         </tbody>
       </table>
     </div>
