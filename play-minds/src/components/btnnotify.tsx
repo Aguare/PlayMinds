@@ -5,6 +5,7 @@ import { Notification } from "../models/Entitys/Notification";
 import axios from "axios";
 import { Request } from "@/helpers/requests";
 import { User } from "@/models/Entitys/User";
+import { get } from "http";
 
 const BtnNotify = () => {
   const [showNotifications, setShowNotifications] = useState<Boolean>(false);
@@ -22,8 +23,8 @@ const BtnNotify = () => {
       }
     }
   }, []);
-
-  if (user?.email != undefined && amount === 0 && getter === 0) {
+  console.log(getter);
+  if (user?.email != undefined && getter === 0) {
     axios
       .get(Request.GET_NOTIFICATIONS + "?email=" + user?.email, {
         headers: {
