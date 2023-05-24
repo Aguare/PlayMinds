@@ -3,12 +3,9 @@ import axios from 'axios'
 import { Request } from '@/helpers/requests'
 import { User } from '../models/Entitys/User'
 import { useRouter } from 'next/router'
+import { format } from 'date-fns'
 
-interface Props {
-  id_game: string
-}
-
-const NewComment = ({ id_game }: Props) => {
+const NewComment = () => {
   const [rows, setRows] = useState<number>(4)
   const [comment, setComment] = useState('')
   const [user, setUser] = useState<User | null>(null)
@@ -41,12 +38,15 @@ const NewComment = ({ id_game }: Props) => {
     const parsedUser = JSON.parse(userData)
     const user_email = parsedUser.email
 
+    const currentDate = new Date()
+    const date_comment = format(currentDate, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+
     const newComment = {
       id_comment: 0,
       game_id_game,
       user_email,
       comment,
-      date_comment: new Date(),
+      date_comment,
     }
     console.log(newComment)
 

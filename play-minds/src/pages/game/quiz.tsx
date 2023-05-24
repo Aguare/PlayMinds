@@ -210,7 +210,7 @@ const Quiz = () => {
           <Table />
         </div>
         <div className="col-span-4 w-[100%]">
-          <NewComment id_game={igc} />
+          <NewComment />
         </div>
         <div className="col-span-4 w-[100%]">
           <Comments />

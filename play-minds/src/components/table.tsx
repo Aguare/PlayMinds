@@ -1,6 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import { Request } from '@/helpers/requests'
+import { User } from '../models/Entitys/User'
+import { useRouter } from 'next/router'
 
 const Table = () => {
+  const [user, setUser] = useState<User | null>(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user')
+    if (userData) {
+      const parsedUser = JSON.parse(userData)
+      setUser(parsedUser)
+    }
+  }, [])
+
   return (
     <div className="bg-white shadow-md rounded p-4 w-80">
       <h2 className="text-xl font-bold mb-4">Ranking de Jugadores</h2>

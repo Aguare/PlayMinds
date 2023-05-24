@@ -5,7 +5,6 @@ import { faUser, faTrash } from '@fortawesome/free-solid-svg-icons'
 const UserCard = () => {
   return (
     <div>
-      <NavBar />
       <div className="mt-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 w-full pl-5">
           <div className="bg-white hover:bg-cyan-600 group rounded-lg shadow hover:shadow-lg hover:shadow-mainorange transition-all hover:cursor-pointer">

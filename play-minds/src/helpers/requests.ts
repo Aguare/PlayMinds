@@ -11,4 +11,5 @@ export enum Request {
   REGISTER_USER = SERVER + "/Users/RegisterUser",
   SERVER_IMAGE = SERVER_API + "/images",
   REGISTER_COMMENT = SERVER + "/Games/RegisterComment",
+  GET_COMMENTS_BY_GAME= SERVER + "/Games/GetGameComments",
 }
