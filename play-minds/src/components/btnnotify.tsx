@@ -11,6 +11,7 @@ const BtnNotify = () => {
   const [notifications, setNotification] = useState<Notification[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [amount, setAmount] = useState<number>(0);
+  const [getter, setGetter] = useState<number>(0);
 
   useEffect(() => {
     if (user?.email !== null) {
@@ -22,7 +23,7 @@ const BtnNotify = () => {
     }
   }, []);
 
-  if (user?.email != undefined && amount === 0) {
+  if (user?.email != undefined && amount === 0 && getter === 0) {
     axios
       .get(Request.GET_NOTIFICATIONS + "?email=" + user?.email, {
         headers: {
@@ -30,6 +31,7 @@ const BtnNotify = () => {
         },
       })
       .then((response) => {
+        setGetter(getter + 1);
         setNotification(response.data);
         setAmount(response.data.length);
       });
