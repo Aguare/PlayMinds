@@ -1,12 +1,17 @@
 package com.coderhouse.pmb.Controllers;
 
 
+import com.coderhouse.pmb.DAO.GameCompleteDAO;
+import com.coderhouse.pmb.DAO.NotificationDAO;
 import com.coderhouse.pmb.DAO.UserDAO;
+import com.coderhouse.pmb.Entitys.GameComplete;
+import com.coderhouse.pmb.Entitys.Notification;
 import com.coderhouse.pmb.Entitys.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -17,6 +22,12 @@ public class UserCTRL {
 
     @Autowired
     private UserDAO user;
+
+    @Autowired
+    private GameCompleteDAO gameComplete;
+
+    @Autowired
+    private NotificationDAO notification;
 
     @PostMapping("/Login")
     public User login(@RequestBody User user) {
@@ -29,8 +40,14 @@ public class UserCTRL {
         return null;
     }
 
+    @GetMapping("/GetNotification")
+    public Iterable<Notification> getNotification(String email) {
+        return this.notification.findAllByUser(email);
+    }
+
     @GetMapping("/GetUser")
     public User getUser(String email) {
+        logLogic(email);
         Optional<User> userReceipt = this.user.findById(email);
         return userReceipt.orElse(null);
     }
@@ -46,6 +63,7 @@ public class UserCTRL {
         return user.findAllByOrderByPointsDesc();
     }
 
+
     @PostMapping("/RegisterUser")
     public User saveUser(@RequestBody User user) {
         User userReceipt = this.user.save(user);
@@ -55,8 +73,28 @@ public class UserCTRL {
             return null;
         }
     }
+
     @DeleteMapping("/DeleteUser")
     public void deleteUser(String email) {
         this.user.deleteById(email);
+    }
+
+    @GetMapping("/Logout")
+    public void logout(String email) {
+        logLogic(email);
+    }
+
+    private void logLogic(String email){
+        List<GameComplete> gameCompleteList = this.gameComplete.findAllByUser(email);
+        double points = 0;
+        for (GameComplete gc : gameCompleteList) {
+            points += gc.getScore();
+        }
+        Optional<User> userReceipt = this.user.findById(email);
+        if (userReceipt.isPresent()) {
+            User user = userReceipt.get();
+            user.setPoints(Integer.parseInt(String.valueOf(Math.round(points))));
+            this.user.save(user);
+        }
     }
 }

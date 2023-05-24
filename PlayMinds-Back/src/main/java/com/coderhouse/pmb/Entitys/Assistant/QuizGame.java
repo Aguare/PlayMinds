@@ -10,6 +10,8 @@ public class QuizGame implements Serializable {
     private Game game;
     private List<QuestionOBJ> questions;
 
+    public QuizGame() {
+    }
     public QuizGame(Game game, List<QuestionOBJ> questions) {
         this.game = game;
         this.questions = questions;
