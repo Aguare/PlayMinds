@@ -38,34 +38,31 @@ const Table = () => {
   }, [])
 
   return (
-    <div className="bg-white shadow-md rounded p-4 w-80">
+    <div className="bg-white shadow-md rounded p-4 w-[100%] sm:w-[98%]  ">
       <h2 className="text-xl font-bold mb-4">Ranking de Jugadores</h2>
-      <table className="w-full">
-        <thead>
-          <tr className="bg-gray-200 text-gray-600">
-            <th className="py-2 px-4">Ranking</th>
-            <th className="py-2 px-4">Jugador</th>
-            <th className="py-2 px-4">Puntos</th>
-          </tr>
-        </thead>
-        <tbody className="text-gray-600">
-          {rankingData.map(
-            (item, index) => (
-              console.log(rankingData.map),
-              (
-                <tr
-                  key={index}
-                  className="border-b border-gray-200 hover:bg-gray-100"
-                >
-                  <td className="py-2 px-4">{index + 1}</td>
-                  <td className="py-2 px-4">{item.user}</td>
-                  <td className="py-2 px-4">{item.score}</td>
-                </tr>
-              )
-            ),
-          )}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="w-[100%]">
+          <thead>
+            <tr className="bg-gray-200 text-gray-600">
+              <th className="py-2 px-4">Ranking</th>
+              <th className="py-2 px-4">Jugador</th>
+              <th className="py-2 px-4">Puntos</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-600">
+            {rankingData.map((item, index) => (
+              <tr
+                key={index}
+                className="border-b border-gray-200 hover:bg-gray-100"
+              >
+                <td className="py-2 px-4">{index + 1}</td>
+                <td className="py-2 px-4">{item.user}</td>
+                <td className="py-2 px-4">{item.score}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

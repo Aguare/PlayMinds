@@ -17,7 +17,18 @@ const Comments = () => {
   useEffect(() => {
     fetchComments()
   }, [])
+  const [commentStates, setCommentStates] = useState<{
+    [key: string]: boolean
+  }>({})
 
+  // ...
+
+  const handleButtonPress = (commentId: string) => {
+    setCommentStates((prevState) => ({
+      ...prevState,
+      [commentId]: !prevState[commentId],
+    }))
+  }
   const fetchComments = async () => {
     try {
       const response = await axios.get(
@@ -36,11 +47,11 @@ const Comments = () => {
   }
 
   return (
-    <div>
+    <div className="w-[100%] ">
       {comments.map((comment) => (
         <ul key={comment.id_comment}>
           <li>
-            <div className=" relative mx-auto max-w-2xl bg-gray-100 p-6 rounded-lg mb-6 drop-shadow-xl">
+            <div className="  mx-auto w-[100%] bg-gray-100 p-6 rounded-lg mb-6 drop-shadow-xl border-2">
               <div className=" flex flex-col md:flex-row md:items-center justify-between border-b border-dashed border-gray-500/20 pb-6 mb-6">
                 <div className="flex items-start gap-x-4">
                   <FontAwesomeIcon icon={faUser} className="text-mainblue" />
@@ -54,7 +65,7 @@ const Comments = () => {
                 <div className="flex items-center gap-x-1">
                   <button
                     className={`bg-white hover:bg-cyan-600 group rounded-lg shadow hover:shadow-lg hover:shadow-mainorange transition-all hover:cursor-pointer text-lg hover:bg-gray-200 p-2 rounded-lg transition-colors ${
-                      isButtonPressed ? 'bg-red-500' : ''
+                      isButtonPressed ? 'text-red-500' : ''
                     }`}
                     onClick={() => setIsButtonPressed(!isButtonPressed)}
                   >

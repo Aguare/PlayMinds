@@ -1,21 +1,19 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBell, faUser, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faBell } from '@fortawesome/free-solid-svg-icons'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { User } from '../models/Entitys/User'
 import img1 from '../image/logo playminds.png'
 import axios from 'axios'
 import { Request } from '@/helpers/requests'
-import { set } from 'date-fns'
-import { Game } from '../models/Entitys/Game'
 
 const NavBar = () => {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [search, setSearch] = useState('')
-  const [games, setGames] = useState('')
+
   useEffect(() => {
     const userData = localStorage.getItem('user')
     if (userData) {
@@ -47,33 +45,6 @@ const NavBar = () => {
     setDropdownOpen(!dropdownOpen)
   }
 
-  const handleCreateGame = () => {
-    if (user?.role === 'TEACHER') {
-      // Aquí puedes agregar la lógica para redirigir al usuario a la ruta de creación de juegos
-      router.push('/forms/creator')
-      console.log('Redirigir a la página de creación de juegos')
-    }
-  }
-
-  const handleSearch = (e: any) => {
-    e.preventDefault()
-    useEffect(() => {
-      const fetchGames = async () => {
-        const response = await axios
-          .get(Request.SERVER + Request.GET_GAME_BY_ID + '?id_game=' + search, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-          .then((response) => {
-            const game = response.data
-            setGames(game.data)
-          })
-      }
-    }, [search])
-    console.log(search)
-  }
-
   return (
     <div className="w-full bg-[#112B3C] rounded-lg p-7 sm:flex sm:justify-between gap-4 sm:h-[90px] grid md:grid-cols-1 ">
       <div className="bg-red flex items-center gap-2 w-[200px]">
@@ -85,8 +56,6 @@ const NavBar = () => {
             type="text"
             className="w-full bg-gray-100 outline-none p-2 rounded-lg"
             placeholder="Buscar sala de juego"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +64,6 @@ const NavBar = () => {
             viewBox="0 0 24 24"
             stroke="currentColor"
             strokeWidth={2}
-            onClick={handleSearch}
           >
             <path
               strokeLinecap="round"
@@ -115,11 +83,11 @@ const NavBar = () => {
         </a>
         <FontAwesomeIcon icon={faUser} className="text-[#EFEFEF]" />
         <div
-          className="flex items-center gap-2 cursor-pointer relative"
+          className="flex items-center gap-2 cursor-pointer"
           onClick={toggleDropdown}
         >
           {user && (
-            <div>
+            <div className="relative">
               <span className="text-white">{user.name}</span>
               {dropdownOpen && (
                 <div className="absolute bg-gray-800 p-2 rounded-lg top-[32px] right-0 z-10">
@@ -129,14 +97,6 @@ const NavBar = () => {
                   >
                     Cerrar sesión
                   </p>
-                  {user.role === 'TEACHER' && (
-                    <p
-                      className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg transition-colors cursor-pointer"
-                      onClick={handleCreateGame}
-                    >
-                      Crear juego
-                    </p>
-                  )}
                 </div>
               )}
             </div>

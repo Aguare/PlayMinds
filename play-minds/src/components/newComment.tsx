@@ -64,7 +64,7 @@ const NewComment = () => {
   }
 
   return (
-    <div className="relative mt-4 bg-gray-100 p-6 rounded-lg drop-shadow-xl w-[100%] border-2">
+    <div className=" mt-4 bg-gray-100 p-6 rounded-lg drop-shadow-xl w-[100%] border-2">
       <h1>Ingresa un comentario</h1>
       <form>
         <textarea

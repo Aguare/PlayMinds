@@ -258,8 +258,8 @@ const Duocards = () => {
   return (
     <div className="bg-gray-100 min-h-screen w-[100%]">
       <NavBar />
-      <div className="w-[100%] h-[100%] grid sm:grid-cols-4 grid-cols-1 place-items-center">
-        <div className="bg-gradient-to-r w-[100%] sm:w-[80%] border-2 rounded-lg from-red-200 via-transparent to-green-200 sm:w-[60%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px] col-span-3">
+      <div className="w-[100%] h-[100%] grid sm:grid-cols-5 grid-cols-1 place-items-center gap-4">
+        <div className="bg-gradient-to-r w-[100%] sm:w-[100%] border-2 rounded-lg from-red-200 via-transparent to-green-200  border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px] sm:col-span-3">
           <div className="grid grid-cols-1 p-2 gap-3 place-items-center  rounded-lg w-[100%] sm:h-[650px]">
             {gameOver ? (
               <div className="p-10 rounded-lg bg-gray-900 bg-opacity-60 flex flex-col justify-center items-center text-center">
@@ -300,13 +300,15 @@ const Duocards = () => {
             )}
           </div>
         </div>
-        <div className="bg-[aqua]  ">
+        <div className="sm:col-span-2 w-[100%]">
+          <div className="w-[98%] bg-mainorange mb-12">aqui </div>
+          <div className="w-[98%] bg-mainorange mb-12">aqui 2</div>
           <Table />
         </div>
-        <div className="col-span-4 w-[100%]">
+        <div className="sm:col-span-5 w-[100%]">
           <NewComment />
         </div>
-        <div className="col-span-4 w-[100%]">
+        <div className="sm:col-span-5 w-[100%]">
           <Comments />
         </div>
       </div>
