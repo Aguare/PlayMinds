@@ -15,6 +15,7 @@ import Comments from '@/components/comment'
 import { CardGameG } from '@/models/Entitys/Assistant/CardGameG'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import Footer from '@/components/footer'
 
 const MemorizeGame = () => {
   var user = new User('', '', '', '', 0)
@@ -171,7 +172,8 @@ const MemorizeGame = () => {
               tmp &&
               memoryGame.game.id_game
             ) {
-              const gameC = new GameComplete(0,
+              const gameC = new GameComplete(
+                0,
                 tmp,
                 memoryGame.game.id_game,
                 new Date(),
@@ -242,6 +244,7 @@ const MemorizeGame = () => {
           <Comments />
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

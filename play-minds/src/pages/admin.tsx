@@ -1,6 +1,6 @@
 import NavBar from '../components/navbar'
 import Card from '../components/card'
-import UserCard from '@/components/usercard'
+import UserCard from '@/pages/usercard'
 
 const Admin = () => {
   return (

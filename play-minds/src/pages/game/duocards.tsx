@@ -14,6 +14,7 @@ import { Card } from '@/models/Entitys/Card'
 import Table from '@/components/table'
 import NewComment from '@/components/newComment'
 import Comments from '@/components/comment'
+import Footer from '@/components/footer'
 
 const Duocards = () => {
   const user = new User('', '', '', '', 0)
@@ -231,7 +232,8 @@ const Duocards = () => {
           let score =
             (cardGameG.game.value_points / cardGameG.cards.length) *
             correctAnswers
-          const gameC = new GameComplete(0,
+          const gameC = new GameComplete(
+            0,
             tmp,
             cardGameG.game.id_game,
             new Date(),
@@ -316,6 +318,7 @@ const Duocards = () => {
           <Comments />
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
