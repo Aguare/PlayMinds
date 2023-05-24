@@ -107,7 +107,7 @@ const NavBar = () => {
           <input
             type="text"
             className="w-full bg-gray-100 outline-none p-2 rounded-lg"
-            placeholder="Buscar sala de juego"
+            placeholder="Buscar Juego"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -164,7 +164,7 @@ const NavBar = () => {
         )}
         {user?.role === 'TEACHER' && (
           <button
-            className="text-[#EFEFEF] text-xs xl:py-3 xl:px-2 rounded-lg transition-colors"
+            className="text-[#EFEFEF] xl:py-1 xl:px-2 rounded-lg hover:bg-mainorange transition-colors"
             onClick={handleCreateGame}
           >
             Crear Juegos
