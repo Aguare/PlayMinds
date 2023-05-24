@@ -5,7 +5,9 @@ import { Game } from '../../models/Entitys/Game'
 import { Imag } from '../../models/Entitys/Imag'
 import { User } from '../../models/Entitys/User'
 import { MemoryGame } from '../../models/Entitys/Assistant/MemoryGame'
-import {Request} from '../../helpers/requests'
+import { Request } from '../../helpers/requests'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const MemorizeF = () => {
   const [selectedFile, setSelectedFile] = useState<FileList | null>(null)
@@ -39,16 +41,17 @@ const MemorizeF = () => {
     setSelectedFile(event.target.files)
   }
 
-  const getUserEmail = () => {
-    // Lógica para obtener el correo del usuario logeado
-
-    // Actualizar el estado con el correo del usuario
-    setUserEmail('marcosy300@gmail.com')
-  }
-
   const handleImageUpload = async () => {
     // Verifica que se haya seleccionado un archivo
     if (!selectedFile) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Oops...',
+        text: 'No se ha seleccionado ninguna imagen',
+        showConfirmButton: false,
+        timer: 1500,
+      })
       return
     }
 
@@ -60,34 +63,85 @@ const MemorizeF = () => {
 
     try {
       // Realiza la solicitud POST al API utilizando Axios
-      const response = await axios.post(
-        Request.UPLOAD_MEMORIZE,
-        formData,
-      )
+      const response = await axios.post(Request.UPLOAD_MEMORIZE, formData)
       console.log(response.data)
       listImages.push(response.data[0])
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Ok',
+        text: 'Se subio correctamente la imagen',
+        showConfirmButton: false,
+        timer: 800,
+      })
     } catch (error) {
       console.error(error)
     }
   }
 
   const handleGameCreation = async () => {
-    const user = new User(userEmail, '', '', 'STUDENT', 0)
+    // Obtener los datos del usuario desde el localStorage
+    const userString = localStorage.getItem('user')
+    let user
+    if (userString) {
+      user = JSON.parse(userString)
+    } else {
+      // Manejar el caso cuando los datos del usuario no están disponibles
+
+      return
+    }
+
+    // Crear el objeto de tipo User con los datos obtenidos del localStorage
+    const userObject = new User(
+      user.email,
+      user.name,
+      '',
+      user.role,
+      user.points,
+    )
+
     const game = new Game(
       '',
       name_game,
       'MEMORY',
       description,
       parseInt(value_points),
-      user,
+      userObject,
     )
     const memoryGame = new MemoryGame(game, listImages)
+    if (listImages.length === 0) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Opps....',
+        text: 'No se ingreso ninguna imagen',
+        showConfirmButton: false,
+        timer: 1500,
+      })
+      return
+    }
     try {
-      const response = await axios.post(
-        Request.REGISTER_MEMORY_GAME,
-        memoryGame,
-      )
-      console.log(response.data)
+      const response = await axios
+        .post(Request.REGISTER_MEMORY_GAME, memoryGame, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(function (response) {
+          setSelectedFile(null)
+          setUploadedFiles([])
+          setName_game('')
+          setDescription('')
+          setValue_points('')
+          setError('')
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Se ingreso correctamente el juego',
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        })
     } catch (error) {
       console.error(error)
     }
@@ -101,9 +155,6 @@ const MemorizeF = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
-    // Obtenemos el correo del usuario logeado
-    getUserEmail()
 
     // Sube la imagen al servidor
     await handleImageUpload()

@@ -7,7 +7,9 @@ import { User } from '../../models/Entitys/User'
 import { Game } from '../../models/Entitys/Game'
 import { QuizGame } from '../../models/Entitys/Assistant/QuizGame'
 import { QuestionOBJ } from '@/models/Entitys/Assistant/QuestionOBJ'
-import {Request} from '../../helpers/requests'
+import { Request } from '../../helpers/requests'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 const QuizForm = () => {
   const [pregunta, setPregunta] = useState<string>('')
   const [respuestas, setRespuestas] = useState<string[]>(['', '', '', ''])
@@ -20,7 +22,7 @@ const QuizForm = () => {
   const [value_points, setValue_points] = useState<string>('')
   const [userEmail, setUserEmail] = useState('')
   const [aux, setAux] = useState<number>(-1)
-
+  const MySwal = withReactContent(Swal)
   const handlePreguntaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPregunta(event.target.value)
     setError('')
@@ -75,29 +77,33 @@ const QuizForm = () => {
     setError('')
   }
 
-  const getUserEmail = () => {
-    // Lógica para obtener el correo del usuario logeado
-
-    // Actualizar el estado con el correo del usuario
-    setUserEmail('marcosy300@gmail.com')
-    return 'marcosy300@gmail.com'
-  }
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
+    // Obtener los datos del usuario desde el localStorage
+    const userString = localStorage.getItem('user')
+    let user
+    if (userString) {
+      user = JSON.parse(userString)
+    } else {
+      // Manejar el caso cuando los datos del usuario no están disponibles
 
-    // Obtenemos el correo del usuario logeado
-    getUserEmail()
+      return
+    }
     // Crear instancia de User
-
-    const user = new User(getUserEmail(), '', '', 'STUDENT', 0)
+    const userObject = new User(
+      user.email,
+      user.name,
+      '',
+      user.role,
+      user.points,
+    )
     const game = new Game(
       '',
       name_game,
       'QUIZ',
       description,
       parseInt(value_points),
-      user,
+      userObject,
     )
 
     // Crear instancias de QuestionOBJ
@@ -119,17 +125,39 @@ const QuizForm = () => {
 
     const quizGame = new QuizGame(game, questionObjs)
     const jsonData = JSON.stringify(quizGame)
-
+    if(questionObjs.length === 0){
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Opps....',
+        text: 'No se ingreso ninguna palabra',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      return
+    } 
     // Enviar los datos al servidor utilizando Axios
     try {
-      const response = await axios.post(
-        Request.REGISTER_QUIZ_GAME,
-        jsonData,
-        {
-          headers: { 'Content-Type': 'application/json' },
-        },
-      )
-      console.log(response.data)
+      console.log("datos enviados"+jsonData)
+      const response = await axios.post(Request.REGISTER_QUIZ_GAME, jsonData, {
+        headers: { 'Content-Type': 'application/json' },
+      }).then(function (response) {
+        setPregunta('')
+        setRespuestas(['', '', '', ''])
+        setPreguntas([])
+        setName_game('')
+        setDescription('')
+        setValue_points('')
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Se ingreso correctamente el juego',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        console.log(response.data)
+      })
+      
     } catch (error) {
       console.error(error)
     }

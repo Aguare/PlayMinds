@@ -9,6 +9,12 @@ import { User } from '@/models/Entitys/User'
 import { Request } from '@/helpers/requests'
 import axios from 'axios'
 import { GameComplete } from '@/models/Entitys/GameComplete'
+import Table from '@/components/table'
+import NewComment from '@/components/newComment'
+import Comments from '@/components/comment'
+import { CardGameG } from '@/models/Entitys/Assistant/CardGameG'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const MemorizeGame = () => {
   var user = new User('', '', '', '', 0)
@@ -77,7 +83,6 @@ const MemorizeGame = () => {
         setMemoryGame(response.data)
         memoryGame.imageList = response.data.imageList
         setCards(memoryGame.imageList)
-        console.log(memoryGame)
         memoryGame.imageList.forEach((img) => {
           img.path_img = img.path_img.replace(
             'http://localhost:8080',
@@ -147,15 +152,27 @@ const MemorizeGame = () => {
           setPairsFound(pairsFound + 1)
 
           // Comprobar si se ha encontrado el último par
-          if (pairsFound + 1 === cards.length / 2) {
+          console.log(memoryGame.imageList.length / 2)
+          console.log(pairsFound + 1)
+          if (pairsFound + 1 === memoryGame.imageList.length / 2) {
+            Swal.fire({
+              title: 'Felicidades Ganaste',
+              width: 600,
+              padding: '3em',
+              color: '#716add',
+            })
             setGameCompleted(true)
+            let tmp = localStorage.getItem('user')
+            if (tmp) {
+              tmp = JSON.parse(tmp).email
+            }
             if (
               memoryGame.game.id_game != 'default' &&
-              user.email != '' &&
+              tmp &&
               memoryGame.game.id_game
             ) {
-              const gameC = new GameComplete(
-                user.email,
+              const gameC = new GameComplete(0,
+                tmp,
                 memoryGame.game.id_game,
                 new Date(),
                 memoryGame.game.value_points,
@@ -182,11 +199,12 @@ const MemorizeGame = () => {
   return (
     <div className="bg-gray-100 min-h-screen w-[100%]">
       <NavBar />
-      <div className="px-4 py-8 flex flex-wrap md:items-center md:justify-center gap-8 sm:w-[60%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px]">
-        {cards.map((card) => (
-          <button
-            key={card.id}
-            className="py-2 px-6 text-center relative w-36 h-36 sm:w-48 sm:h-48 
+      <div className="w-[100%] h-[100%] grid sm:grid-cols-5 grid-cols-1 place-items-center gap-4">
+        <div className="px-4 py-8 flex flex-wrap md:items-center md:justify-center gap-8 sm:w-[60%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px] sm:col-span-3">
+          {cards.map((card) => (
+            <button
+              key={card.id}
+              className="py-2 px-6 text-center relative w-36 h-36 sm:w-48 sm:h-48 
             before:absolute before:top-0 before:left-0 before:w-full before:h-full 
             before:z-10 before:bg-green-500/10 before:transition-all before:duration-300 
             hover:before:opacity-0 hover:before:scale-50 
@@ -194,41 +212,32 @@ const MemorizeGame = () => {
             after:z-10 after:opacity-0 after:transition-all after:duration-300 
             after:border after:border-green-600 after:scale-125 
             hover:after:opacity-100 hover:after:scale-100"
-            onClick={() => handleClick(card)}
-          >
-            {card.show ? (
-              <img src={card.path_img} className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full "></div>
-            )}
-          </button>
-        ))}
-      </div>
-
-      {gameCompleted && (
-        <div className="flex bg-white shadow-lg rounded-lg sm:w-[20%]">
-          <div className="icon bg-green-600 flex justify-center items-center py-4 px-6 rounded-tr-3xl rounded-lg">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 bg-white rounded-full text-green-600 p-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
+              onClick={() => handleClick(card)}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          </div>
-          <div className="flex flex-col p-4 rounded-tr-lg rounded-br-lg">
-            <h2 className="font-semibold text-green-600">Éxito</h2>
-            <p className="text-gray-700">FELICIDADES GANASTE </p>
-          </div>
+              {card.show ? (
+                <img
+                  src={card.path_img}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full "></div>
+              )}
+            </button>
+          ))}
         </div>
-      )}
+        {gameCompleted}
+        <div className="sm:col-span-2 w-[100%]">
+          <div className="w-[98%] bg-mainorange mb-12">aqui </div>
+          <div className="w-[98%] bg-mainorange mb-12">aqui 2</div>
+          <Table />
+        </div>
+        <div className="sm:col-span-5 w-[100%]">
+          <NewComment />
+        </div>
+        <div className="sm:col-span-5 w-[100%]">
+          <Comments />
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,37 +1,47 @@
-import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
-import imgIngenieria from '../image/Image-carrera-inge.png'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios'
-import { Game } from '../models/Entitys/Game'
-import { Request } from '../helpers/requests'
-import { useRouter } from 'next/router'
+import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { Game } from "../models/Entitys/Game";
+import { Request } from "../helpers/requests";
+import { useRouter } from "next/router";
 
 const Card = () => {
-  const [games, setGames] = useState<Game[]>([])
-  const router = useRouter()
+  const [games, setGames] = useState<Game[]>([]);
+  const router = useRouter();
+
+  const getImage = (type: string) => {
+    if (type === "QUIZ") return Request.SERVER_IMAGE + "/quizgame.png";
+    if (type === "CARD") return Request.SERVER_IMAGE + "/cardgame.png";
+    if (type === "MEMORY") return Request.SERVER_IMAGE + "/memorygame.png";
+    if (type === "HANGED") return Request.SERVER_IMAGE + "/hangedgame.png";
+    return Request.SERVER_IMAGE + "/quiz.png";
+  };
 
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await axios.get(Request.GET_ALL_GAMES)
-        setGames(response.data)
+        const response = await axios.get(Request.GET_ALL_GAMES, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setGames(response.data);
       } catch (error) {
-        console.error('Error al obtener los juegos:', error)
+        console.error("Error al obtener los juegos:", error);
       }
-    }
+    };
 
-    fetchGames()
-  }, [])
+    fetchGames();
+  }, []);
 
   const handlePlay = (type: any, id: any) => {
-    console.log('Jugar:', id)
-    if (type === 'QUIZ') router.push(`game/quiz?id=${id}`)
-    if (type === 'CARD') router.push(`game/duocards?id=${id}`)
-    if (type === 'MEMORY') router.push(`game/memorize?id=${id}`)
-    if (type === 'HANGED') router.push(`game/ahorcado?id=${id}`)
-  }
+    console.log("Jugar:", id);
+    if (type === "QUIZ") router.push(`game/quiz?id=${id}`);
+    if (type === "CARD") router.push(`game/duocards?id=${id}`);
+    if (type === "MEMORY") router.push(`game/memorize?id=${id}`);
+    if (type === "HANGED") router.push(`game/ahorcado?id=${id}`);
+  };
 
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-8 p-8">
@@ -41,8 +51,8 @@ const Card = () => {
           className="flex flex-col gap-6 bg-gray-100 p-8 rounded-xl drop-shadow-xl"
         >
           <div className="flex flex-col items-center justify-center mx-auto pad ">
-            <Image
-              src={imgIngenieria}
+            <img
+              src={getImage(game.type_game)}
               alt="Imagen de fondo"
               width={400}
               height={400}
@@ -68,7 +78,7 @@ const Card = () => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;

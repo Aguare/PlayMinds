@@ -6,7 +6,9 @@ import { Game } from '../../models/Entitys/Game'
 import { Phrase } from '../../models/Entitys/Phrase'
 import { User } from '../../models/Entitys/User'
 import { HangedGame } from '../../models/Entitys/Assistant/HangedGame'
-import {Request} from '../../helpers/requests'
+import { Request } from '../../helpers/requests'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const AhorcadoF = () => {
   const [palabra, setPalabra] = useState<string>('')
@@ -18,7 +20,6 @@ const AhorcadoF = () => {
     { palabra: string; pista: string }[]
   >([])
   const [error, setError] = useState<string>('')
-  const [userEmail, setUserEmail] = useState('')
 
   const handlePalabraChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPalabra(event.target.value)
@@ -62,44 +63,80 @@ const AhorcadoF = () => {
     setError('')
   }
 
-  const getUserEmail = () => {
-    // Lógica para obtener el correo del usuario logeado
-
-    // Actualizar el estado con el correo del usuario
-    setUserEmail('marcosy300@gmail.com')
-  }
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    // Obtenemos el correo del usuario logeado
-    getUserEmail()
+    // Obtener los datos del usuario desde el localStorage
+    const userString = localStorage.getItem('user')
+    let user
+    if (userString) {
+      user = JSON.parse(userString)
+     
+    } else {
+      // Manejar el caso cuando los datos del usuario no están disponibles
 
-    // Crear el objeto de tipo HangedGame
-    const user = new User(userEmail, '', '', 'STUDENT', 0)
+      return
+    }
+
+    // Crear el objeto de tipo User con los datos obtenidos del localStorage
+    const userObject = new User(
+      user.email,
+      user.name,
+      '',
+      user.role,
+      user.points,
+    )
+
     const game = new Game(
       '',
       name_game,
       'HANGED',
       description,
       parseInt(value_points),
-      user,
+      userObject,
     )
 
     const phrasesArray = palabras.map(
       (p, i) => new Phrase(i + 1, p.palabra, p.pista),
     )
     const hangedGame = new HangedGame(game, phrasesArray)
-
+  if(phrasesArray.length==0){
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: 'Opps....',
+      text: 'No se ingreso ninguna palabra',
+      showConfirmButton: false,
+      timer: 1500
+    })
+    return
+  }
     try {
       // Realizar la solicitud POST
       const response = await axios.post(
         Request.REGISTER_HANGED_GAME,
-        hangedGame,
-      )
+        hangedGame,{ headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(function (response) {
+        setPalabras([]),
+        setName_game(''),
+        setDescription(''),
+        setValue_points(''),
+        setPista('')
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Se ingreso correctamente el juego',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        console.log(response.data)
+      })
 
       // Manejar la respuesta del servidor
-      console.log(response.data)
+
     } catch (error) {
       console.error(error)
     }

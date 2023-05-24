@@ -1,5 +1,5 @@
-import NavBar from '../components/navbar'
-import Card from '../components/card'
+import NavBar from "../components/navbar";
+import Card from "../components/card";
 
 const home = () => {
   return (
@@ -7,6 +7,6 @@ const home = () => {
       <NavBar />
       <Card />
     </div>
-  )
-}
-export default home
+  );
+};
+export default home;

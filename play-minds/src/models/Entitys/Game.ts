@@ -1,3 +1,4 @@
+import { Request } from "@/helpers/requests";
 import { User } from "./User";
 
 export class Game {

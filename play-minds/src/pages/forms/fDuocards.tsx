@@ -5,7 +5,10 @@ import { Imag } from '../../models/Entitys/Imag'
 import { Card } from '@/models/Entitys/Card'
 import { User } from '../../models/Entitys/User'
 import { CardGameG } from '@/models/Entitys/Assistant/CardGameG'
-import {Request} from '../../helpers/requests'
+import { Request } from '../../helpers/requests'
+import NavBar from '@/components/navbar'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const DuoCardsForm = () => {
   const [pregunta, setPregunta] = useState<string>('')
@@ -59,16 +62,17 @@ const DuoCardsForm = () => {
     setError('')
   }
 
-  const getUserEmail = () => {
-    // Lógica para obtener el correo del usuario logeado
-
-    // Actualizar el estado con el correo del usuario
-    setUserEmail('marcosy300@gmail.com')
-  }
-
   const handleImage = async () => {
     // Verifica que se haya seleccionado un archivo
     if (!selectedFile) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Oops...',
+        text: 'No se ha seleccionado ninguna imagen',
+        showConfirmButton: false,
+        timer: 1500
+      })
       return
     }
 
@@ -82,12 +86,19 @@ const DuoCardsForm = () => {
     // Envía la imagen al servidor
     try {
       // Realiza la solicitud POST al API utilizando Axios
-      const response = await axios.post(
-        Request.UPLOAD_DUO_CARD,
-        formData,
-      )
+      const response = await axios.post(Request.UPLOAD_DUO_CARD, formData, {headers: {
+        'Content-Type': 'apllication/json'
+      },
+    })
       console.log(response.data)
       listcards.push(response.data[0])
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Imagen cargagada con exito',
+        showConfirmButton: false,
+        timer: 800
+      })
     } catch (error) {
       console.error(error)
     }
@@ -124,17 +135,37 @@ const DuoCardsForm = () => {
     setUploadedFiles([])
     setPista('')
     setError('')
+    setRespuestaCorrecta(false)
   }
 
   const handleGameCreation = async () => {
-    const user = new User(userEmail, '', '', 'STUDENT', 0)
+    // Obtener los datos del usuario desde el localStorage
+    const userString = localStorage.getItem('user')
+    let user
+    if (userString) {
+      user = JSON.parse(userString)
+    } else {
+      // Manejar el caso cuando los datos del usuario no están disponibles
+
+      return
+    }
+
+    // Crear el objeto de tipo User con los datos obtenidos del localStorage
+    const userObject = new User(
+      user.email,
+      user.name,
+      '',
+      user.role,
+      user.points,
+    )
+
     const game = new Game(
       '',
       name_game,
       'CARD',
       description,
       parseInt(value_points),
-      user,
+      userObject,
     )
 
     const cards: Card[] = []
@@ -151,11 +182,40 @@ const DuoCardsForm = () => {
     })
 
     const cardGameG = new CardGameG(game, cards)
+    if(cards.length === 0){
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Opps....',
+        text: 'No se ingreso ninguna palabra',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      return
+    } 
     try {
-      const response = await axios.post(
-        Request.REGISTER_CARD_GAME,
-        cardGameG,
-      )
+      const response = await axios.post(Request.REGISTER_CARD_GAME, cardGameG , {
+        headers: {
+          'Content-Type': 'application/json',
+          },
+          })
+      setPregunta('')
+      setSelectedFile(null)
+      setUploadedFiles([])
+      setPista('')
+      setError('')
+      setRespuestaCorrecta(false)
+      setName_game('')
+      setDescription('')
+      setValue_points('')
+      setCartas([])
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Se ingreso correctamente el juego',
+        showConfirmButton: false,
+        timer: 1500
+      })
       console.log(response.data)
       console.log(cardGameG)
     } catch (error) {
@@ -166,9 +226,6 @@ const DuoCardsForm = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    // Obtenemos el correo del usuario logeado
-    getUserEmail()
-
     // Sube la imagen al servidor
     await handleImage()
 
@@ -178,6 +235,7 @@ const DuoCardsForm = () => {
 
   return (
     <div>
+      <NavBar />
       <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 overflow-hidden">
         <div>
           <h1 className="mb-1 font-bold text-3xl flex gap-1 items-baseline text-maincian">

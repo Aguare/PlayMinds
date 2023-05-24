@@ -12,19 +12,12 @@ import Table from "@/components/table";
 import NewComment from "@/components/newComment";
 import Comments from "@/components/comment";
 
-interface Question {
-  question: string;
-  answers: Answer[];
-}
-
-interface Answer {
-  text: string;
-  correct: boolean;
-}
-
 const Quiz = () => {
   const router = useRouter();
-  const { id } = router.query;
+  var id = "default";
+  if (router.query) {
+    id = router.query.id as string;
+  }
   var user = new User("", "", "", "", 0);
   const [quizGame, setQuizGame] = useState<QuizGame>(
     new QuizGame(
@@ -103,6 +96,7 @@ const Quiz = () => {
         setQuizGame(response.data);
         quizGame.questions = response.data.questions;
         setQuestions(quizGame.questions);
+        quizGame.game = response.data.game;
       })
       .catch(function (error) {
         console.error(error);
@@ -116,24 +110,32 @@ const Quiz = () => {
     if (answerCorrect) {
       setScore(score + 1);
     }
-
     const nextQuestion = currentQuestion + 1;
 
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
     } else {
       setShowScore(true);
-      if (
-        quizGame.game.id_game != "default" &&
-        user.email != "" &&
-        quizGame.game.id_game
-      ) {
+      let tmp = localStorage.getItem("user");
+      if (tmp) {
+        tmp = JSON.parse(tmp).email;
+      }
+      if (tmp && quizGame.game.id_game != "default" && quizGame.game.id_game) {
+        let newScore = 0;
+        if (answerCorrect) {
+          newScore =
+            (quizGame.game.value_points / questions.length) * (score + 1);
+        } else {
+          newScore = (quizGame.game.value_points / questions.length) * score;
+        }
         const gameC = new GameComplete(
-          user.email,
+          0,
+          tmp,
           quizGame.game.id_game,
           new Date(),
-          score
+          newScore
         );
+        console.log(gameC);
         axios.post(Request.SERVER + "/Games/RegisterGameComplete", gameC);
       }
     }
@@ -148,8 +150,8 @@ const Quiz = () => {
   return (
     <div className="bg-gray-100 min-h-screen w-[100%]">
       <NavBar />
-      <div className="w-[100%] h-[100%] grid sm:grid-cols-4 grid-cols-1 place-items-center">
-        <div className="col-span-3 bg-[#EFEFEF] sm:w-[80%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px] grid grid-cols-1 p-2 gap-3 place-items-center overflow-hidden">
+      <div className="w-[100%] h-[100%] grid sm:grid-cols-5 grid-cols-1 place-items-center">
+        <div className="sm:col-span-3 bg-[#EFEFEF] sm:w-[80%] w-[100%] border-2 rounded-lg border-[#205375] sm:mt-[20px] sm:ml-[20px] grid grid-cols-1 p-2 gap-3 place-items-center overflow-hidden">
           {showScore ? (
             <div className="quiz-result">
               <h1>Resultado</h1>
@@ -192,13 +194,15 @@ const Quiz = () => {
             </div>
           )}
         </div>
-        <div className="bg-[aqua]  ">
+        <div className="sm:col-span-2 w-[100%]">
+          <div className="w-[98%] bg-mainorange mb-12">aqui </div>
+          <div className="w-[98%] bg-mainorange mb-12">aqui 2</div>
           <Table />
         </div>
-        <div className="col-span-4 w-[100%]">
+        <div className="sm:col-span-5 w-[100%]">
           <NewComment />
         </div>
-        <div className="col-span-4 w-[100%]">
+        <div className="sm:col-span-5 w-[100%]">
           <Comments />
         </div>
       </div>
