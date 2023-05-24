@@ -9,6 +9,6 @@ const home = () => {
       <Card />
       <Footer />
     </div>
-  )
-}
-export default home
+  );
+};
+export default home;
