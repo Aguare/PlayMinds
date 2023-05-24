@@ -8,6 +8,8 @@ import { Game } from '../../models/Entitys/Game'
 import { QuizGame } from '../../models/Entitys/Assistant/QuizGame'
 import { QuestionOBJ } from '@/models/Entitys/Assistant/QuestionOBJ'
 import { Request } from '../../helpers/requests'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 const QuizForm = () => {
   const [pregunta, setPregunta] = useState<string>('')
   const [respuestas, setRespuestas] = useState<string[]>(['', '', '', ''])
@@ -20,7 +22,7 @@ const QuizForm = () => {
   const [value_points, setValue_points] = useState<string>('')
   const [userEmail, setUserEmail] = useState('')
   const [aux, setAux] = useState<number>(-1)
-
+  const MySwal = withReactContent(Swal)
   const handlePreguntaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPregunta(event.target.value)
     setError('')
@@ -123,13 +125,39 @@ const QuizForm = () => {
 
     const quizGame = new QuizGame(game, questionObjs)
     const jsonData = JSON.stringify(quizGame)
-
+    if(questionObjs.length === 0){
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Opps....',
+        text: 'No se ingreso ninguna palabra',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      return
+    } 
     // Enviar los datos al servidor utilizando Axios
     try {
+      console.log("datos enviados"+jsonData)
       const response = await axios.post(Request.REGISTER_QUIZ_GAME, jsonData, {
         headers: { 'Content-Type': 'application/json' },
+      }).then(function (response) {
+        setPregunta('')
+        setRespuestas(['', '', '', ''])
+        setPreguntas([])
+        setName_game('')
+        setDescription('')
+        setValue_points('')
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Se ingreso correctamente el juego',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        console.log(response.data)
       })
-      console.log(response.data)
+      
     } catch (error) {
       console.error(error)
     }

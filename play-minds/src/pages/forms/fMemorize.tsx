@@ -6,6 +6,8 @@ import { Imag } from '../../models/Entitys/Imag'
 import { User } from '../../models/Entitys/User'
 import { MemoryGame } from '../../models/Entitys/Assistant/MemoryGame'
 import { Request } from '../../helpers/requests'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const MemorizeF = () => {
   const [selectedFile, setSelectedFile] = useState<FileList | null>(null)
@@ -42,6 +44,14 @@ const MemorizeF = () => {
   const handleImageUpload = async () => {
     // Verifica que se haya seleccionado un archivo
     if (!selectedFile) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Oops...',
+        text: 'No se ha seleccionado ninguna imagen',
+        showConfirmButton: false,
+        timer: 1500
+      })
       return
     }
 
@@ -56,6 +66,14 @@ const MemorizeF = () => {
       const response = await axios.post(Request.UPLOAD_MEMORIZE, formData)
       console.log(response.data)
       listImages.push(response.data[0])
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Opps....',
+        text: 'Se subio correctamente la imagen',
+        showConfirmButton: false,
+        timer: 800
+      })
     } catch (error) {
       console.error(error)
     }
@@ -91,12 +109,37 @@ const MemorizeF = () => {
       userObject,
     )
     const memoryGame = new MemoryGame(game, listImages)
+    if(listImages.length === 0){
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Opps....',
+        text: 'No se ingreso ninguna palabra',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      return
+    } 
     try {
       const response = await axios.post(
         Request.REGISTER_MEMORY_GAME,
         memoryGame,
-      )
-      console.log(response.data)
+      ).then(function (response) {
+        setSelectedFile(null)
+        setUploadedFiles([])
+        setName_game('')
+        setDescription('')
+        setValue_points('')
+        setError('')
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Se ingreso correctamente el juego',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      })
+     
     } catch (error) {
       console.error(error)
     }

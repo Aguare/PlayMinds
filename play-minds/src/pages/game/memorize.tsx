@@ -1,4 +1,3 @@
-import { Game } from "@/models/Entitys/Game";
 import { MemoryGame } from '@/models/Entitys/Assistant/MemoryGame'
 import NavBar from '../../components/navbar'
 import { useState } from 'react'
@@ -13,6 +12,9 @@ import { GameComplete } from '@/models/Entitys/GameComplete'
 import Table from '@/components/table'
 import NewComment from '@/components/newComment'
 import Comments from '@/components/comment'
+import { CardGameG } from '@/models/Entitys/Assistant/CardGameG'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const MemorizeGame = () => {
   var user = new User("", "", "", "", 0);
@@ -150,7 +152,15 @@ const MemorizeGame = () => {
           setPairsFound(pairsFound + 1);
 
           // Comprobar si se ha encontrado el último par
-          if (pairsFound + 1 === cards.length / 2) {
+          console.log(memoryGame.imageList.length / 2)
+          console.log(pairsFound+1)
+          if (pairsFound + 1 === memoryGame.imageList.length / 2) {
+            Swal.fire({
+              title: 'Felicidades Ganaste',
+              width: 600,
+              padding: '3em',
+              color: '#716add',
+            })
             setGameCompleted(true);
             let tmp = localStorage.getItem("user");
             if (tmp) {
@@ -211,30 +221,7 @@ const MemorizeGame = () => {
           </button>
         ))}
       </div>
-      {gameCompleted && (
-        <div className="flex bg-white shadow-lg rounded-lg sm:w-[20%]">
-          <div className="icon bg-green-600 flex justify-center items-center py-4 px-6 rounded-tr-3xl rounded-lg">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 bg-white rounded-full text-green-600 p-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          </div>
-          <div className="flex flex-col p-4 rounded-tr-lg rounded-br-lg">
-            <h2 className="font-semibold text-green-600">Éxito</h2>
-            <p className="text-gray-700">FELICIDADES GANASTE </p>
-          </div>
-        </div>
-      )}
+      {gameCompleted}
       <div className="col-span-4 w-[100%]">
         <NewComment />
       </div>
