@@ -29,6 +29,8 @@ const SignIn = () => {
         router.push('/forms/creator') // Redireccionar al enlace del docente
       } else if (userData.role === 'STUDENT') {
         router.push('/home') // Redireccionar al enlace del estudiante
+      } else if (userData.role === 'ADMIN') {
+        router.push('/usercard') // Redireccionar al enlace del administrador
       } else {
         // En caso de otro rol, redireccionar a una página de error o realizar otra acción
         router.push('/error')

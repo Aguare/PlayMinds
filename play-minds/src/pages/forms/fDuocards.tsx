@@ -9,6 +9,7 @@ import { Request } from '../../helpers/requests'
 import NavBar from '@/components/navbar'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import Footer from '@/components/footer'
 
 const DuoCardsForm = () => {
   const [pregunta, setPregunta] = useState<string>('')
@@ -71,7 +72,7 @@ const DuoCardsForm = () => {
         title: 'Oops...',
         text: 'No se ha seleccionado ninguna imagen',
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       })
       return
     }
@@ -86,10 +87,11 @@ const DuoCardsForm = () => {
     // Envía la imagen al servidor
     try {
       // Realiza la solicitud POST al API utilizando Axios
-      const response = await axios.post(Request.UPLOAD_DUO_CARD, formData, {headers: {
-        'Content-Type': 'apllication/json'
-      },
-    })
+      const response = await axios.post(Request.UPLOAD_DUO_CARD, formData, {
+        headers: {
+          'Content-Type': 'apllication/json',
+        },
+      })
       console.log(response.data)
       listcards.push(response.data[0])
       Swal.fire({
@@ -97,7 +99,7 @@ const DuoCardsForm = () => {
         icon: 'success',
         title: 'Imagen cargagada con exito',
         showConfirmButton: false,
-        timer: 800
+        timer: 800,
       })
     } catch (error) {
       console.error(error)
@@ -182,23 +184,23 @@ const DuoCardsForm = () => {
     })
 
     const cardGameG = new CardGameG(game, cards)
-    if(cards.length === 0){
+    if (cards.length === 0) {
       Swal.fire({
         position: 'center',
         icon: 'error',
         title: 'Opps....',
         text: 'No se ingreso ninguna palabra',
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       })
       return
-    } 
+    }
     try {
-      const response = await axios.post(Request.REGISTER_CARD_GAME, cardGameG , {
+      const response = await axios.post(Request.REGISTER_CARD_GAME, cardGameG, {
         headers: {
           'Content-Type': 'application/json',
-          },
-          })
+        },
+      })
       setPregunta('')
       setSelectedFile(null)
       setUploadedFiles([])
@@ -214,7 +216,7 @@ const DuoCardsForm = () => {
         icon: 'success',
         title: 'Se ingreso correctamente el juego',
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       })
       console.log(response.data)
       console.log(cardGameG)
@@ -451,6 +453,7 @@ const DuoCardsForm = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

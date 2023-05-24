@@ -13,6 +13,7 @@ import { Request } from '@/helpers/requests'
 import axios from 'axios'
 import { Phrase } from '@/models/Entitys/Phrase'
 import { GameComplete } from '@/models/Entitys/GameComplete'
+import Footer from '@/components/footer'
 function Hangman() {
   var user = new User('', '', '', '', 0)
   const route = useRouter()
@@ -116,7 +117,8 @@ function Hangman() {
           newScore =
             (hangedGame.game.value_points / hangedGame.phrases.length) * score
         }
-        const gameC = new GameComplete(0,
+        const gameC = new GameComplete(
+          0,
           tmp,
           hangedGame.game.id_game,
           new Date(),
@@ -263,8 +265,12 @@ function Hangman() {
           )}
         </div>
         <div className="sm:col-span-2 w-[100%]">
-          <div className="w-[98%] bg-mainorange mb-12">aqui </div>
-          <div className="w-[98%] bg-mainorange mb-12">aqui 2</div>
+          <div className="w-[98%] bg-transparent mb-12">
+          <h2 className="text-9xl font-bold mb-4">CODIGO</h2>
+          </div>
+          <div className="w-[98%] bg-transparent mb-12">
+          <h2 className="text-5xl font-bold mb-4">{id}</h2>
+            </div>
           <Table />
         </div>
         <div className="sm:col-span-5 w-[100%]">
@@ -274,6 +280,7 @@ function Hangman() {
           <Comments />
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

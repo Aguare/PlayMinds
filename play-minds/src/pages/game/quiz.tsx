@@ -195,8 +195,12 @@ const Quiz = () => {
           )}
         </div>
         <div className="sm:col-span-2 w-[100%]">
-          <div className="w-[98%] bg-mainorange mb-12">aqui </div>
-          <div className="w-[98%] bg-mainorange mb-12">aqui 2</div>
+          <div className="w-[98%] bg-transparent mb-12">
+          <h2 className="text-9xl font-bold mb-4">CODIGO</h2>
+          </div>
+          <div className="w-[98%] bg-transparent mb-12">
+          <h2 className="text-5xl font-bold mb-4">{id}</h2>
+            </div>
           <Table />
         </div>
         <div className="sm:col-span-5 w-[100%]">
@@ -206,6 +210,7 @@ const Quiz = () => {
           <Comments />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
