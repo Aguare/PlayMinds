@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface CommentDAO extends CrudRepository<Comment, Long>{
 
-    @Query(value = "SELECT * FROM comments WHERE game_id_game = ?1", nativeQuery = true)
+    @Query("SELECT c FROM Comment c WHERE c.game_id_game = :id")
     List<Comment> findByGameIdGame(String id);
 }

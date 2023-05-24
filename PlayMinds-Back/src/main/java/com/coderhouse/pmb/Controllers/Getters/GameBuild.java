@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GameBuild {
@@ -140,9 +139,6 @@ public class GameBuild {
     }
 
     private List<Comment> getCommentsByIdGame(String id){
-        List<Comment> comments = new ArrayList<>();
-        List<Comment> list = this.comment.findByGameIdGame(id);
-        comments.addAll(list);
-        return comments;
+        return this.comment.findByGameIdGame(id);
     }
 }

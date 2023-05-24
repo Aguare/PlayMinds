@@ -53,6 +53,39 @@ public class GameCTRL {
     @Autowired
     private GameCompleteDAO gameComplete;
 
+    @Autowired
+    private CommentDAO comment;
+
+    @Autowired
+    private NotificationDAO notification;
+
+    @Autowired
+    private UserDAO user;
+
+    private void addNotification(String message, Game game, boolean isComment){
+        String redirect = "game/";
+        switch (game.getType_game()) {
+            case QUIZ -> redirect += "quiz?id=";
+            case MEMORY -> redirect += "memory?id=";
+            case HANGED -> redirect += "hanged?id=";
+            case CARD -> redirect += "card?id=";
+        }
+        redirect += game.getId_game();
+        registerNotification(message, !isComment, game.getUser().getEmail(), redirect);
+    }
+
+    @PostMapping("/RegisterComment")
+    public boolean registerComment(@RequestBody Comment comment) {
+        this.comment.save(comment);
+        Game game = this.game.findById(comment.getGame_id_game()).orElse(null);
+        if (game != null) {
+            String message = comment.getUser_email() + " ha comentado en tu juego" + game.getName_game();
+            addNotification(message, game, true);
+            return true;
+        }
+        return true;
+    }
+
     @PostMapping("/RegisterQuizGame")
     public QuizGame registerQuizGame(@RequestBody QuizGame quizGame) {
         quizGame.getGame().setId_game(generateUUID());
@@ -73,6 +106,8 @@ public class GameCTRL {
                 this.questionAnswer.save(newQA);
             }
         }
+        String message = quizGame.getGame().getUser().getName()+" ha creado un nuevo juego de Preguntas!!";
+        addNotification(message, newQuiz, false);
         return null;
     }
 
@@ -87,6 +122,8 @@ public class GameCTRL {
             newImageGame.setImage(i.getId());
             this.imageGame.save(newImageGame);
         }
+        String message = memoryGame.getGame().getUser().getName()+" ha creado un nuevo juego de Memoria!!";
+        addNotification(message, newMemory, false);
         return null;
     }
 
@@ -102,6 +139,8 @@ public class GameCTRL {
             newPhraseGame.setIdPhrase(newPhrase.getId_phrase());
             this.phraseGame.save(newPhraseGame);
         }
+        String message = hangedGame.getGame().getUser().getName()+" ha creado un nuevo juego de Ahorcado!!";
+        addNotification(message, newHanged, false);
         return null;
     }
 
@@ -117,6 +156,8 @@ public class GameCTRL {
             newCardGame.setIdCard(ca.getIdCard());
             this.cardGame.save(newCardGame);
         }
+        String message = cardGameG.getGame().getUser().getName()+" ha creado un nuevo juego de Cartas!!";
+        addNotification(message, newGame, false);
         return null;
     }
 
@@ -154,10 +195,48 @@ public class GameCTRL {
 
     @GetMapping("/GetGameComments")
     public Object getGameComments(String id_game){ return gameBuild.getGameCommentsById(id_game); }
+
+    @GetMapping("/GetRankingByGame")
+    public Iterable<GameComplete> getUserByPoints(String idGame) { return this.gameComplete.findAllByIdGame(idGame); }
+
+    @PutMapping("/UpdateNotificationByUser")
+    public boolean updateNotificationByUser(String user){
+        Iterable<Notification> notifications = this.notification.findAllByUser(user);
+        for (Notification n : notifications){
+            n.setViewed(true);
+            this.notification.save(n);
+        }
+        return true;
+    }
+
+    private void registerNotification(String message, boolean isAllUsers, String user, String redirect){
+        if (isAllUsers){
+            Iterable<User> users = this.user.findAllByRole_Student();
+            for (User u : users){
+                Notification notification = new Notification();
+                notification.setMessage(message);
+                notification.setUser(u.getEmail());
+                notification.setViewed(false);
+                notification.setRedirect(redirect);
+                this.notification.save(notification);
+            }
+        }else{
+            User u = this.user.findById(user).get();
+            {
+                Notification notification = new Notification();
+                notification.setMessage(message);
+                notification.setUser(u.getEmail());
+                notification.setViewed(false);
+                notification.setRedirect(redirect);
+                this.notification.save(notification);
+            }
+        }
+    }
+
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int LENGTH = 10;
 
-    public static String generateUUID() {
+    private static String generateUUID() {
         StringBuilder uuid = new StringBuilder();
         Random random = new Random();
 
@@ -168,5 +247,6 @@ public class GameCTRL {
 
         return uuid.toString();
     }
+
 
 }
