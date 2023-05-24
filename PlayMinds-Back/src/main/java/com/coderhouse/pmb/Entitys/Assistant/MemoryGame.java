@@ -13,6 +13,8 @@ public class MemoryGame implements Serializable {
 
     private List<Image> imageList;
 
+    public MemoryGame() {
+    }
     public MemoryGame(Game game, List<Image> imageList) {
         this.game = game;
         this.imageList = imageList;

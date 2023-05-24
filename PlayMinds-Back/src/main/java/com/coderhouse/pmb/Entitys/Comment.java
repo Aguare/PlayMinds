@@ -11,6 +11,8 @@ import java.sql.Date;
 @Table(name = "comments")
 public class Comment implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id_comment;
     private String game_id_game;
     private String user_email;
     private String comment;

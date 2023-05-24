@@ -24,7 +24,16 @@ const SignIn = () => {
       const userData = response.data
       userData.password = ''
       localStorage.setItem('user', JSON.stringify(userData))
-      router.push('/home') // Redireccionar al usuario a la página Home
+
+      if (userData.role === 'TEACHER') {
+        router.push('/forms/creator') // Redireccionar al enlace del docente
+      } else if (userData.role === 'STUDENT') {
+        router.push('/home') // Redireccionar al enlace del estudiante
+      } else {
+        // En caso de otro rol, redireccionar a una página de error o realizar otra acción
+        router.push('/error')
+      }
+      // Redireccionar al usuario a la página Home
     } catch (error) {
       console.error(error)
       setErrorMessage(
