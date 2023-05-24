@@ -86,7 +86,10 @@ const DuoCardsForm = () => {
     // Envía la imagen al servidor
     try {
       // Realiza la solicitud POST al API utilizando Axios
-      const response = await axios.post(Request.UPLOAD_DUO_CARD, formData)
+      const response = await axios.post(Request.UPLOAD_DUO_CARD, formData, {headers: {
+        'Content-Type': 'apllication/json'
+      },
+    })
       console.log(response.data)
       listcards.push(response.data[0])
       Swal.fire({
@@ -191,7 +194,11 @@ const DuoCardsForm = () => {
       return
     } 
     try {
-      const response = await axios.post(Request.REGISTER_CARD_GAME, cardGameG)
+      const response = await axios.post(Request.REGISTER_CARD_GAME, cardGameG , {
+        headers: {
+          'Content-Type': 'application/json',
+          },
+          })
       setPregunta('')
       setSelectedFile(null)
       setUploadedFiles([])

@@ -63,7 +63,11 @@ const NavBar = () => {
 
   const handlehome = () => {
     axios
-      .get(Request.SERVER + '/Users/GetUser?email=' + user?.email)
+      .get(Request.SERVER + '/Users/GetUser?email=' + user?.email, {
+        headers: {
+          'Content-Type': 'application/json',
+          },
+          })
       .then((response) => {
         setUser(response.data)
         localStorage.setItem('user', JSON.stringify(response.data))

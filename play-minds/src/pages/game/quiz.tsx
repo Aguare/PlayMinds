@@ -141,7 +141,7 @@ const Quiz = () => {
         } else {
           newScore = (quizGame.game.value_points / questions.length) * score
         }
-        const gameC = new GameComplete(
+        const gameC = new GameComplete(0,
           tmp,
           quizGame.game.id_game,
           new Date(),

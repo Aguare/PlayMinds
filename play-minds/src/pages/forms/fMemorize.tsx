@@ -114,7 +114,7 @@ const MemorizeF = () => {
         position: 'center',
         icon: 'error',
         title: 'Opps....',
-        text: 'No se ingreso ninguna palabra',
+        text: 'No se ingreso ninguna imagen',
         showConfirmButton: false,
         timer: 1500
       })
@@ -123,8 +123,12 @@ const MemorizeF = () => {
     try {
       const response = await axios.post(
         Request.REGISTER_MEMORY_GAME,
-        memoryGame,
-      ).then(function (response) {
+        memoryGame, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(function (response) {
         setSelectedFile(null)
         setUploadedFiles([])
         setName_game('')

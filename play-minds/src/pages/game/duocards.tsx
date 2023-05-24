@@ -231,7 +231,7 @@ const Duocards = () => {
           let score =
             (cardGameG.game.value_points / cardGameG.cards.length) *
             correctAnswers
-          const gameC = new GameComplete(
+          const gameC = new GameComplete(0,
             tmp,
             cardGameG.game.id_game,
             new Date(),
