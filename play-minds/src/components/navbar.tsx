@@ -8,12 +8,16 @@ import { User } from '../models/Entitys/User'
 import img1 from '../image/logo playminds.png'
 import axios from 'axios'
 import { Request } from '@/helpers/requests'
+import { set } from 'date-fns'
+import { ca } from 'date-fns/locale'
+import Swal from 'sweetalert2'
 
 const NavBar = () => {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
-
+  const [search, setSearch] = useState('')
+  const [game_find, setGames] = useState('')
   useEffect(() => {
     const userData = localStorage.getItem('user')
     if (userData) {
@@ -21,7 +25,37 @@ const NavBar = () => {
       setUser(parsedUser)
     }
   }, [])
-
+  const handleSearch = (e: any) => {
+    const fetchGame = async () => {
+      await axios
+        .get(Request.GET_GAME_BY_ID + '?id_game=' + search, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((response) => {
+          const game = response.data
+          console.log("->"+response.data.type_game)
+          setGames(game.data)
+          if (response.data.type_game === 'QUIZ') router.push(`game/quiz?id=${response.data.id_game}`)
+          if (response.data.type_game === 'CARD') router.push(`game/duocards?id=${response.data.id_game}`)
+          if (response.data.type_game === 'MEMORY') router.push(`game/memorize?id=${response.data.id_game}`)
+          if (response.data.type_game === 'HANGED') router.push(`game/ahorcado?id=${response.data.id_game}`)
+        }).catch((error) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Opps....',
+            text: 'No se encuentra el juego',
+            showConfirmButton: false,
+            timer: 2000
+          })
+        }
+        )
+    }
+    fetchGame()
+    console.log(search)
+  }
   const handleLogout = () => {
     axios.get(Request.SERVER + '/Users/Logout?email=' + user?.email)
     localStorage.clear() // Elimina los datos
@@ -30,7 +64,11 @@ const NavBar = () => {
 
   const handlehome = () => {
     axios
-      .get(Request.SERVER + '/Users/GetUser?email=' + user?.email)
+      .get(Request.SERVER + '/Users/GetUser?email=' + user?.email, {
+        headers: {
+          'Content-Type': 'application/json',
+          },
+          })
       .then((response) => {
         setUser(response.data)
         localStorage.setItem('user', JSON.stringify(response.data))
@@ -44,6 +82,15 @@ const NavBar = () => {
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen)
   }
+
+  const handleCreateGame = () => {
+    if (user?.role === 'TEACHER') {
+      // Aquí puedes agregar la lógica para redirigir al usuario a la ruta de creación de juegos
+      router.push('/forms/creator')
+      console.log('Redirigir a la página de creación de juegos')
+    }
+  }
+
 
   return (
     <div className="w-full bg-[#112B3C] rounded-lg p-7 sm:flex sm:justify-between gap-4 sm:h-[90px] grid md:grid-cols-1 ">

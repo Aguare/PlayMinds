@@ -116,7 +116,7 @@ function Hangman() {
           newScore =
             (hangedGame.game.value_points / hangedGame.phrases.length) * score
         }
-        const gameC = new GameComplete(
+        const gameC = new GameComplete(0,
           tmp,
           hangedGame.game.id_game,
           new Date(),

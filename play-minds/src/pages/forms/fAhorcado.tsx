@@ -115,8 +115,11 @@ const AhorcadoF = () => {
       // Realizar la solicitud POST
       const response = await axios.post(
         Request.REGISTER_HANGED_GAME,
-        hangedGame,
-      ).then(function (response) {
+        hangedGame,{ headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(function (response) {
         setPalabras([]),
         setName_game(''),
         setDescription(''),

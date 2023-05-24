@@ -4,6 +4,7 @@ import { Request } from '@/helpers/requests'
 import { User } from '../models/Entitys/User'
 import { useRouter } from 'next/router'
 import { format } from 'date-fns'
+import Swal from 'sweetalert2'
 
 const NewComment = () => {
   const [rows, setRows] = useState<number>(4)
@@ -54,7 +55,13 @@ const NewComment = () => {
     axios
       .post(Request.REGISTER_COMMENT, newComment)
       .then((response) => {
-        console.log('Comentario enviado exitosamente')
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Se ingreso correctamente el comentario',
+          showConfirmButton: false,
+          timer: 1500
+        })
       })
       .catch((error) => {
         console.error('Error al enviar el comentario', error)

@@ -15,7 +15,11 @@ const Card = () => {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await axios.get(Request.GET_ALL_GAMES)
+        const response = await axios.get(Request.GET_ALL_GAMES, {
+          headers: {
+            'Content-Type': 'application/json',
+            },
+            })
         setGames(response.data)
       } catch (error) {
         console.error('Error al obtener los juegos:', error)

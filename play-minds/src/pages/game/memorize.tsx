@@ -171,7 +171,7 @@ const MemorizeGame = () => {
               tmp &&
               memoryGame.game.id_game
             ) {
-              const gameC = new GameComplete(
+              const gameC = new GameComplete(0,
                 tmp,
                 memoryGame.game.id_game,
                 new Date(),
