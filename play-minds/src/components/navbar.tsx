@@ -8,14 +8,15 @@ import img1 from '../image/logo playminds.png'
 import axios from 'axios'
 import { Request } from '@/helpers/requests'
 import { set } from 'date-fns'
-import { Game } from '../models/Entitys/Game'
+import { ca } from 'date-fns/locale'
+import Swal from 'sweetalert2'
 
 const NavBar = () => {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [search, setSearch] = useState('')
-  const [games, setGames] = useState('')
+  const [game_find, setGames] = useState('')
   useEffect(() => {
     const userData = localStorage.getItem('user')
     if (userData) {
@@ -23,7 +24,37 @@ const NavBar = () => {
       setUser(parsedUser)
     }
   }, [])
-
+  const handleSearch = (e: any) => {
+    const fetchGame = async () => {
+      await axios
+        .get(Request.GET_GAME_BY_ID + '?id_game=' + search, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((response) => {
+          const game = response.data
+          console.log("->"+response.data.type_game)
+          setGames(game.data)
+          if (response.data.type_game === 'QUIZ') router.push(`game/quiz?id=${response.data.id_game}`)
+          if (response.data.type_game === 'CARD') router.push(`game/duocards?id=${response.data.id_game}`)
+          if (response.data.type_game === 'MEMORY') router.push(`game/memorize?id=${response.data.id_game}`)
+          if (response.data.type_game === 'HANGED') router.push(`game/ahorcado?id=${response.data.id_game}`)
+        }).catch((error) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Opps....',
+            text: 'No se encuentra el juego',
+            showConfirmButton: false,
+            timer: 2000
+          })
+        }
+        )
+    }
+    fetchGame()
+    console.log(search)
+  }
   const handleLogout = () => {
     axios.get(Request.SERVER + '/Users/Logout?email=' + user?.email)
     localStorage.clear() // Elimina los datos
@@ -55,24 +86,6 @@ const NavBar = () => {
     }
   }
 
-  const handleSearch = (e: any) => {
-    e.preventDefault()
-    useEffect(() => {
-      const fetchGames = async () => {
-        const response = await axios
-          .get(Request.SERVER + Request.GET_GAME_BY_ID + '?id_game=' + search, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-          .then((response) => {
-            const game = response.data
-            setGames(game.data)
-          })
-      }
-    }, [search])
-    console.log(search)
-  }
 
   return (
     <div className="w-full bg-[#112B3C] rounded-lg p-7 sm:flex sm:justify-between gap-4 sm:h-[90px] grid md:grid-cols-1 ">
