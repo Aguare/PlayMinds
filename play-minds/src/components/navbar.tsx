@@ -47,6 +47,7 @@ const NavBar = () => {
   const handleCreateGame = () => {
     if (user?.role === 'TEACHER') {
       // Aquí puedes agregar la lógica para redirigir al usuario a la ruta de creación de juegos
+      router.push('/forms/creator')
       console.log('Redirigir a la página de creación de juegos')
     }
   }

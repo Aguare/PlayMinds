@@ -6,6 +6,9 @@ import { Card } from '@/models/Entitys/Card'
 import { User } from '../../models/Entitys/User'
 import { CardGameG } from '@/models/Entitys/Assistant/CardGameG'
 import { Request } from '../../helpers/requests'
+import NavBar from '@/components/navbar'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const DuoCardsForm = () => {
   const [pregunta, setPregunta] = useState<string>('')
@@ -62,6 +65,14 @@ const DuoCardsForm = () => {
   const handleImage = async () => {
     // Verifica que se haya seleccionado un archivo
     if (!selectedFile) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Oops...',
+        text: 'No se ha seleccionado ninguna imagen',
+        showConfirmButton: false,
+        timer: 1500
+      })
       return
     }
 
@@ -78,6 +89,13 @@ const DuoCardsForm = () => {
       const response = await axios.post(Request.UPLOAD_DUO_CARD, formData)
       console.log(response.data)
       listcards.push(response.data[0])
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Imagen cargagada con exito',
+        showConfirmButton: false,
+        timer: 800
+      })
     } catch (error) {
       console.error(error)
     }
@@ -114,6 +132,7 @@ const DuoCardsForm = () => {
     setUploadedFiles([])
     setPista('')
     setError('')
+    setRespuestaCorrecta(false)
   }
 
   const handleGameCreation = async () => {
@@ -160,8 +179,36 @@ const DuoCardsForm = () => {
     })
 
     const cardGameG = new CardGameG(game, cards)
+    if(cards.length === 0){
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Opps....',
+        text: 'No se ingreso ninguna palabra',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      return
+    } 
     try {
       const response = await axios.post(Request.REGISTER_CARD_GAME, cardGameG)
+      setPregunta('')
+      setSelectedFile(null)
+      setUploadedFiles([])
+      setPista('')
+      setError('')
+      setRespuestaCorrecta(false)
+      setName_game('')
+      setDescription('')
+      setValue_points('')
+      setCartas([])
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Se ingreso correctamente el juego',
+        showConfirmButton: false,
+        timer: 1500
+      })
       console.log(response.data)
       console.log(cardGameG)
     } catch (error) {
@@ -181,6 +228,7 @@ const DuoCardsForm = () => {
 
   return (
     <div>
+      <NavBar />
       <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 overflow-hidden">
         <div>
           <h1 className="mb-1 font-bold text-3xl flex gap-1 items-baseline text-maincian">
