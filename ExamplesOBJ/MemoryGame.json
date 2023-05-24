@@ -1,0 +1,28 @@
+{
+  "game": {
+    "name_game": "Juego de memoria",
+    "type_game": "MEMORY",
+    "description": "Un divertido juego de memoria",
+    "value_points": 100,
+    "user": {
+      "email": "marcosy300@gmail.com"
+    }
+  },
+  "imageList": [
+    {
+      "id": 1,
+      "path_img": "ruta/imagen1.png",
+      "show": false
+    },
+    {
+      "id": 2,
+      "path_img": "ruta/imagen2.png",
+      "show": false
+    },
+    {
+      "id": 3,
+      "path_img": "ruta/imagen3.png",
+      "show": false
+    }
+  ]
+}
