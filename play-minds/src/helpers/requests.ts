@@ -1,6 +1,6 @@
 export enum Request {
-  SERVER = "https://98c1-181-174-107-182.ngrok-free.app/PlayMind",
-  SERVER_API = "https://98c1-181-174-107-182.ngrok-free.app",
+  SERVER = "https:/7707-181-174-107-182.ngrok-free.app/PlayMind",
+  SERVER_API = "https:/7707-181-174-107-182.ngrok-free.app/",
   GET_ALL_GAMES = SERVER + "/Games/GetAllGames",
   REGISTER_HANGED_GAME = SERVER + "/Games/RegisterHangedGame",
   UPLOAD_DUO_CARD = SERVER + "/Files/upload",
@@ -10,4 +10,5 @@ export enum Request {
   REGISTER_QUIZ_GAME = SERVER + "/Games/RegisterQuizGame",
   REGISTER_USER = SERVER + "/Users/RegisterUser",
   SERVER_IMAGE = SERVER_API + "/images",
+  REGISTER_COMMENT = SERVER + "/Games/RegisterComment",
 }
