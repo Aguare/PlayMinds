@@ -4,13 +4,13 @@ import img1 from '../../image/logo playminds.png'
 import axios from 'axios'
 import { User } from '../../models/Entitys/User'
 import { Request } from '../../helpers/requests'
-
+import { useRouter } from 'next/router'
 const Register = () => {
   const [name, setName] = useState('')
   const [role, setRole] = useState('STUDENT')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
+  const router = useRouter();
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
@@ -25,6 +25,7 @@ const Register = () => {
         },
       })
       .then(function (response) {
+        router.push('/auth/signin')
         console.log('Respuesta del servidor:', response.data)
       })
       .catch(function (error) {
