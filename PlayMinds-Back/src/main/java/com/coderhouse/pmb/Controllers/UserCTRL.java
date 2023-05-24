@@ -2,8 +2,10 @@ package com.coderhouse.pmb.Controllers;
 
 
 import com.coderhouse.pmb.DAO.GameCompleteDAO;
+import com.coderhouse.pmb.DAO.NotificationDAO;
 import com.coderhouse.pmb.DAO.UserDAO;
 import com.coderhouse.pmb.Entitys.GameComplete;
+import com.coderhouse.pmb.Entitys.Notification;
 import com.coderhouse.pmb.Entitys.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class UserCTRL {
     @Autowired
     private GameCompleteDAO gameComplete;
 
+    @Autowired
+    private NotificationDAO notification;
+
     @PostMapping("/Login")
     public User login(@RequestBody User user) {
         Optional<User> userReceipt = this.user.findById(user.getEmail());
@@ -33,6 +38,11 @@ public class UserCTRL {
             }
         }
         return null;
+    }
+
+    @GetMapping("/GetNotification")
+    public Iterable<Notification> getNotification(String email) {
+        return this.notification.findAllByUser(email);
     }
 
     @GetMapping("/GetUser")
