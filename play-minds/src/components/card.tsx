@@ -12,6 +12,14 @@ const Card = () => {
   const [games, setGames] = useState<Game[]>([]);
   const router = useRouter();
 
+  const getImage = (type: string) => {
+    if (type === "QUIZ") return Request.SERVER_IMAGE + "/quiz.png";
+    if (type === "CARD") return Request.SERVER_IMAGE + "/duocards.png";
+    if (type === "MEMORY") return Request.SERVER_IMAGE + "/memorize.png";
+    if (type === "HANGED") return Request.SERVER_IMAGE + "/ahorcado.png";
+    return Request.SERVER_IMAGE + "/quiz.png";
+  };
+
   useEffect(() => {
     const fetchGames = async () => {
       try {
@@ -46,7 +54,7 @@ const Card = () => {
         >
           <div className="flex flex-col items-center justify-center mx-auto pad ">
             <Image
-              src={game.getImage()}
+              src={getImage(game.type_game)}
               alt="Imagen de fondo"
               width={400}
               height={400}

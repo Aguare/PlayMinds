@@ -24,19 +24,4 @@ export class Game {
     this.value_points = value_points;
     this.user = user;
   }
-
-  getImage() {
-    switch (this.type_game) {
-      case "CARD":
-        return Request.SERVER_IMAGE + "/cardgame.png";
-      case "HANGED":
-        return Request.SERVER_IMAGE + "/hangedgame.png";
-      case "QUIZ":
-        return Request.SERVER_IMAGE + "/quizgame.png";
-      case "MEMORY":
-        return Request.SERVER_IMAGE + "/memorygame.png";
-      default:
-        return Request.SERVER_IMAGE + "/cardgame.png";
-    }
-  }
 }
