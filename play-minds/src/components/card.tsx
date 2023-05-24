@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import imgIngenieria from "../image/Image-carrera-inge.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
@@ -13,10 +11,10 @@ const Card = () => {
   const router = useRouter();
 
   const getImage = (type: string) => {
-    if (type === "QUIZ") return Request.SERVER_IMAGE + "/quiz.png";
-    if (type === "CARD") return Request.SERVER_IMAGE + "/duocards.png";
-    if (type === "MEMORY") return Request.SERVER_IMAGE + "/memorize.png";
-    if (type === "HANGED") return Request.SERVER_IMAGE + "/ahorcado.png";
+    if (type === "QUIZ") return Request.SERVER_IMAGE + "/quizgame.png";
+    if (type === "CARD") return Request.SERVER_IMAGE + "/cardgame.png";
+    if (type === "MEMORY") return Request.SERVER_IMAGE + "/memorygame.png";
+    if (type === "HANGED") return Request.SERVER_IMAGE + "/hangedgame.png";
     return Request.SERVER_IMAGE + "/quiz.png";
   };
 
@@ -53,7 +51,7 @@ const Card = () => {
           className="flex flex-col gap-6 bg-gray-100 p-8 rounded-xl drop-shadow-xl"
         >
           <div className="flex flex-col items-center justify-center mx-auto pad ">
-            <Image
+            <img
               src={getImage(game.type_game)}
               alt="Imagen de fondo"
               width={400}
