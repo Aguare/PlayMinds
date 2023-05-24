@@ -50,7 +50,7 @@ const MemorizeF = () => {
         title: 'Oops...',
         text: 'No se ha seleccionado ninguna imagen',
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       })
       return
     }
@@ -68,11 +68,11 @@ const MemorizeF = () => {
       listImages.push(response.data[0])
       Swal.fire({
         position: 'center',
-        icon: 'error',
-        title: 'Opps....',
+        icon: 'success',
+        title: 'Ok',
         text: 'Se subio correctamente la imagen',
         showConfirmButton: false,
-        timer: 800
+        timer: 800,
       })
     } catch (error) {
       console.error(error)
@@ -109,41 +109,39 @@ const MemorizeF = () => {
       userObject,
     )
     const memoryGame = new MemoryGame(game, listImages)
-    if(listImages.length === 0){
+    if (listImages.length === 0) {
       Swal.fire({
         position: 'center',
         icon: 'error',
         title: 'Opps....',
         text: 'No se ingreso ninguna imagen',
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       })
       return
-    } 
+    }
     try {
-      const response = await axios.post(
-        Request.REGISTER_MEMORY_GAME,
-        memoryGame, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(function (response) {
-        setSelectedFile(null)
-        setUploadedFiles([])
-        setName_game('')
-        setDescription('')
-        setValue_points('')
-        setError('')
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Se ingreso correctamente el juego',
-          showConfirmButton: false,
-          timer: 1500
+      const response = await axios
+        .post(Request.REGISTER_MEMORY_GAME, memoryGame, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
         })
-      })
-     
+        .then(function (response) {
+          setSelectedFile(null)
+          setUploadedFiles([])
+          setName_game('')
+          setDescription('')
+          setValue_points('')
+          setError('')
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Se ingreso correctamente el juego',
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        })
     } catch (error) {
       console.error(error)
     }
