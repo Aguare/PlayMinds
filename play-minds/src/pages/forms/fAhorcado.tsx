@@ -9,6 +9,7 @@ import { HangedGame } from '../../models/Entitys/Assistant/HangedGame'
 import { Request } from '../../helpers/requests'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import Footer from '@/components/footer'
 
 const AhorcadoF = () => {
   const [palabra, setPalabra] = useState<string>('')
@@ -71,7 +72,6 @@ const AhorcadoF = () => {
     let user
     if (userString) {
       user = JSON.parse(userString)
-     
     } else {
       // Manejar el caso cuando los datos del usuario no están disponibles
 
@@ -100,43 +100,42 @@ const AhorcadoF = () => {
       (p, i) => new Phrase(i + 1, p.palabra, p.pista),
     )
     const hangedGame = new HangedGame(game, phrasesArray)
-  if(phrasesArray.length==0){
-    Swal.fire({
-      position: 'center',
-      icon: 'error',
-      title: 'Opps....',
-      text: 'No se ingreso ninguna palabra',
-      showConfirmButton: false,
-      timer: 1500
-    })
-    return
-  }
+    if (phrasesArray.length == 0) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Opps....',
+        text: 'No se ingreso ninguna palabra',
+        showConfirmButton: false,
+        timer: 1500,
+      })
+      return
+    }
     try {
       // Realizar la solicitud POST
-      const response = await axios.post(
-        Request.REGISTER_HANGED_GAME,
-        hangedGame,{ headers: {
-          'Content-Type': 'application/json',
-        }
-      })
-      .then(function (response) {
-        setPalabras([]),
-        setName_game(''),
-        setDescription(''),
-        setValue_points(''),
-        setPista('')
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Se ingreso correctamente el juego',
-          showConfirmButton: false,
-          timer: 1500
+      const response = await axios
+        .post(Request.REGISTER_HANGED_GAME, hangedGame, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
         })
-        console.log(response.data)
-      })
+        .then(function (response) {
+          setPalabras([]),
+            setName_game(''),
+            setDescription(''),
+            setValue_points(''),
+            setPista('')
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Se ingreso correctamente el juego',
+            showConfirmButton: false,
+            timer: 1500,
+          })
+          console.log(response.data)
+        })
 
       // Manejar la respuesta del servidor
-
     } catch (error) {
       console.error(error)
     }
@@ -282,6 +281,7 @@ const AhorcadoF = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

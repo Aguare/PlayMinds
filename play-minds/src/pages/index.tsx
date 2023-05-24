@@ -6,6 +6,7 @@ import imggame2 from '../image/img-duocards.png'
 import imggame3 from '../image/img-memoria.png'
 import imggame4 from '../image/img-quiz.png'
 import Link from 'next/link'
+import Footer from '../components/footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -173,6 +174,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faBell } from '@fortawesome/free-solid-svg-icons'
 import { User } from '../../models/Entitys/User'
+import Footer from '@/components/footer'
 
 const creator = () => {
   const router = useRouter()

@@ -14,4 +14,5 @@ export enum Request {
   GET_COMMENTS_BY_GAME= SERVER + "/Games/GetGameComments",
   GET_RANKING_GAME = SERVER + "/Games/GetRankingByGame",
   GET_GAME_BY_ID = SERVER + "/Games/GetGame",
+  Get_ALL_USER = SERVER + "/Users/GetAllUsers",
 }

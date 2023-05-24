@@ -11,6 +11,7 @@ import { GameComplete } from '@/models/Entitys/GameComplete'
 import Table from '@/components/table'
 import NewComment from '@/components/newComment'
 import Comments from '@/components/comment'
+import Footer from '@/components/footer'
 
 interface Question {
   question: string
@@ -141,7 +142,8 @@ const Quiz = () => {
         } else {
           newScore = (quizGame.game.value_points / questions.length) * score
         }
-        const gameC = new GameComplete(0,
+        const gameC = new GameComplete(
+          0,
           tmp,
           quizGame.game.id_game,
           new Date(),
@@ -218,6 +220,7 @@ const Quiz = () => {
           <Comments />
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

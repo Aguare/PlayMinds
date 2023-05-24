@@ -8,6 +8,7 @@ import { MemoryGame } from '../../models/Entitys/Assistant/MemoryGame'
 import { Request } from '../../helpers/requests'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import Footer from '@/components/footer'
 
 const MemorizeF = () => {
   const [selectedFile, setSelectedFile] = useState<FileList | null>(null)
@@ -288,6 +289,7 @@ const MemorizeF = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
