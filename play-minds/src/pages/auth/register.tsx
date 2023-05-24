@@ -5,12 +5,14 @@ import axios from 'axios'
 import { User } from '../../models/Entitys/User'
 import { Request } from '../../helpers/requests'
 import { useRouter } from 'next/router'
+import Swal from 'sweetalert2'
+
 const Register = () => {
   const [name, setName] = useState('')
   const [role, setRole] = useState('STUDENT')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const router = useRouter();
+  const router = useRouter()
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
@@ -25,6 +27,13 @@ const Register = () => {
         },
       })
       .then(function (response) {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Se ingreso correctamente el usuario ' + user.name,
+          showConfirmButton: false,
+          timer: 1500,
+        })
         router.push('/auth/signin')
         console.log('Respuesta del servidor:', response.data)
       })
