@@ -11,11 +11,11 @@ const Card = () => {
   const router = useRouter();
 
   const getImage = (type: string) => {
-    if (type === "QUIZ") return Request.SERVER_IMAGE + "/quizgame.png";
-    if (type === "CARD") return Request.SERVER_IMAGE + "/cardgame.png";
-    if (type === "MEMORY") return Request.SERVER_IMAGE + "/memorygame.png";
-    if (type === "HANGED") return Request.SERVER_IMAGE + "/hangedgame.png";
-    return Request.SERVER_IMAGE + "/quiz.png";
+    if (type === "QUIZ") return Request.SERVER_IMAGE + "/img-quiz.png";
+    if (type === "CARD") return Request.SERVER_IMAGE + "/img-duocards.png";
+    if (type === "MEMORY") return Request.SERVER_IMAGE + "/img-memoria.png";
+    if (type === "HANGED") return Request.SERVER_IMAGE + "/img-ahorcado.png";
+    return Request.SERVER_IMAGE + "../quiz.png";
   };
 
   useEffect(() => {

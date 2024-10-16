@@ -194,11 +194,18 @@ const Quiz = () => {
             </div>
           )}
         </div>
-        <div className="sm:col-span-2 w-[100%]">
-          <div className="w-[98%] bg-mainorange mb-12">aqui </div>
-          <div className="w-[98%] bg-mainorange mb-12">aqui 2</div>
-          <Table />
-        </div>
+        <div className="sm:col-span-2 w-[100%] flex flex-col items-center">
+      <div className="w-[90%] p-4 bg-mainorange text-white rounded-md shadow-md mb-4">
+        <h3 className="text-lg font-semibold text-center">Código de Juego</h3>
+      </div>
+      <div className="w-[90%] p-4 bg-white text-black border border-mainorange rounded-md shadow-md text-center mb-6">
+        <span className="text-lg font-bold">{id ? id : 'Cargando...'}</span>
+      </div>
+      <div className="w-[90%]">
+        <Table />
+      </div>
+    </div>
+
         <div className="sm:col-span-5 w-[100%]">
           <NewComment />
         </div>
