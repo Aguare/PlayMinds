@@ -1,12 +1,17 @@
 import NavBar from "../components/navbar";
 import Card from "../components/card";
 
-const home = () => {
+const Home = () => {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col bg-gray-100">
       <NavBar />
-      <Card />
+      <main className="flex flex-col items-center justify-center w-full px-4 md:px-8 py-8">
+        <div className="w-full max-w-7xl">
+          <Card />
+        </div>
+      </main>
     </div>
   );
 };
-export default home;
+
+export default Home;

@@ -32,7 +32,7 @@ const Duocards = () => {
       name: '¿La capital de Francia es: ?',
       image: {
         id: 1,
-        path_img: 'https://via.placeholder.com/150',
+        path_img: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/Paris_Night.jpg',  // Imagen de París
         show: false,
       },
       description: 'París',
@@ -43,7 +43,7 @@ const Duocards = () => {
       name: '¿El río más largo del mundo es: ?',
       image: {
         id: 2,
-        path_img: 'https://via.placeholder.com/150',
+        path_img: 'https://www.ngenespanol.com/wp-content/uploads/2023/08/nilo-o-amazonas-cual-es-el-rio-mas-largo-del-mundo.jpg',  // Nueva imagen del río Amazonas
         show: false,
       },
       description: 'El río Amazonas',
@@ -53,8 +53,8 @@ const Duocards = () => {
       idCard: 3,
       name: '¿Cuál es el elemento más abundante en la Tierra?',
       image: {
-        id: 2,
-        path_img: 'https://via.placeholder.com/150',
+        id: 3,
+        path_img: 'https://www.escuelapedia.com/wp-content/uploads/Elemento-m%C3%A1s-abundante-en-la-Tierra.jpg',  // Nueva imagen de oxígeno (tabla periódica)
         show: false,
       },
       description: 'El oxígeno',
@@ -64,8 +64,8 @@ const Duocards = () => {
       idCard: 4,
       name: '¿Quién escribió la novela "Cien años de soledad"?',
       image: {
-        id: 2,
-        path_img: 'https://via.placeholder.com/150',
+        id: 4,
+        path_img: 'https://wmagazin.com/wp-content/uploads/2017/08/ES-ppal-garciamarquez4.jpg',  // Nueva imagen de Gabriel García Márquez
         show: false,
       },
       description: 'Gabriel García Márquez',
@@ -75,8 +75,8 @@ const Duocards = () => {
       idCard: 5,
       name: '¿En qué año comenzó la Segunda Guerra Mundial?',
       image: {
-        id: 2,
-        path_img: 'https://via.placeholder.com/150',
+        id: 5,
+        path_img: 'https://encyclopedia.ushmm.org/images/large/259b160c-b004-4699-8588-9df332ea2092.jpg',  // Nueva imagen de la Segunda Guerra Mundial
         show: false,
       },
       description: '1939',
@@ -86,8 +86,8 @@ const Duocards = () => {
       idCard: 6,
       name: '¿Qué país tiene la población más grande del mundo?',
       image: {
-        id: 2,
-        path_img: 'https://via.placeholder.com/150',
+        id: 6,
+        path_img: 'https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/05/17/16527765411158.jpg',  // Nueva imagen de China (Shanghai)
         show: false,
       },
       description: 'China',
@@ -97,8 +97,8 @@ const Duocards = () => {
       idCard: 7,
       name: '¿Quién fue el primer hombre en pisar la luna?',
       image: {
-        id: 2,
-        path_img: 'https://via.placeholder.com/150',
+        id: 7,
+        path_img: 'https://s3.amazonaws.com/rtvc-assets-senalcolombia.gov.co/s3fs-public/inline-images/neil-armstrong-armstrong-primer-hombre-en-la-luna-biografia-5.jpg',  // Nueva imagen del aterrizaje en la luna (Neil Armstrong)
         show: false,
       },
       description: 'Neil Armstrong',
@@ -108,8 +108,8 @@ const Duocards = () => {
       idCard: 8,
       name: '¿Quién pintó la obra "La noche estrellada"?',
       image: {
-        id: 2,
-        path_img: 'https://via.placeholder.com/150',
+        id: 8,
+        path_img: 'https://wahooart.com/A55A04/w.nsf/O/BRUE-5ZKG4H/$File/Vincent+Van+Gogh+-+The+Starry+Night+.JPG',  // Nueva imagen de "La noche estrellada"
         show: false,
       },
       description: 'Vincent van Gogh',
@@ -119,8 +119,8 @@ const Duocards = () => {
       idCard: 9,
       name: '¿Cuál es el nombre del continente más grande del mundo?',
       image: {
-        id: 2,
-        path_img: 'https://via.placeholder.com/150',
+        id: 9,
+        path_img: 'https://libretilla.com/wp-content/uploads/2019/04/cuantos-continentes-hay-mundo.png',  // Nueva imagen del continente asiático
         show: false,
       },
       description: 'Asia',
@@ -130,14 +130,16 @@ const Duocards = () => {
       idCard: 10,
       name: '¿Qué animal representa al signo zodiacal de Leo?',
       image: {
-        id: 2,
-        path_img: 'https://via.placeholder.com/150',
+        id: 10,
+        path_img: 'https://media.glamour.mx/photos/64b0a9030589c34e947d85cd/2:3/w_1124,h_1686,c_limit/leo.jpg',  // Imagen de un león
         show: false,
       },
       description: 'El león',
       correct: true,
     },
   ])
+  
+  
 
   if (
     id !== 'default' &&

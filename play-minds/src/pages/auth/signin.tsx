@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { User } from '@/models/Entitys/User'
 import axios from 'axios'
 import { Request } from '../../helpers/requests'
+import Link from 'next/link'  // Importamos Link de Next.js
 
 const SignIn = () => {
   const router = useRouter()
@@ -33,7 +34,6 @@ const SignIn = () => {
         // En caso de otro rol, redireccionar a una página de error o realizar otra acción
         router.push('/error')
       }
-      // Redireccionar al usuario a la página Home
     } catch (error) {
       console.error(error)
       setErrorMessage(
@@ -47,7 +47,9 @@ const SignIn = () => {
       <div className="min-h-screen bg-[#112B3C] grid grid-cols-1 lg:grid-cols-2">
         {/* Imagen */}
         <div className="flex flex-col items-center justify-center sm:pl-[20%] mx-auto pad">
-          <Image src={img1} alt="Imagen de fondo" width={900} height={900} />
+          <Link href="/">  {/* Envolvemos el logo en un enlace */}
+            <Image src={img1} alt="Logo Playminds" width={900} height={900} />
+          </Link>
         </div>
         <div className="text-white flex flex-col items-center justify-center gap-8 p-8 max-w-lg mx-auto">
           <div className="flex flex-col gap-1 w-full">
