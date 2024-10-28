@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "eject": "next eject"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -38,6 +39,7 @@
   "devDependencies": {
     "@types/node": "^20.2.1",
     "@types/react": "^18.2.6",
+    "file-loader": "^6.2.0",
     "typescript": "^5.0.4"
   }
 }

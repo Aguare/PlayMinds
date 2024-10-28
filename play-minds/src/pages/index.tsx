@@ -5,6 +5,7 @@ import imggame1 from '../image/img-ahorcado.png'
 import imggame2 from '../image/img-duocards.png'
 import imggame3 from '../image/img-memoria.png'
 import imggame4 from '../image/img-quiz.png'
+import imggame5 from '../image/img-kiche.png'
 import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -133,6 +134,32 @@ export default function Home() {
                 className="border border-gray-600 py-2 px-4 rounded-lg mt-4 md:mt-0"
               >
                 <Link href="/game/quiz">JUGAR</Link>
+              </button>
+            </div>
+          </div>
+
+          {/* Card 5 - Idiomas */}
+          <div className="flex flex-col gap-6 bg-gray-100 p-6 rounded-xl shadow-md">
+            <div className="flex items-center justify-center mx-auto">
+              <Image src={imggame5} alt="Imagen del juego de idiomas" layout="responsive" width={400} height={400} />
+            </div>
+            <p className="text-gray-500 text-sm md:text-base">
+              "Juego diseñado para aprender y practicar idiomas de manera divertida. Incluye ejercicios de vocabulario, gramática y pronunciación. El objetivo es mejorar tus habilidades lingüísticas mientras te diviertes. ¡Aprende un nuevo idioma y juega al mismo tiempo!"
+            </p>
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <img
+                src="https://img.freepik.com/foto-gratis/retrato-hombre-negocios-mascarilla-usando-su-computadora-portatil-mientras-sentado-escaleras-al-aire-libre-concepto-negocio-nuevo-concepto-estilo-vida-normal_58466-14709.jpg"
+                className="w-16 h-16 object-cover rounded-full ring-4 ring-gray-300"
+              />
+              <div>
+                <h3 className="text-indigo-500 font-bold">Ana Pérez</h3>
+                <p className="text-gray-500 font-medium">Language Teacher</p>
+              </div>
+              <button
+                type="button"
+                className="border border-gray-600 py-2 px-4 rounded-lg mt-4 md:mt-0"
+              >
+                <Link href="/game/idiomas">JUGAR</Link>
               </button>
             </div>
           </div>

@@ -1,6 +1,6 @@
 export enum Request {
-  SERVER = "http://localhost:8080",
-  SERVER_API = "http://localhost:3000",
+  SERVER = "http://34.73.62.185:8080",
+  SERVER_API = "http://34.73.62.185:3000",
   GET_ALL_GAMES = SERVER + "/Games/GetAllGames",
   REGISTER_HANGED_GAME = SERVER + "/Games/RegisterHangedGame",
   UPLOAD_DUO_CARD = SERVER + "/Files/upload",
